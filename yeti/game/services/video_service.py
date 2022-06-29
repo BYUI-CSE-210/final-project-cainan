@@ -83,8 +83,7 @@ class VideoService(Service):
 if __name__ == "__main__":
     from game.deeds.start_services_deed import StartServicesDeed
     from game.services.video_service import VideoService
-    start_services_deed = StartServicesDeed()
-    service_manager = start_services_deed.execute()
+    service_manager = StartServicesDeed().execute()
     service_manager.show_all_services()
     video_service = service_manager.get_first_service(VideoService)
     keyboards = service_manager.get_services("input")
@@ -95,13 +94,27 @@ if __name__ == "__main__":
 
     while video_service.is_window_open():
         video_service.start_buffer()
+        
+        # draw text deed
         pr.draw_text("Use the arrow keys.",200, 200, 20, Color().get_tuple())
+
+        # get input deed
         direction = kbd.get_direction()
+
+        # move deed
         x = (x + direction.x * 10) % video_service.get_width()
         y = (y + direction.y * 10) % video_service.get_height()
+
+        # draw text deed
         pr.draw_text(f"Current position is: ({x}, {y})", 20, 20, 20, pr.WHITE)
+
+        # draw text deed
         pr.draw_text(f"The max width and height should be: {video_service.get_width()} by {video_service.get_height()}. The square is 10x10.", 20, 50, 20, pr.WHITE )
+
+        # draw rect deed
         pr.draw_rectangle(x,y,10,10,pr.WHITE)
+
         video_service.end_buffer()
 
-    video_service.stop_service()
+    service_manager.stop_all_services()
+    service_manager.show_all_services()

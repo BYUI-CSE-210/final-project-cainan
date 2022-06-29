@@ -61,6 +61,21 @@ class ServiceManager:
                     print("Starting Service: ", service)
                 service.start_service()
                 
+    def stop_all_services(self):
+        '''
+        Triggers the stop_service() method for all services that have been registered.
+        '''
+
+        if self._debug:
+            print("Services dictionary", self._services)
+        for group in self._services:
+            if self._debug:
+                print("Stopping Group: ", group)
+            service: Service
+            for service in self._services[group]:
+                if self._debug:
+                    print("Stopping Service: ", service)
+                service.stop_service()
 
     def show_all_services(self):
         '''

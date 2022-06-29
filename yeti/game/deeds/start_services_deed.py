@@ -8,7 +8,7 @@ from game.services.service_manager import ServiceManager
 class StartServicesDeed(Deed):
     
     def execute(self):
-        service_manager = ServiceManager(debug=False)
+        service_manager = ServiceManager(self._debug)
         keyboard_service = KeyboardService()
 
         audio_service = AudioService()
