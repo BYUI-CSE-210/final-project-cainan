@@ -75,7 +75,7 @@ class ServiceManager:
 
 
 if __name__ == "__main__":
-    from game.services.actions_service import ActionsService
+    from game.services.deeds_service import DeedsService
     from game.services.keyboard_service import KeyboardService
     from game.services.audio_service import AudioService
     from game.services.video_service import VideoService
@@ -84,12 +84,12 @@ if __name__ == "__main__":
     keyboard_service1 = KeyboardService()
     audio_service = AudioService()
     video_service = VideoService(20)
-    action_service = ActionsService()
+    deed_service = DeedsService()
 
     service_manager.register_service(keyboard_service1, "input")
     service_manager.register_service(audio_service, "output")
     service_manager.register_service(video_service, "output")
-    service_manager.register_service(action_service, "control")
+    service_manager.register_service(deed_service, "control")
 
     service_manager.start_all_services()
     service_manager.show_all_services()
