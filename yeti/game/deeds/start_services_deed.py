@@ -1,5 +1,3 @@
-import pyray as pr
-
 from game.deeds.deed import Deed
 from game.services.deeds_service import DeedsService
 from game.services.video_service import VideoService
