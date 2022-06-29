@@ -5,7 +5,7 @@ from game.services.service import Service
 
 class VideoService(Service):
 
-    def __init__(self, framerate, width = 0, height = 0, caption = "Cycles", bg_color = None) -> None:
+    def __init__(self, framerate, width = 0, height = 0, caption = "Title", bg_color = None) -> None:
         super().__init__()
         self._width = width
         self._height = height
@@ -17,19 +17,17 @@ class VideoService(Service):
         self._background_color = bg_color.get_tuple()
     
     def start_service(self):
-        width = 0 
-        height = 0 
-        pr.init_window(width, height, self._caption)
+        pr.init_window(self._width, self._height, self._caption)
         pr.set_target_fps(self._framerate)
-        screen = pr.get_current_monitor()
-        self._width = pr.get_monitor_width(screen)
-        self._height = pr.get_monitor_height(screen)
+        if self._width == 0 and self._height == 0:
+            screen = pr.get_current_monitor()
+            self._width = pr.get_monitor_width(screen)
+            self._height = pr.get_monitor_height(screen)
+            pr.toggle_fullscreen()
         if self._height > 1200:
             self._height = 950
             self._width = 1750
             pr.set_window_size(self._width,self._height)
-        else:
-            pr.toggle_fullscreen()
         self._is_started = True
     
     def stop_service(self):
