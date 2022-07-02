@@ -1,5 +1,3 @@
-from tkinter import Frame
-from matplotlib.patches import Rectangle
 from yeti.game.entities.entity import Entity
 from yeti.game.shared.point import Point
 import pyray as pr
@@ -31,7 +29,7 @@ class Yeti(Entity):
         self.timer = float(0.0)
         self.frame = 0
 
-def main():
+if __name__ == "__main__":
 
     pr.init_window(900,750,"YetiQuest")
     pr.set_target_fps(60)
@@ -53,5 +51,4 @@ def main():
 
         pr.end_drawing()
 
-if __name__ == "__main__":
-    main()
+
