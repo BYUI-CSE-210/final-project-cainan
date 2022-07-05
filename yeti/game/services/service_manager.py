@@ -1,3 +1,4 @@
+from time import perf_counter
 from game.services.service import Service
 
 
@@ -9,7 +10,19 @@ class ServiceManager:
     def __init__(self, debug = False) -> None:
         self._services = {}
         self._debug = debug
-    
+
+    @property
+    def video_serivce(self):
+        return self.get_first_service(VideoService)
+
+    @property
+    def audio_service(self):
+        return self.get_first_service(AudioService)
+     
+    @property
+    def keyboard_service(self):
+        return self.get_first_service(KeyboardService)
+
     def register_service(self, service, group):
         '''
         Register a service to a group in the ServiceManager.

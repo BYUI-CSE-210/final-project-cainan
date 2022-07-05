@@ -5,7 +5,7 @@ from game.services.keyboard_service import KeyboardService
 from game.services.service_manager import ServiceManager
 
 class Deed(ABC):
-
+    '''Abstract class to describe deeds. Init optionally takes a service manager object and assigns video, audio and keyboard services to properties of self.'''
     def __init__(self, service_manager = None, debug = False) -> None:
         super().__init__()
         self.service_manager: ServiceManager
