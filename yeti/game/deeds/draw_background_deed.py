@@ -7,9 +7,14 @@ class DrawBackgroundDeed(Deed):
         super().__init__(service_manager, debug)
         self._background = self.video_service.register_texture("background", "game/entities/images/background.png")
         self._player = player
+        self._timer = 0
+        self._x = 0
     def execute(self):
-
-        source_rect = pr.Rectangle(self._player.x, 0, self.video_service.get_width(), 1024)
+        self._timer += self.video_service.get_frame_time()
+        if self._timer >= 0.01:
+            self._x += 5
+            self._timer = 0
+        source_rect = pr.Rectangle(self._x, 0, self.video_service.get_width(), 1024)
         dest_rect = pr.Rectangle(0, 0, self.video_service.get_width(), self.video_service.get_height())
         pr.draw_texture_pro(self._background, source_rect, dest_rect, pr.Vector2(0,0), 0, pr.WHITE )
 

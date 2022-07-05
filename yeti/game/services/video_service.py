@@ -11,6 +11,7 @@ class VideoService(Service):
         self._height = height
         self._caption = caption
         self._framerate = framerate
+        self._frametime = 0
         self._textures = {}
         if not bg_color:
             bg_color = Color(0,0,0,255)    
@@ -37,6 +38,7 @@ class VideoService(Service):
     def start_buffer(self):
         pr.begin_drawing()
         pr.clear_background(self._background_color)
+        self._frametime = pr.get_frame_time()
 
     def end_buffer(self):
         pr.end_drawing(self)
@@ -76,6 +78,9 @@ class VideoService(Service):
         if name in self._textures:
             return self._textures[name]
         return False
+
+    def get_frame_time(self):
+        return self._frametime
 
 
 if __name__ == "__main__":
