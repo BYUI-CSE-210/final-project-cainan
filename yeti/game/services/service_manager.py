@@ -1,5 +1,8 @@
-from time import perf_counter
 from game.services.service import Service
+from game.services.deeds_service import DeedsService
+from game.services.keyboard_service import KeyboardService
+from game.services.audio_service import AudioService
+from game.services.video_service import VideoService
 
 
 class ServiceManager:
@@ -22,6 +25,10 @@ class ServiceManager:
     @property
     def keyboard_service(self):
         return self.get_first_service(KeyboardService)
+    
+    @property
+    def deeds_service(self):
+        return self.get_first_service(DeedsService)
 
     def register_service(self, service, group):
         '''
@@ -103,10 +110,7 @@ class ServiceManager:
 
 
 if __name__ == "__main__":
-    from game.services.deeds_service import DeedsService
-    from game.services.keyboard_service import KeyboardService
-    from game.services.audio_service import AudioService
-    from game.services.video_service import VideoService
+
 
     service_manager = ServiceManager()
     keyboard_service1 = KeyboardService()
