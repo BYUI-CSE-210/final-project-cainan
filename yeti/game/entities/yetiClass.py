@@ -13,6 +13,10 @@ from game.services.video_service import VideoService
 
 class Yeti(Entity):
     def __init__(self, x, y):
+        #TODO: add weight property to Yeti
+        #TODO: pass in a service_manager object to Yeti
+        #TODO: call super from Yeti init.
+        #TODO: rename this file to yeti.py instead of yetiClass.py
         self.x = x
         self.y = y
         self.speed = 1
