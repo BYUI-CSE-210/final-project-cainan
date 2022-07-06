@@ -4,7 +4,16 @@ from game.services.service import Service
 
 
 class VideoService(Service):
-
+    '''
+    Handles pyray initialization and buffers.
+    
+    Params: * means required
+    *framerate: int, sets the target FPS of the video service
+    width: int, default is 0 which is fullscreen
+    height: int, default 0
+    caption: string, The title of the window
+    bg_color: Color(), the background color that the game will be painted on top of. Default is black.
+    '''
     def __init__(self, framerate, width = 0, height = 0, caption = "Title", bg_color = None) -> None:
         super().__init__()
         self._width = width
@@ -36,14 +45,17 @@ class VideoService(Service):
         self._is_started = False
     
     def start_buffer(self):
+        '''Starts the drawing mode, clears the background, and gets the frame time since the last frame.'''
         pr.begin_drawing()
         pr.clear_background(self._background_color)
         self._frametime = pr.get_frame_time()
 
     def end_buffer(self):
+        '''Ends the drawing mode. This draws all the items that have been sent to the buffer.'''
         pr.end_drawing(self)
     
     def is_window_open(self):
+        '''Returns a boolean about the window being open. '''
         return not pr.window_should_close()
        
     def get_width(self):
@@ -80,6 +92,7 @@ class VideoService(Service):
         return False
 
     def get_frame_time(self):
+        '''Returns the time since the last frame.'''
         return self._frametime
 
 

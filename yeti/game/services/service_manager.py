@@ -16,18 +16,22 @@ class ServiceManager:
 
     @property
     def video_serivce(self):
+        '''Returns the main video service.'''
         return self.get_first_service(VideoService)
 
     @property
     def audio_service(self):
+        '''Returns the main audio service'''
         return self.get_first_service(AudioService)
      
     @property
     def keyboard_service(self):
+        '''Returns the main keyboard service'''
         return self.get_first_service(KeyboardService)
     
     @property
     def deeds_service(self):
+        '''Returns the main deeds service'''
         return self.get_first_service(DeedsService)
 
     def register_service(self, service, group):
