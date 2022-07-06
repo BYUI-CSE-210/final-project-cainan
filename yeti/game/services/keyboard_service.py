@@ -4,13 +4,15 @@ from game.shared.point import Point
 
 
 class KeyboardService(Service):
-
+    '''Service to interact with the keyboard. Default keys are the arrow keys.'''
     def __init__(self) -> None:
         super().__init__()
         self.LEFT_KEY = None
         self.RIGHT_KEY = None
         self.UP_KEY = None
         self.DOWN_KEY = None
+        self.ACTION_ONE = None
+        self.ACTION_TWO = None
         self._is_started = False
         
     def start_service(self):
@@ -20,6 +22,10 @@ class KeyboardService(Service):
             self.RIGHT_KEY = pr.KEY_RIGHT
             self.UP_KEY = pr.KEY_UP
             self.DOWN_KEY = pr.KEY_DOWN
+            self.ACTION_ONE = pr.KEY_SPACE
+            self.ACTION_TWO = pr.KEY_ENTER
+            self.ACTION_THREE = pr.KEY_LEFT_SHIFT
+            self.ACTION_FOUR = pr.KEY_LEFT_CONTROL
         self._is_started = True
         return self._is_started
     
@@ -27,6 +33,11 @@ class KeyboardService(Service):
         self._is_started = False
 
     def get_direction(self, single_press = False):
+        '''
+        Gets the direction being pressed.  Returns a Point() object.
+
+        The returned point object will be between the range of (-1,-1) and (1,1)
+        '''
         if not self._is_started:
             raise ValueError("Keyboard Service not started.")
         method = pr.is_key_down
@@ -42,18 +53,28 @@ class KeyboardService(Service):
         elif method(self.DOWN_KEY):
             p.y = 1
         return p
+    
+    def get_action(self, single_press = False):
+        '''
+        returns the number of the action button pressed. Eg. return 1 if ACTION_ONE button is pressed.
+        '''
 
-    def _get_character_input(self):
-        return pr.get_char_pressed()
-    
-    def _get_key_input(self):
-        return pr.get_key_pressed()
-    
-    def get_character(self):
-        character = self._get_key_input()
-        if character == 257:
-            return False
-        return self._get_character_input()
+        if not self._is_started:
+            raise ValueError("Keyboard Service not started.")
+        method = pr.is_key_down
+        if single_press:
+            method = pr.is_key_pressed
+        
+        if method(self.ACTION_ONE):
+            return 1
+        if method(self.ACTION_TWO):
+            return 2
+        if method(self.ACTION_THREE):
+            return 3
+        if method(self.ACTION_FOUR):
+            return 4
+
+
    
 
     
