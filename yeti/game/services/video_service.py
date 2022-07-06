@@ -24,7 +24,7 @@ class VideoService(Service):
             screen = pr.get_current_monitor()
             self._width = pr.get_monitor_width(screen)
             self._height = pr.get_monitor_height(screen)
-            pr.toggle_fullscreen()
+            # pr.toggle_fullscreen()
         if self._height > 1200:
             self._height = 950
             self._width = 1750
