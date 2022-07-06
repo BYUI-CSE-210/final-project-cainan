@@ -7,6 +7,7 @@ class ApplyGravityDeed(Deed):
         self._entities = entities
 
     def execute(self):
+        #TODO make sure entities have a property to tell if they are on ground.
         for entity in self._entities:
             if not entity.is_on_solid_ground:
                 entity.position.y += 1 * entity.weight
