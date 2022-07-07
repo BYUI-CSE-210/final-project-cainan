@@ -1,5 +1,6 @@
 from atexit import register
 from re import X
+from tkinter import W
 import pyray as pr
 from pyray import Vector2
 from game.entities.entity import Entity
@@ -8,22 +9,27 @@ from game.shared.color import Color
 from game.services.keyboard_service import KeyboardService
 from game.services.audio_service import AudioService
 from game.services.video_service import VideoService
+from game.services.service_manager import ServiceManager
 
 
 
 class Yeti(Entity):
-    def __init__(self, x, y):
+    def __init__(self, x, y) -> None:
+        super().__init__()
         #TODO: add weight property to Yeti
-        #TODO: pass in a service_manager object to Yeti
-        #TODO: call super from Yeti init.
-        #TODO: rename this file to yeti.py instead of yetiClass.py
+            #Added weight property, but get "AttributeError: can't set attribute 'weight'"
         self.x = x
         self.y = y
-        self.speed = 1
+        self.weight = 2
+        self.speed = 10
         self._tint = Color().get_tuple()
         self.is_moving = False
+        self.is_jumping = True
+        self.is_falling = False
         self._video_service = VideoService(20)
+        self._service_manger = ServiceManager()
         self._texture = self._video_service.register_texture("yeti", f"game/entities/images/yeti.png")
+    
 
     def draw(self):
         pr.draw_texture(self._texture, int(self.x), int(self.y), self._tint)

@@ -4,7 +4,7 @@ from game.services.video_service import VideoService
 from game.services.audio_service import AudioService
 from game.services.keyboard_service import KeyboardService
 from game.services.service_manager import ServiceManager
-from yeti.game.services.deeds_service import DeedsService
+from game.services.deeds_service import DeedsService
 class Entity(ABC):
 
     def __init__(self, service_manager = None) -> None:
