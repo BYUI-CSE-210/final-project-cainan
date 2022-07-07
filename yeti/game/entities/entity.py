@@ -10,7 +10,7 @@ class Entity(ABC):
     def __init__(self, service_manager = None) -> None:
         super().__init__()
         self.position = Point()
-        self._weight = 0
+        self.weight = 0
         if service_manager:
             self._video_service: VideoService
             self._video_service = service_manager.video_service
@@ -29,16 +29,4 @@ class Entity(ABC):
     def draw(self):
         pass
 
-    @property
-    def weight(self):
-        '''
-        Weight of an entity is used to apply gravity to the entity. 
-        
-        See the world_apply_gravity_deed.py:
-        Something that has 2 weight is twice as heavy as something with 1.'''
-        return self._weight
-    
-    @weight.setter
-    def set_weight(self, weight):
-        self._weight = weight
 
