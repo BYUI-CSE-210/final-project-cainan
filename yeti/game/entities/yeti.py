@@ -16,8 +16,7 @@ from game.services.service_manager import ServiceManager
 class Yeti(Entity):
     def __init__(self, x, y) -> None:
         super().__init__()
-        #TODO: add weight property to Yeti
-            #Added weight property, but get "AttributeError: can't set attribute 'weight'"
+        
         self.x = x
         self.y = y
         self.weight = 2
