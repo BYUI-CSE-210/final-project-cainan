@@ -38,15 +38,14 @@ if __name__ == "__main__":
     player = Player()
     x = 300
     y = 1000
-    camera = pr.Camera2D( pr.Vector2(video_service.get_width()/2,0), pr.Vector2(player.x, player.y), 0, 1)
 
     from game.deeds.world_draw_background_deed import DrawBackgroundDeed
+    from game.deeds.world_move_camera_deed import MoveCameraDeed
     draw_background_deed = DrawBackgroundDeed(service_manager)
+    move_camera_deed = MoveCameraDeed(service_manager, target=player)
 
     while video_service.is_window_open():
         video_service.start_buffer()
-        pr.begin_mode_2d(camera)
-        
         draw_background_deed.execute()
         
 
@@ -58,12 +57,7 @@ if __name__ == "__main__":
         y = (y + direction.y * 10) 
         player.x = x
         player.y = y
-        if player.x < video_service.get_width()/2:
-            camera.target = pr.Vector2(video_service.get_width()/2,0)
-        elif player.x > ((4048 * 2) - video_service.get_width()/2): 
-            camera.target = pr.Vector2((4048 * 2 - video_service.get_width()/2), 0)
-        else:
-            camera.target = pr.Vector2(player.x, 0)
+       
         # draw text deed
         pr.draw_text(f"Current position is: ({x}, {y})", 20, 20, 20, pr.WHITE)
         pr.draw_text(f"Current position is: ({x}, {y})", 4000, 20, 20, pr.WHITE)
@@ -75,7 +69,7 @@ if __name__ == "__main__":
 
         # draw rect deed
         pr.draw_rectangle(x,y,10,10,pr.RED)
-        pr.end_mode_2d(camera)
+        move_camera_deed.execute()
         video_service.end_buffer()
 
     service_manager.stop_all_services()

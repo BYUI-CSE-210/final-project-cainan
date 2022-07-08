@@ -22,6 +22,7 @@ class VideoService(Service):
         self._framerate = framerate
         self._frametime = 0
         self._textures = {}
+        self._camera = None
         #self._camera = pr.Camera2D()  #TODO
         if not bg_color:
             bg_color = Color(0,0,0,255)    
@@ -39,6 +40,7 @@ class VideoService(Service):
             self._height = 950
             self._width = 1750
             pr.set_window_size(self._width,self._height)
+        self._camera = pr.Camera2D(pr.Vector2(self.get_width()/2,0), pr.Vector2(0,0), 0, 1)
         self._is_started = True
     
     def stop_service(self):
@@ -49,10 +51,12 @@ class VideoService(Service):
         '''Starts the drawing mode, clears the background, and gets the frame time since the last frame.'''
         pr.begin_drawing()
         pr.clear_background(self._background_color)
+        pr.begin_mode_2d(self._camera)
         self._frametime = pr.get_frame_time()
 
     def end_buffer(self):
         '''Ends the drawing mode. This draws all the items that have been sent to the buffer.'''
+        pr.end_mode_2d()
         pr.end_drawing(self)
     
     def is_window_open(self):
@@ -95,6 +99,10 @@ class VideoService(Service):
     def get_frame_time(self):
         '''Returns the time since the last frame.'''
         return self._frametime
+
+    def set_camera_target(self, target: pr.Vector2):
+        '''Sets the target of the camera.  target param is a pr.Vector2'''
+        self._camera.target = target
 
 
 if __name__ == "__main__":
