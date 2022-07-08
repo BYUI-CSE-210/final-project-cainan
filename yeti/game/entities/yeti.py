@@ -1,52 +1,90 @@
-from atexit import register
-from re import X
-from tkinter import W
-import pyray as pr
-from pyray import Vector2
+from pyray import Rectangle
 from game.entities.entity import Entity
 from game.shared.point import Point
-from game.shared.color import Color
-from game.services.keyboard_service import KeyboardService
-from game.services.audio_service import AudioService
-from game.services.video_service import VideoService
-from game.services.service_manager import ServiceManager
+from game.deeds.start_services_deed import StartServicesDeed
+import pyray as pr
+from pyray import Vector2
 
-
+#TODO: Work on code for the yeti jumping and falling and throwing
 
 class Yeti(Entity):
-    def __init__(self, x, y) -> None:
+    def __init__(self) -> None:
         super().__init__()
         
-        self.x = x
-        self.y = y
-        self.weight = 2
+        self.weight = 3
         self.speed = 10
-        self._tint = Color().get_tuple()
+        
+        self._texture = pr.load_texture("game/entities/images/yeti.png")
+        
+        self.center = Point()
+        self.x = self.center.x
+        self.y = self.center.y
+
+        self.frameWidth = self._texture.width / 8
+        self.frameHeight = self._texture.height / 6
+        self.frameCount = 0
+
         self.is_moving = False
-        self.is_jumping = True
+        self.is_running = False
+        self.is_jumping = False
         self.is_falling = False
-        self._video_service = VideoService(20)
-        self._service_manger = ServiceManager()
-        self._texture = self._video_service.register_texture("yeti", f"game/entities/images/yeti.png")
-    
+        self.is_throwing = False
+        self.direction = 1
 
     def draw(self):
-        pr.draw_texture(self._texture, int(self.x), int(self.y), self._tint)
+        x = self.center.x
+        y = self.center.y
+        source_x = self.frameCount * self.frameWidth
+        source_y = 0
+        if self.is_moving:
+            source_y = 1 * self.frameHeight
+        if self.is_running:
+            source_y = 2 * self.frameHeight
+        if self.is_jumping:
+            source_y = 3 * self.frameHeight
+        if self.is_falling:
+            source_y = 4 * self.frameHeight
+        if self.is_throwing:
+            source_y = 5 * self.frameHeight
+        print(f"height: {self.frameHeight}, width:  {self.frameWidth}")
+        print(source_x, source_y)
+        print(self.frameWidth, self.frameHeight)
+        self.source = Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
+        self.destination = Rectangle(x, y, self.frameWidth, self.frameHeight)
+        self.origin = Vector2(0, 0)
+        pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
 
     def advance(self, x_direction, y_direction):
-        self.x += x_direction * self.speed
-        self.y += y_direction * self.speed
+        if self.is_running:
+            self.speed = 20
+        else:
+            self.speed = 10
+
+        self.center.x += x_direction * self.speed
+        self.center.y += y_direction * self.speed
+
+        self.frameCount += 1
+        if self.frameCount > 7:
+            self.frameCount = 0
+
         if x_direction != 0 or y_direction != 0:
             self.is_moving = True
-
+            self.direction = x_direction or 1
+        else:
+            self.is_moving = False
+        
 
 if __name__ == "__main__":
-    pr.init_window(800,600,"Yeti Test")
-    pr.set_target_fps(20)
-    c = Yeti(int(pr.get_screen_width() // 2), int(pr.get_screen_height() // 2), )
+    pr.init_window(800,600,"YETI")
+    yeti = Yeti()
+    yeti.position = Vector2(350.0, 280.0)
+    current_frame = 0
+    frames_counter = 0
+    frame_speed = 8
+    pr.set_target_fps(15)
     while not pr.window_should_close():
         pr.begin_drawing()
-        pr.clear_background(pr.BLACK)
+        pr.clear_background(pr.RAYWHITE)
         x_direction = 0
         y_direction = 0
         if pr.is_key_down(pr.KEY_RIGHT):
@@ -59,8 +97,15 @@ if __name__ == "__main__":
             y_direction = 1
         if pr.is_key_down(pr.KEY_ESCAPE):
             pr.window_should_close()
-        c.advance(x_direction,y_direction)
-        c.draw()
+        if pr.is_key_down(pr.KEY_LEFT_SHIFT):
+            yeti.is_running = True
+        if pr.is_key_released(pr.KEY_LEFT_SHIFT):
+            yeti.is_running = False
+        if pr.is_key_pressed(pr.KEY_SPACE):
+            yeti.is_jumping = True
+
+        yeti.advance(x_direction,y_direction)
+        yeti.draw()
         pr.end_drawing()
-    print(pr.get_screen_height())
-    print(pr.get_screen_width())
+    pr.unload_texture(yeti)
+    pr.close_window()
