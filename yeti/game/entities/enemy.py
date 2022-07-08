@@ -10,18 +10,30 @@ class Axe(Entity):
         self._service_manager = StartServicesDeed.execute()
         self.speed = 20
         self.weight = 1
-        self.image = self._video_service.register_texture("flyingAxe","")
+        self.texture = self._video_service.register_texture("flyingAxe","yeti/game/entities/images/Axe.png")
+        self.angle = int()
+        self.spin = int()
+
+    def draw(self):
+        x = self.position.x
+        y = self.position.y
+        frameWidth = self.texture.width
+        frameHeight = self.texture.height
+        source = Rectangle(0,0,frameWidth,frameHeight)
+        destination = Rectangle(x,y,frameWidth/2,frameHeight/2)
+        origin = Vector2(frameWidth/4,frameHeight/4)
+        pr.draw_texture_pro(self.texture,source,destination,origin,self.angle,pr.WHITE)
 
 class Enemy(Entity):
     def __init__(self, service_manager=None) -> None:
         super().__init__(service_manager)
         self.speed = 10
         self.weight = 3
-        self.image = pr.load_texture("game/entities/images/lumberjack_walk.png")
-        # self.rect = Rectangle (0,0,int(self.image.width/7),int(self.image.height/2))
-        # pr.draw_texture_rec(self.image,self.rect,Vector2(15,40),pr.WHITE)
-        self.frameWidth = self.image.width/5
-        self.frameHeight = self.image.height
+        self.texture = pr.load_texture("game/entities/images/lumberjack_walk.png")
+        # self.rect = Rectangle (0,0,int(self.texture.width/7),int(self.texture.height/2))
+        # pr.draw_texture_rec(self.texture,self.rect,Vector2(15,40),pr.WHITE)
+        self.frameWidth = self.texture.width/5
+        self.frameHeight = self.texture.height
         self.frameCount = 1
         self.direction = self.frameWidth
         
@@ -40,7 +52,7 @@ class Enemy(Entity):
         self.source = pr.Rectangle(source_x,source_y,self.direction,self.frameHeight)
         self.destination = pr.Rectangle(x,y, self.frameWidth/4, self.frameHeight/4)
         self.origin = Vector2(x/2,y/2)
-        pr.draw_texture_pro(self.image,self.source,self.destination,self.origin,0,pr.RAYWHITE)
+        pr.draw_texture_pro(self.texture,self.source,self.destination,self.origin,0,pr.RAYWHITE)
         print("End frame*****************")
 
     def advance(self,x_direction,y_direction):
