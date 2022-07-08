@@ -29,6 +29,7 @@ class Yeti(Entity):
         self.is_jumping = False
         self.is_falling = False
         self.is_throwing = False
+        self.direction = 1
 
     def draw(self):
         x = self.center.x
@@ -48,7 +49,7 @@ class Yeti(Entity):
         print(f"height: {self.frameHeight}, width:  {self.frameWidth}")
         print(source_x, source_y)
         print(self.frameWidth, self.frameHeight)
-        self.source = Rectangle(source_x, source_y, self.frameWidth, self.frameHeight)
+        self.source = Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
         self.destination = Rectangle(x, y, self.frameWidth, self.frameHeight)
         self.origin = Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
@@ -68,6 +69,7 @@ class Yeti(Entity):
 
         if x_direction != 0 or y_direction != 0:
             self.is_moving = True
+            self.direction = x_direction or 1
         else:
             self.is_moving = False
         
@@ -79,7 +81,7 @@ if __name__ == "__main__":
     current_frame = 0
     frames_counter = 0
     frame_speed = 8
-    pr.set_target_fps(5)
+    pr.set_target_fps(15)
     while not pr.window_should_close():
         pr.begin_drawing()
         pr.clear_background(pr.RAYWHITE)
