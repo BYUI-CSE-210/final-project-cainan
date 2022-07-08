@@ -17,6 +17,7 @@ class Enemy(Entity):
         self.frameWidth = self.image.width/5
         self.frameHeight = self.image.height
         self.frameCount = 1
+        self.direction = self.frameWidth
         
     def draw(self):
         x = self.position.x
@@ -30,8 +31,8 @@ class Enemy(Entity):
         print(source_x + self.frameWidth, source_y + self.frameHeight, 'source ending point')
         print("destination starting point", x, y)
         print('destination ending point', x+self.frameWidth, y+ self.frameHeight)
-        self.source = pr.Rectangle(source_x,source_y,self.frameWidth,self.frameHeight)
-        self.destination = pr.Rectangle(x,y, self.frameWidth, self.frameHeight)
+        self.source = pr.Rectangle(source_x,source_y,self.direction,self.frameHeight)
+        self.destination = pr.Rectangle(x,y, self.frameWidth/4, self.frameHeight/4)
         self.origin = Vector2(x/2,y/2)
         pr.draw_texture_pro(self.image,self.source,self.destination,self.origin,0,pr.RAYWHITE)
         print("End frame*****************")
@@ -40,10 +41,12 @@ class Enemy(Entity):
         self.position.x += x_direction * self.speed
         self.position.y += y_direction * self.speed
         if x_direction != 0 or y_direction != 0:
+            self.direction = self.frameWidth * x_direction
             self.is_moving = True
-        self.frameCount += 1
-        if self.frameCount > 5:
-            self.frameCount = 0
+            self.frameCount += 1
+            if self.frameCount > 5:
+                self.frameCount = 1
+
 
 if __name__ == "__main__":
     from game.entities.enemy import Enemy
@@ -59,11 +62,11 @@ if __name__ == "__main__":
         if pr.is_key_down(pr.KEY_RIGHT):
             x_direction = 1
         if pr.is_key_down(pr.KEY_UP):
-            y_direction = 1
+            y_direction = -1
         if pr.is_key_down(pr.KEY_LEFT):
             x_direction = -1
         if pr.is_key_down(pr.KEY_DOWN):
-            y_direction = -1
+            y_direction = 1
         if pr.is_key_down(pr.KEY_ESCAPE):
             pr.window_should_close()
         enemy.advance(x_direction,y_direction)
