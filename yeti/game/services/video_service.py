@@ -22,6 +22,7 @@ class VideoService(Service):
         self._framerate = framerate
         self._frametime = 0
         self._textures = {}
+        #self._camera = pr.Camera2D()  #TODO
         if not bg_color:
             bg_color = Color(0,0,0,255)    
         self._background_color = bg_color.get_tuple()
