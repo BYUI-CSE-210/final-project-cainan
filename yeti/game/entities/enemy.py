@@ -14,7 +14,7 @@ class Enemy(Entity):
         self.center = Point()
         self.x = self.center.x
         self.y = self.center.y
-        self.image = pr.load_texture("game/entities/images/lumberjack.png")
+        self.image = pr.load_texture("game/entities/images/lumberjack_walk.png")
         # self.rect = Rectangle (0,0,int(self.image.width/7),int(self.image.height/2))
         # pr.draw_texture_rec(self.image,self.rect,Vector2(15,40),pr.WHITE)
         self.frameWidth = self.image.width/7
