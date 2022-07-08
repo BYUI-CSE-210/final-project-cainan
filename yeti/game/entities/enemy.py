@@ -19,20 +19,25 @@ class Enemy(Entity):
         # pr.draw_texture_rec(self.image,self.rect,Vector2(15,40),pr.WHITE)
         self.frameWidth = self.image.width/5
         self.frameHeight = self.image.height
-        self.frameCount = 0
+        self.frameCount = 1
         
     def draw(self):
         x = self.center.x
         y = self.center.y
-        source_x = self.frameCount * self.frameWidth
+        source_x = int(self.frameCount * self.frameWidth)
         source_y = 0
-        print(f"height: {self.frameHeight}, width:  {self.frameWidth}")
-        print(source_x,source_y)
-        print(source_x + self.frameWidth, source_y + self.frameHeight)
-        self.source = Rectangle(source_x,source_y,source_x + self.frameWidth,source_y + self.frameHeight)
-        self.destination = Rectangle(x,y,x + self.frameWidth,y + self.frameHeight)
-        self.origin = Vector2(source_x,source_y)
+
+        print("***********Frame: ", self.frameCount)
+        print(f"Frame size: width:  {self.frameWidth}, height: {self.frameHeight}")
+        print(source_x,source_y, "source starting point")
+        print(source_x + self.frameWidth, source_y + self.frameHeight, 'source ending point')
+        print("destination starting point", x, y)
+        print('destination ending point', x+self.frameWidth, y+ self.frameHeight)
+        self.source = pr.Rectangle(source_x,source_y,self.frameWidth,self.frameHeight)
+        self.destination = pr.Rectangle(x,y, self.frameWidth, self.frameHeight)
+        self.origin = Vector2(x/2,y/2)
         pr.draw_texture_pro(self.image,self.source,self.destination,self.origin,0,pr.RAYWHITE)
+        print("End frame*****************")
 
     def advance(self,x_direction,y_direction):
         self.center.x += x_direction * self.speed
@@ -44,13 +49,11 @@ class Enemy(Entity):
             self.frameCount = 0
 
 if __name__ == "__main__":
+    from game.entities.enemy import Enemy
     pr.init_window(800,600,"ENEMY")
+    
     enemy = Enemy()
-    enemy.position = Vector2(350.0, 280.0)
-    current_frame = 0
-    frames_counter = 0
-    frame_speed = 8
-    pr.set_target_fps(5)
+    pr.set_target_fps(10)
     while not pr.window_should_close():
         pr.begin_drawing()
         pr.clear_background(pr.RAYWHITE)
