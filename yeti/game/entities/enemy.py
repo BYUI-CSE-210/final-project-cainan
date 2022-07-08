@@ -1,16 +1,22 @@
 from pyray import Rectangle
 from game.entities.entity import Entity
-from game.shared.point import Point
 from game.deeds.start_services_deed import StartServicesDeed
 import pyray as pr
 from pyray import Vector2
 
+class Axe(Entity):
+    def __init__(self, service_manager) -> None:
+        super().__init__(service_manager)
+        self._service_manager = StartServicesDeed.execute()
+        self.speed = 20
+        self.weight = 1
+        self.image = self._video_service.register_texture("flyingAxe","")
+
 class Enemy(Entity):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, service_manager=None) -> None:
+        super().__init__(service_manager)
         self.speed = 10
         self.weight = 3
-        #TODO: inherit point from Entity and correct methods accordingly
         self.image = pr.load_texture("game/entities/images/lumberjack_walk.png")
         # self.rect = Rectangle (0,0,int(self.image.width/7),int(self.image.height/2))
         # pr.draw_texture_rec(self.image,self.rect,Vector2(15,40),pr.WHITE)
