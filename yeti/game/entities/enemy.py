@@ -17,8 +17,8 @@ class Enemy(Entity):
         self.image = pr.load_texture("game/entities/images/lumberjack_walk.png")
         # self.rect = Rectangle (0,0,int(self.image.width/7),int(self.image.height/2))
         # pr.draw_texture_rec(self.image,self.rect,Vector2(15,40),pr.WHITE)
-        self.frameWidth = self.image.width/7
-        self.frameHeight = self.image.height/2
+        self.frameWidth = self.image.width/5
+        self.frameHeight = self.image.height
         self.frameCount = 0
         
     def draw(self):
@@ -40,7 +40,7 @@ class Enemy(Entity):
         if x_direction != 0 or y_direction != 0:
             self.is_moving = True
         self.frameCount += 1
-        if self.frameCount > 6:
+        if self.frameCount > 5:
             self.frameCount = 0
 
 if __name__ == "__main__":
@@ -57,11 +57,11 @@ if __name__ == "__main__":
         x_direction = 0
         y_direction = 0
         if pr.is_key_down(pr.KEY_RIGHT):
-            x_direction = -1
+            x_direction = 1
         if pr.is_key_down(pr.KEY_UP):
             y_direction = 1
         if pr.is_key_down(pr.KEY_LEFT):
-            x_direction = 1
+            x_direction = -1
         if pr.is_key_down(pr.KEY_DOWN):
             y_direction = -1
         if pr.is_key_down(pr.KEY_ESCAPE):
