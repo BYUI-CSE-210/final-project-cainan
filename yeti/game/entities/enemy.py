@@ -11,9 +11,6 @@ class Enemy(Entity):
         self.speed = 10
         self.weight = 3
         #TODO: inherit point from Entity and correct methods accordingly
-        self.center = Point()
-        self.x = self.center.x
-        self.y = self.center.y
         self.image = pr.load_texture("game/entities/images/lumberjack_walk.png")
         # self.rect = Rectangle (0,0,int(self.image.width/7),int(self.image.height/2))
         # pr.draw_texture_rec(self.image,self.rect,Vector2(15,40),pr.WHITE)
@@ -22,8 +19,8 @@ class Enemy(Entity):
         self.frameCount = 1
         
     def draw(self):
-        x = self.center.x
-        y = self.center.y
+        x = self.position.x
+        y = self.position.y
         source_x = int(self.frameCount * self.frameWidth)
         source_y = 0
 
@@ -40,8 +37,8 @@ class Enemy(Entity):
         print("End frame*****************")
 
     def advance(self,x_direction,y_direction):
-        self.center.x += x_direction * self.speed
-        self.center.y += y_direction * self.speed
+        self.position.x += x_direction * self.speed
+        self.position.y += y_direction * self.speed
         if x_direction != 0 or y_direction != 0:
             self.is_moving = True
         self.frameCount += 1
