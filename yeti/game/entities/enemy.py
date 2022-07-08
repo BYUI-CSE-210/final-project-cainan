@@ -41,8 +41,8 @@ class Enemy(Entity):
         self.position.x += x_direction * self.speed
         self.position.y += y_direction * self.speed
         if x_direction != 0 or y_direction != 0:
-            self.direction = self.frameWidth * x_direction
             self.is_moving = True
+            self.direction = self.frameWidth * x_direction
             self.frameCount += 1
             if self.frameCount > 5:
                 self.frameCount = 1
