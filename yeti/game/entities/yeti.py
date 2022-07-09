@@ -13,7 +13,8 @@ class Yeti(Entity):
         
         self.weight = 3
         self.speed = 10
-        
+        #TODO change the path to game/entities/images/yeti.png
+        #TODO use the video service to register the texture instead
         self._texture = pr.load_texture("game/entities/images/yeti.png")
         
         self.center = Point()
@@ -46,9 +47,11 @@ class Yeti(Entity):
             source_y = 4 * self.frameHeight
         if self.is_throwing:
             source_y = 5 * self.frameHeight
-        print(f"height: {self.frameHeight}, width:  {self.frameWidth}")
-        print(source_x, source_y)
-        print(self.frameWidth, self.frameHeight)
+        if self._debug:
+
+            print(f"height: {self.frameHeight}, width:  {self.frameWidth}")
+            print(source_x, source_y)
+            print(self.frameWidth, self.frameHeight)
         self.source = Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
         self.destination = Rectangle(x, y, self.frameWidth, self.frameHeight)
         self.origin = Vector2(0, 0)
@@ -72,6 +75,19 @@ class Yeti(Entity):
             self.direction = x_direction or 1
         else:
             self.is_moving = False
+    
+    #TODO add actions like jump here.  This gets called from the player_action_deed.py
+    # action will be a value between 1 and 4
+    # 1 = space bar
+    # 2 = Enter
+    # 3 = Left shift
+    # 4 = Left control
+    def do_action(self, action):
+        self.is_running = False
+        if action == 3:
+            self.is_running = True
+        
+            
         
 
 if __name__ == "__main__":
