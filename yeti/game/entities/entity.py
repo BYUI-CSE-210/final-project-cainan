@@ -10,7 +10,7 @@ class Entity(ABC):
     def __init__(self, service_manager = None, debug = None) -> None:
         super().__init__()
         self.position = Point()
-        self.weight = 0
+        self._weight = 0
         self.is_on_solid_ground = False
         self._debug = debug
         self._service_manager: ServiceManager
@@ -33,4 +33,10 @@ class Entity(ABC):
     def get_hitbox(self):
         pass
 
+    @property
+    def weight(self):
+        return self._weight
 
+    @weight.setter
+    def weight(self, weight):
+        self._weight = weight

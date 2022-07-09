@@ -16,9 +16,9 @@ class Yeti(Entity):
         self._texture = self._video_service.register_texture("Yeti", "yeti/game/entities/images/yeti.png")
 
         
-        self.center = Point()
-        self.x = self.center.x
-        self.y = self.center.y
+        
+        self.x = self.position.x
+        self.y = self.position.y
 
         self.frameWidth = self._texture.width / 8
         self.frameHeight = self._texture.height / 6
@@ -33,8 +33,8 @@ class Yeti(Entity):
         self.direction = 1
 
     def draw(self):
-        x = self.center.x
-        y = self.center.y
+        x = self.position.x
+        y = self.position.y
         source_x = self.frameCount * self.frameWidth
         source_y = 0
         if self.is_moving:
@@ -59,8 +59,8 @@ class Yeti(Entity):
         else:
             self.speed = 10
 
-        self.center.x += x_direction * self.speed
-        self.center.y += y_direction * self.speed
+        self.position.x += x_direction * self.speed
+        self.position.y += y_direction * self.speed
 
         self.frameCount += 1
         if self.frameCount > 7:

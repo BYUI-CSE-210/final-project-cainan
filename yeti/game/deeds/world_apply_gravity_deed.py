@@ -17,8 +17,8 @@ class ApplyGravityDeed(Deed):
                 if self._debug:
                     print("Entity is not on solid ground. He should fall at a rate of: ", 1*entity.weight)
                 #TODO Clean this up when center is no longer being used
-                entity.center.y += 1 * entity.weight
                 entity.position.y += 1 * entity.weight
+                
 
 
 
