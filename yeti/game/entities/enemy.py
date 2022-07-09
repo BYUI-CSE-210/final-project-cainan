@@ -5,6 +5,9 @@ from game.deeds.start_services_deed import StartServicesDeed
 import pyray as pr
 from pyray import Vector2
 
+#TODO: add get_hitbox(self) method that returns a rectangle the same size as the enemy. 
+# I'm adding get_hitbox to the abstract class, so you will get an error until the method is at least defined.
+
 class Enemy(Entity):
     def __init__(self) -> None:
         super().__init__()

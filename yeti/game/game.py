@@ -33,6 +33,7 @@ class Game:
         # action deeds 
         world_draw_background_deed = DrawBackgroundDeed(service_manager)
         world_move_camera_deed = MoveCameraDeed(service_manager, yeti)
+        #TODO create a list of Entities to be passed to the apply gravity deed. 
         world_apply_gravity_deed = ApplyGravityDeed([yeti], service_manager)
         player_action_deed = PlayerActionDeed(service_manager, yeti)
         player_move_deed = PlayerMoveDeed(service_manager, yeti)

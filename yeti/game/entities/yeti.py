@@ -6,6 +6,8 @@ import pyray as pr
 from pyray import Vector2
 
 #TODO: Work on code for the yeti jumping and falling and throwing
+#TODO: add get_hitbox(self) method that returns a rectangle the same size as the yeti. 
+# I'm adding get_hitbox to the abstract class, so you will get an error until the method is at least defined.
 
 class Yeti(Entity):
     def __init__(self) -> None:

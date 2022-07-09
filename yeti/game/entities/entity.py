@@ -30,5 +30,9 @@ class Entity(ABC):
     @abstractmethod
     def draw(self):
         pass
+    
+    @abstractmethod
+    def get_hitbox(self):
+        pass
 
 
