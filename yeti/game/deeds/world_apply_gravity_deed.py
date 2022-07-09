@@ -8,8 +8,16 @@ class ApplyGravityDeed(Deed):
 
     def execute(self):
         #TODO make sure entities have a property to tell if they are on ground.
+        if self._debug:
+            print("Entities: ", self._entities)
         for entity in self._entities:
+            if self._debug:
+                print("Specific Entity: ", entity)
             if not entity.is_on_solid_ground:
+                if self._debug:
+                    print("Entity is not on solid ground. He should fall at a rate of: ", 1*entity.weight)
+                #TODO Clean this up when center is no longer being used
+                entity.center.y += 1 * entity.weight
                 entity.position.y += 1 * entity.weight
 
 
