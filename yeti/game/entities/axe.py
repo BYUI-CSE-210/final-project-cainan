@@ -23,7 +23,7 @@ class Axe(Entity):
         frameWidth = self.texture.width
         frameHeight = self.texture.height
         source = pr.Rectangle(0,0,frameWidth,frameHeight)
-        destination = pr.Rectangle(x,y,frameWidth/6,frameHeight/6)
+        destination = pr.Rectangle(x,y - frameHeight/4,frameWidth/6,frameHeight/6)
         origin = pr.Vector2(frameWidth/12,frameHeight/12)
         pr.draw_texture_pro(self.texture,source,destination,origin,self._angle,pr.WHITE)
 
