@@ -39,7 +39,7 @@ class Game:
 
         if self._debug:
             service_manager.show_all_services()
-        video_service = service_manager.video_serivce
+        video_service = service_manager.video_service
         audio_service = service_manager.audio_service
         keyboard_service = service_manager.keyboard_service
         deeds_service = service_manager.deeds_service
