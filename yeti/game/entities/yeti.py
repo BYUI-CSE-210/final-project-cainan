@@ -29,6 +29,7 @@ class Yeti(Entity):
         self.is_jumping = False
         self.is_falling = False
         self.is_throwing = False
+        self.is_taunting = False
         self.direction = 1
 
     def draw(self):
@@ -46,11 +47,7 @@ class Yeti(Entity):
             source_y = 4 * self.frameHeight
         if self.is_throwing:
             source_y = 5 * self.frameHeight
-        if self._debug:
 
-            print(f"height: {self.frameHeight}, width:  {self.frameWidth}")
-            print(source_x, source_y)
-            print(self.frameWidth, self.frameHeight)
         self.source = Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
         self.destination = Rectangle(x, y, self.frameWidth, self.frameHeight)
         self.origin = Vector2(0, 0)
@@ -81,12 +78,12 @@ class Yeti(Entity):
     def do_action(self, action):
         self.is_running = False
         self.is_jumping = False
-        self.is_falling = False
         self.is_throwing = False
+        self.is_taunting = False
         if action == 1:
             self.is_jumping = True
         if action == 2:
-            pass
+            self.is_taunting = True
         if action == 3:
             self.is_running = True
         if action == 4:
