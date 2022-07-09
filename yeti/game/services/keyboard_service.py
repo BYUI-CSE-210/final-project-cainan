@@ -13,6 +13,8 @@ class KeyboardService(Service):
         self.DOWN_KEY = None
         self.ACTION_ONE = None
         self.ACTION_TWO = None
+        self.ACTION_THREE = None
+        self.ACTION_FOUR = None
         self._is_started = False
         
     def start_service(self):
@@ -46,11 +48,11 @@ class KeyboardService(Service):
         p = Point(0,0)
         if method(self.UP_KEY):
             p.y = -1
-        elif method(self.RIGHT_KEY):
+        if method(self.RIGHT_KEY):
             p.x = 1
-        elif method(self.LEFT_KEY):
+        if method(self.LEFT_KEY):
             p.x = -1
-        elif method(self.DOWN_KEY):
+        if method(self.DOWN_KEY):
             p.y = 1
         return p
     
