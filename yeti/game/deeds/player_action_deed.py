@@ -12,6 +12,7 @@ class PlayerActionDeed(Deed):
     
     def execute(self):
         action = self._keyboard_service.get_action()
-        print(action)
+        if self._debug:
+            print(action)
         self._player.do_action(action)
         
