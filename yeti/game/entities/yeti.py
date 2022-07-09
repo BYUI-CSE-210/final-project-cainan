@@ -13,7 +13,7 @@ class Yeti(Entity):
         self.weight = 3
         self.speed = 10
         self._video_service = VideoService(10)
-        self._texture = self._video_service.register_texture("Yeti", "game/entities/images/yeti.png")
+        self._texture = self._video_service.register_texture("Yeti", "yeti/game/entities/images/yeti.png")
 
         
         self.center = Point()
