@@ -11,7 +11,7 @@ class DetectPlatformCollisionsDeed(Deed):
 
     def execute(self):
         player_hitbox = self._player.get_hitbox()
-        player_hit_rectangle = pr.Rectangle(player_hitbox.x, player_hitbox.y + (player_hitbox.height-2), player_hitbox.width, 3)
+        player_hit_rectangle = pr.Rectangle(player_hitbox.x + (player_hitbox.width/4), player_hitbox.y + (player_hitbox.height-2), player_hitbox.width/1.5, 3)
         if self._debug:
             pr.draw_rectangle(int(player_hit_rectangle.x), int(player_hit_rectangle.y), int(player_hit_rectangle.width), int(player_hit_rectangle.height), pr.BLUE)
         
