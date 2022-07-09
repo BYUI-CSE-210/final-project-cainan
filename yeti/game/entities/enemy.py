@@ -7,7 +7,7 @@ import pyray as pr
 from pyray import Vector2
 
 class Axeman(Entity):
-    def __init__(self, service_manager=None, speed=10,_turn_after = 20, debug=False) -> None:
+    def __init__(self, service_manager=None, speed=5,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
         self.texture = self._video_service.register_texture("Axeman","yeti/game/entities/images/lumberjack_walk.png")
         # self.axes = []
@@ -22,6 +22,8 @@ class Axeman(Entity):
         self.frameHeight = self.texture.height
         self.scaled_frameHeight = self.frameHeight/4
         self.is_on_solid_ground = True
+        self._frame_timer = 0
+
 
         
 
@@ -42,6 +44,14 @@ class Axeman(Entity):
 
     def advance(self,x_direction,y_direction):
         # return super().advance()
+        self._frame_timer += self._video_service.get_frame_time()
+        if self._frame_timer > .12:
+            self.frameCount += 1
+            self._frame_timer = 0
+        if (self.frameCount < 3):
+            self.frameCount = 2
+        if self.frameCount > 3:
+            self.frameCount = 0
         self._pace_count += 1
         if x_direction != 0:
             self.direction = x_direction
