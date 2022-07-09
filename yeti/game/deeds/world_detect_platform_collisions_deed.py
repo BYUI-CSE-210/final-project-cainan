@@ -11,18 +11,18 @@ class DetectPlatformCollisionsDeed(Deed):
 
     def execute(self):
         player_hitbox = self._player.get_hitbox()
-        feet_line_start = pr.Vector2(player_hitbox.x, player_hitbox.y + player_hitbox.height)
-        feet_line_end = pr.Vector2(player_hitbox.x + player_hitbox.width, player_hitbox.y + player_hitbox.height)
-        pr.draw_line(int(feet_line_start.x), int(feet_line_start.y), int(feet_line_end.x), int(feet_line_end.y), pr.BLUE)
+        player_hit_rectangle = pr.Rectangle(player_hitbox.x, player_hitbox.y + (player_hitbox.height-2), player_hitbox.width, 3)
+        if self._debug:
+            pr.draw_rectangle(int(player_hit_rectangle.x), int(player_hit_rectangle.y), int(player_hit_rectangle.width), int(player_hit_rectangle.height), pr.BLUE)
+        
+        
+
         for platform in self._platforms:
             platform_hitbox = platform.get_hitbox()
-            platform_line_start = pr.Vector2(platform_hitbox.x, platform_hitbox.y)
-            platform_line_end = pr.Vector2(platform_hitbox.x + platform_hitbox.width, platform_hitbox.y)
-            # colliding = pr.check_collision_recs(platform_hitbox, player_hitbox)
-            cp = pr.Vector2(0,0)
-            pr.draw_line(int(platform_line_start.x), int(platform_line_start.y), int(platform_line_end.x), int(platform_line_end.y), pr.GREEN)
-            colliding = pr.check_collision_lines(feet_line_start, feet_line_end, platform_line_start, platform_line_end, cp)
-            print(cp.x)
+            platform_hit_rectangle = pr.Rectangle(platform_hitbox.x, platform_hitbox.y, platform_hitbox.width, 5)
+            if self._debug:
+                pr.draw_rectangle(int(platform_hit_rectangle.x), int(platform_hit_rectangle.y), int(platform_hit_rectangle.width), int(player_hit_rectangle.height), pr.GREEN)
+            colliding = pr.check_collision_recs(platform_hit_rectangle, player_hit_rectangle)
             if colliding and platform.solid:
                 self._player.is_on_solid_ground = True
                 break
