@@ -1,23 +1,20 @@
-from pyray import Rectangle
 from game.entities.entity import Entity
+from game.services.video_service import VideoService
 from game.shared.point import Point
-from game.deeds.start_services_deed import StartServicesDeed
+
 import pyray as pr
 from pyray import Vector2
-
-#TODO: Work on code for the yeti jumping and falling and throwing
-#TODO: add get_hitbox(self) method that returns a rectangle the same size as the yeti. 
-# I'm adding get_hitbox to the abstract class, so you will get an error until the method is at least defined.
+from pyray import Rectangle
 
 class Yeti(Entity):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, service_manager=None, debug=None) -> None:
+        super().__init__(service_manager, debug)
         
         self.weight = 3
         self.speed = 10
-        #TODO change the path to yeti/game/entities/images/yeti.png  -- This is needed when you run the game from the root directory. 
-        #TODO use the video service to register the texture instead
-        self._texture = pr.load_texture("game/entities/images/yeti.png")
+        self._video_service = VideoService(10)
+        self._texture = self._video_service.register_texture("Yeti", "game/entities/images/yeti.png")
+
         
         self.center = Point()
         self.x = self.center.x
@@ -77,17 +74,23 @@ class Yeti(Entity):
             self.direction = x_direction or 1
         else:
             self.is_moving = False
+
+    def get_hitbox(self):
+        return pr.Rectangle(self.position.x, self.position.y, self.frameWidth, self.frameHeight)
     
-    #TODO add actions like jump here.  This gets called from the player_action_deed.py
-    # action will be a value between 1 and 4
-    # 1 = space bar
-    # 2 = Enter
-    # 3 = Left shift
-    # 4 = Left control
     def do_action(self, action):
         self.is_running = False
+        self.is_jumping = False
+        self.is_falling = False
+        self.is_throwing = False
+        if action == 1:
+            self.is_jumping = True
+        if action == 2:
+            pass
         if action == 3:
             self.is_running = True
+        if action == 4:
+            self.is_throwing = True
         
             
         
