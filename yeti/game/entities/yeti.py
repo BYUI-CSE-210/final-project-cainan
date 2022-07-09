@@ -13,7 +13,7 @@ class Yeti(Entity):
         
         self.weight = 3
         self.speed = 10
-        #TODO change the path to game/entities/images/yeti.png
+        #TODO change the path to yeti/game/entities/images/yeti.png  -- This is needed when you run the game from the root directory. 
         #TODO use the video service to register the texture instead
         self._texture = pr.load_texture("game/entities/images/yeti.png")
         
