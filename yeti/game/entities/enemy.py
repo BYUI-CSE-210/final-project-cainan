@@ -2,6 +2,7 @@ from random import randint
 from pyray import Rectangle
 from game.entities.entity import Entity
 from game.deeds.start_services_deed import StartServicesDeed
+from game.deeds.enemy_create_axe import AxeCreateDeed
 import pyray as pr
 from pyray import Vector2
 
@@ -91,15 +92,10 @@ class Axeman(Entity):
         #     self._pace_count = 0
         #     self.axes.append(Axe)
 
-    def do_action(self,action,entities:list):
+    def do_action(self,action,axes:list):
         if action == 1:
-            entities.append(axe)
-            for axe in entities:
-                axe = Axe()
-                axe.draw()
-                axe.advance()
-        if action ==2:
-            return
+            create_axe = AxeCreateDeed(self,axes,self._service_manager,debug=False)
+            create_axe.execute()
 
     def get_hitbox(self):
         return super().get_hitbox()

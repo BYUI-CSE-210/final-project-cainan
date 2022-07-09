@@ -13,6 +13,7 @@ from game.deeds.player_move_deed import PlayerMoveDeed
 from game.deeds.player_draw_deed import PlayerDrawDeed
 from game.deeds.enemy_create_axeman import CreateAxemanDeed
 from game.deeds.enemy_axeman_walk_deed import AxemanWalkDeed
+from game.deeds.enemy_move_axes_deed import MoveAxesDeed
 
 
 class Game:
@@ -32,6 +33,7 @@ class Game:
         from random import randint
         platforms = []
         axemen = []
+        axes = []
         platform_x = 50
 
         if self._debug:
@@ -64,6 +66,7 @@ class Game:
         player_action_deed = PlayerActionDeed(service_manager, yeti)
         player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
+        move_axes_deed = MoveAxesDeed(axes,service_manager)
     
 
 
@@ -75,6 +78,7 @@ class Game:
         deeds_service.register_deed(player_move_deed, "action")
         deeds_service.register_deed(player_draw_deed, "action")
         deeds_service.register_deed(world_detect_platform_collisions_deed, "action")
+        deeds_service.register_deed(move_axes_deed,"action")
 
         # game loop 
         while video_service.is_window_open():

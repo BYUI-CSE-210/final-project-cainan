@@ -1,10 +1,8 @@
 from game.deeds.deed import Deed
-from game.entities.enemy import *
-from yeti.game.shared.point import Point
-
+from game.entities.enemy import Axe
 
 class AxeCreateDeed(Deed):
-    def __init__(self, axeman:Axeman,axes:list, service_manager=None, debug=False) -> None:
+    def __init__(self, axeman,axes:list, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self.axes = axes
         self.axeman = axeman
