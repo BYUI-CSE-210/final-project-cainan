@@ -28,5 +28,8 @@ class Platform(Entity):
         else:
             self.solid = True
 
+    def get_width(self):
+        return self._width
+
     def get_hitbox(self):
         return pr.Rectangle(self.position.x, self.position.y, self._width, self._height)
