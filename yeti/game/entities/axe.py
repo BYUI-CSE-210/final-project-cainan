@@ -16,6 +16,7 @@ class Axe(Entity):
         self._alive_time = 0 
         self._max_alive_time = 3
         self._axe_weight_coefficient = 5
+        self.axe_time_counter = 0
 
     def draw(self):
         x = self.position.x
@@ -30,6 +31,9 @@ class Axe(Entity):
     def advance(self):
         # return super().advance()
         self.position.x += self.direction * self.speed
+        self.axe_time_counter += self._video_service.get_frame_time()
+        if self.axe_time_counter < .5:
+            self.position.y -= self.speed * .5
         self._angle += self._spin * self.direction
         self._alive_time += self._video_service.get_frame_time()
 
