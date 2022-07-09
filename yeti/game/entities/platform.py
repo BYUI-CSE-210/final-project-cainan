@@ -9,13 +9,17 @@ class Platform(Entity):
         self._height = height
         self.position = Point(0,0)
         self.solid = solid
+        self._texture = self._video_service.register_texture("platform_snow", "yeti/game/entities/images/platform_snowy_interior.png")
     
     def draw(self):
         x = self.position.x
         y = self.position.y
         width = self._width
         height = self._height
-        pr.draw_rectangle(x,y,width,height,pr.RED)
+        # pr.draw_rectangle(x,y,width,height,pr.RED)
+        source = pr.Rectangle(0, 0, 32, 32)
+        destination = pr.Rectangle(x, y, width, height)
+        pr.draw_texture_tiled(self._texture, source, destination, pr.Vector2(0,0), 0, 1, pr.WHITE )
     
     def advance(self):
         direction = self._keyboard_service.get_direction()
