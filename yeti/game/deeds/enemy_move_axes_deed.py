@@ -1,4 +1,4 @@
-from game.entities.enemy import Axe
+from game.entities.axe import Axe
 from game.deeds.deed import Deed
 
 class MoveAxesDeed(Deed):
@@ -8,6 +8,8 @@ class MoveAxesDeed(Deed):
         
     def execute(self):
         # return super().execute()
+        if self._debug:
+            print("Move Axes Deed - Axes list: ",self.axes)
         for axe in self.axes:
             axe:Axe
             axe.advance()

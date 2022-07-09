@@ -6,37 +6,6 @@ from game.deeds.enemy_create_axe import AxeCreateDeed
 import pyray as pr
 from pyray import Vector2
 
-class Axe(Entity):
-    def __init__(self, service_manager,starting_pos:Vector2,direction) -> None:
-        super().__init__(service_manager)
-        self.position.x = starting_pos.x
-        self.position.y = starting_pos.y
-        self.direction = direction
-        self.speed = 25
-        self.weight = 1
-        self.texture = self._video_service.register_texture("flyingAxe","game/entities/images/Axe.png")
-        self._angle = int()
-        self._spin = 20
-
-    def draw(self):
-        x = self.position.x
-        y = self.position.y
-        frameWidth = self.texture.width
-        frameHeight = self.texture.height
-        source = Rectangle(0,0,frameWidth,frameHeight)
-        destination = Rectangle(x,y,frameWidth/6,frameHeight/6)
-        origin = Vector2(frameWidth/12,frameHeight/12)
-        pr.draw_texture_pro(self.texture,source,destination,origin,self._angle,pr.WHITE)
-
-    def advance(self):
-        # return super().advance()
-        self.position.x += self.direction * self.speed
-        self._angle += self._spin * self.direction
-
-    def get_hitbox(self):
-        return super().get_hitbox()
-
-
 class Axeman(Entity):
     def __init__(self, service_manager=None, speed=10,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
@@ -53,6 +22,8 @@ class Axeman(Entity):
         self.frameHeight = self.texture.height
         self.scaled_frameHeight = self.frameHeight/4
         self.is_on_solid_ground = True
+
+        
 
     def draw(self):
         # return super().draw()
@@ -96,27 +67,10 @@ class Axeman(Entity):
         if action == 1:
             create_axe = AxeCreateDeed(self,axes,self._service_manager,debug=False)
             create_axe.execute()
+            if self._debug:
+                print("Throwing axe!")
 
     def get_hitbox(self):
         return super().get_hitbox()
 
 
-if __name__ == "__main__":
-    _service_manager = StartServicesDeed().execute()
-    _vs = _service_manager.video_service
-    _ks = _service_manager.keyboard_service
-    axeman = Axeman(_service_manager)
-    entities=[]
-    axe = Axe(_service_manager,Vector2(300,300),1)
-    axeman.position.x = 140
-    axeman.position.y = 140
-    pr.set_target_fps(10)
-    while _vs.is_window_open():
-        _vs.start_buffer()
-        input = _ks.get_direction()
-        axeman.advance(input.x,input.y)
-        axe.advance()
-        axe.draw()
-        axeman.draw()
-        _vs.end_buffer()
-    _service_manager.stop_all_services()

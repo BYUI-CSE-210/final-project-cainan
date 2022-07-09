@@ -1,5 +1,5 @@
 from game.deeds.deed import Deed
-from game.entities.enemy import Axe
+from game.entities.axe import Axe
 
 class AxeCreateDeed(Deed):
     def __init__(self, axeman,axes:list, service_manager=None, debug=False) -> None:
@@ -10,6 +10,8 @@ class AxeCreateDeed(Deed):
     def execute(self):
         axe = Axe(self.service_manager,self.axeman.position,self.axeman.direction)
         self.axes.append(axe)
+        if self._debug:
+            print(self.axes)
 
         
         
