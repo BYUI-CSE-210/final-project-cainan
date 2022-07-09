@@ -4,7 +4,6 @@ from game.entities.entity import Entity
 from game.deeds.start_services_deed import StartServicesDeed
 import pyray as pr
 from pyray import Vector2
-from game.entities.yeti import Yeti
 
 class Axe(Entity):
     def __init__(self, service_manager,starting_pos:Vector2,direction) -> None:
@@ -32,6 +31,9 @@ class Axe(Entity):
         # return super().advance()
         self.position.x += self.direction * self.speed
         self._angle += self._spin * self.direction
+
+    def get_hitbox(self):
+        return super().get_hitbox()
 
 
 class Axeman(Entity):
@@ -93,13 +95,15 @@ class Axeman(Entity):
         if action ==2:
             return
 
+    def get_hitbox(self):
+        return super().get_hitbox()
+
 
 if __name__ == "__main__":
     _service_manager = StartServicesDeed().execute()
     _vs = _service_manager.video_service
     _ks = _service_manager.keyboard_service
     axeman = Axeman(_service_manager)
-    yeti = Yeti(240,240)
     entities=[]
     axe = Axe(_service_manager,Vector2(300,300),1)
     axeman.position.x = 140
