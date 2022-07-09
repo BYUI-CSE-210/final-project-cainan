@@ -1,76 +1,120 @@
+from random import randint
 from pyray import Rectangle
 from game.entities.entity import Entity
-from game.shared.point import Point
 from game.deeds.start_services_deed import StartServicesDeed
 import pyray as pr
 from pyray import Vector2
 
-#TODO: add get_hitbox(self) method that returns a rectangle the same size as the enemy. 
-# I'm adding get_hitbox to the abstract class, so you will get an error until the method is at least defined.
+class Axe(Entity):
+    def __init__(self, service_manager,starting_pos:Vector2,direction) -> None:
+        super().__init__(service_manager)
+        self.position.x = starting_pos.x
+        self.position.y = starting_pos.y
+        self.direction = direction
+        self.speed = 25
+        self.weight = 1
+        self.texture = self._video_service.register_texture("flyingAxe","game/entities/images/Axe.png")
+        self._angle = int()
+        self._spin = 20
 
-class Enemy(Entity):
-    def __init__(self) -> None:
-        super().__init__()
-        self.speed = 10
-        self.weight = 3
-        #TODO: inherit point from Entity and correct methods accordingly
-        self.center = Point()
-        self.x = self.center.x
-        self.y = self.center.y
-        self.image = pr.load_texture("game/entities/images/lumberjack_walk.png")
-        # self.rect = Rectangle (0,0,int(self.image.width/7),int(self.image.height/2))
-        # pr.draw_texture_rec(self.image,self.rect,Vector2(15,40),pr.WHITE)
-        self.frameWidth = self.image.width/5
-        self.frameHeight = self.image.height
-        self.frameCount = 0
-        
     def draw(self):
-        x = self.center.x
-        y = self.center.y
-        source_x = self.frameCount * self.frameWidth
+        x = self.position.x
+        y = self.position.y
+        frameWidth = self.texture.width
+        frameHeight = self.texture.height
+        source = Rectangle(0,0,frameWidth,frameHeight)
+        destination = Rectangle(x,y,frameWidth/6,frameHeight/6)
+        origin = Vector2(frameWidth/12,frameHeight/12)
+        pr.draw_texture_pro(self.texture,source,destination,origin,self._angle,pr.WHITE)
+
+    def advance(self):
+        # return super().advance()
+        self.position.x += self.direction * self.speed
+        self._angle += self._spin * self.direction
+
+    def get_hitbox(self):
+        return super().get_hitbox()
+
+
+class Axeman(Entity):
+    def __init__(self, service_manager=None, speed=10,_turn_after = 20) -> None:
+        super().__init__(service_manager)
+        self.texture = self._video_service.register_texture("Axeman","game/entities/images/lumberjack_walk.png")
+        # self.axes = []
+        self.weight = 3
+        self.speed = speed
+        self._pace_count = 0
+        self.direction = -1
+        self._turn_after = _turn_after
+        self.frameCount = 1
+        self.frameWidth = self.texture.width/5
+        self.frameHeight = self.texture.height
+
+    def draw(self):
+        # return super().draw()
+        x = self.position.x
+        y = self.position.y
+        source_x = int(self.frameCount * self.frameWidth)
         source_y = 0
-        print(f"height: {self.frameHeight}, width:  {self.frameWidth}")
-        print(source_x,source_y)
-        print(source_x + self.frameWidth, source_y + self.frameHeight)
-        self.source = Rectangle(source_x,source_y,source_x + self.frameWidth,source_y + self.frameHeight)
-        self.destination = Rectangle(x,y,x + self.frameWidth,y + self.frameHeight)
-        self.origin = Vector2(source_x,source_y)
-        pr.draw_texture_pro(self.image,self.source,self.destination,self.origin,0,pr.RAYWHITE)
+        self.source = pr.Rectangle(source_x,source_y,self.frameWidth * self.direction,self.frameHeight)
+        self.destination = pr.Rectangle(x,y, self.frameWidth/4, self.frameHeight/4)
+        self.origin = Vector2(x/2,y/2)
+        pr.draw_texture_pro(self.texture,self.source,self.destination,self.origin,0,pr.RAYWHITE)
+        # pr.draw_rectangle(int(x),int(y),int(self.frameWidth),int(self.frameHeight),pr.GREEN)
 
     def advance(self,x_direction,y_direction):
-        self.center.x += x_direction * self.speed
-        self.center.y += y_direction * self.speed
-        if x_direction != 0 or y_direction != 0:
-            self.is_moving = True
+        # return super().advance()
+        self._pace_count += 1
+        if x_direction != 0:
+            self.direction = x_direction
         self.frameCount += 1
-        if self.frameCount > 5:
+        if self.frameCount >5:
             self.frameCount = 0
+        self.position.x += x_direction * self.speed
+        self.position.y += y_direction * self.speed
+        # if self._pace_count >= self._turn_after:
+        #     self.direction *= -1
+        #     self._pace_count = 0
+        #     self.axes.append(Axe)
+        # if self.position.x <=0:
+        #     self.direction = 0
+        #     self._pace_count = 0
+        #     self.axes.append(Axe)
+        # if self.position.x >= pr.get_screen_width():
+        #     self.direction = -1
+        #     self._pace_count = 0
+        #     self.axes.append(Axe)
+
+    def do_action(self,action,entities:list):
+        if action == 1:
+            entities.append(axe)
+            for axe in entities:
+                axe = Axe()
+                axe.draw()
+                axe.advance()
+        if action ==2:
+            return
+
+    def get_hitbox(self):
+        return super().get_hitbox()
+
 
 if __name__ == "__main__":
-    pr.init_window(800,600,"ENEMY")
-    enemy = Enemy()
-    enemy.position = Vector2(350.0, 280.0)
-    current_frame = 0
-    frames_counter = 0
-    frame_speed = 8
-    pr.set_target_fps(5)
-    while not pr.window_should_close():
-        pr.begin_drawing()
-        pr.clear_background(pr.RAYWHITE)
-        x_direction = 0
-        y_direction = 0
-        if pr.is_key_down(pr.KEY_RIGHT):
-            x_direction = 1
-        if pr.is_key_down(pr.KEY_UP):
-            y_direction = 1
-        if pr.is_key_down(pr.KEY_LEFT):
-            x_direction = -1
-        if pr.is_key_down(pr.KEY_DOWN):
-            y_direction = -1
-        if pr.is_key_down(pr.KEY_ESCAPE):
-            pr.window_should_close()
-        enemy.advance(x_direction,y_direction)
-        enemy.draw()
-        pr.end_drawing()
-    pr.unload_texture(enemy)
-    pr.close_window()
+    _service_manager = StartServicesDeed().execute()
+    _vs = _service_manager.video_service
+    _ks = _service_manager.keyboard_service
+    axeman = Axeman(_service_manager)
+    entities=[]
+    axe = Axe(_service_manager,Vector2(300,300),1)
+    axeman.position.x = 140
+    axeman.position.y = 140
+    pr.set_target_fps(10)
+    while _vs.is_window_open():
+        _vs.start_buffer()
+        input = _ks.get_direction()
+        axeman.advance(input.x,input.y)
+        axe.advance()
+        axe.draw()
+        axeman.draw()
+        _vs.end_buffer()
+    _service_manager.stop_all_services()

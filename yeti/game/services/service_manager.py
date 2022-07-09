@@ -15,7 +15,7 @@ class ServiceManager:
         self._debug = debug
 
     @property
-    def video_serivce(self):
+    def video_service(self):
         '''Returns the main video service.'''
         return self.get_first_service(VideoService)
 
