@@ -11,6 +11,7 @@ class Entity(ABC):
         super().__init__()
         self.position = Point()
         self.weight = 0
+        self.is_on_solid_ground = False
         if service_manager:
             self._video_service: VideoService
             self._video_service = service_manager.video_service
