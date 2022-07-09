@@ -48,7 +48,9 @@ class Axeman(Entity):
         self._turn_after = _turn_after
         self.frameCount = 1
         self.frameWidth = self.texture.width/5
+        self.scaled_frameWidth = self.frameWidth/4
         self.frameHeight = self.texture.height
+        self.scaled_frameHeight = self.frameHeight/4
         self.is_on_solid_ground = True
 
     def draw(self):
@@ -58,11 +60,12 @@ class Axeman(Entity):
         source_x = int(self.frameCount * self.frameWidth)
         source_y = 0
         self.source = pr.Rectangle(source_x,source_y,self.frameWidth * self.direction,self.frameHeight)
-        self.destination = pr.Rectangle(x,y, self.frameWidth/4, self.frameHeight/4)
-        self.origin = Vector2(x/2,y/2)
+        self.destination = pr.Rectangle(x + self.frameWidth/8,y - self.frameHeight/8, self.scaled_frameWidth, self.scaled_frameHeight)
+        self.origin = Vector2(self.frameWidth/8,self.frameHeight/8)
         pr.draw_texture_pro(self.texture,self.source,self.destination,self.origin,0,pr.RAYWHITE)
+        # pr.draw_texture_rec(self.texture,self.source,self.origin,pr.GREEN)
         if self._debug:
-            pr.draw_rectangle(int(x),int(y),int(self.frameWidth),int(self.frameHeight),pr.GREEN)
+            pr.draw_rectangle(int(x),int(y), int(self.frameWidth/4), int(self.frameHeight/4),pr.GREEN)
             print("Drawing axeman at: ", x, y)
 
     def advance(self,x_direction,y_direction):
