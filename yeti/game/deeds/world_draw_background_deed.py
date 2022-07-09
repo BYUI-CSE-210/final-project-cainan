@@ -1,6 +1,7 @@
 import pyray as pr
 from game.deeds.deed import Deed
 from game.shared.point import Point
+from game.shared.color import Color
 class DrawBackgroundDeed(Deed):
 
     def __init__(self, service_manager) -> None:
@@ -13,10 +14,10 @@ class DrawBackgroundDeed(Deed):
         source_rect = pr.Rectangle(0, 0, background_width, background_height)
         dest_rect = pr.Rectangle(0, 0, background_width, self.video_service.get_height())
         origin = pr.Vector2(0,0)
-
-        pr.draw_texture_pro(self._background, source_rect, dest_rect, origin, 0, pr.WHITE )
+        tint = Color(alpha=150).get_tuple()
+        pr.draw_texture_pro(self._background, source_rect, dest_rect, origin, 0, tint )
         dest_rect = pr.Rectangle(background_width, 0, background_width*2, self.video_service.get_height())
-        pr.draw_texture_pro(self._background, source_rect, dest_rect, origin, 0, pr.WHITE )
+        pr.draw_texture_pro(self._background, source_rect, dest_rect, origin, 0, tint)
         
 
 
