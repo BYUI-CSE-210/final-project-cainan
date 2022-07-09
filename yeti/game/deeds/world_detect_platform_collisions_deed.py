@@ -19,7 +19,7 @@ class DetectPlatformCollisionsDeed(Deed):
 
         for platform in self._platforms:
             platform_hitbox = platform.get_hitbox()
-            platform_hit_rectangle = pr.Rectangle(platform_hitbox.x, platform_hitbox.y, platform_hitbox.width, 5)
+            platform_hit_rectangle = pr.Rectangle(platform_hitbox.x, platform_hitbox.y, platform_hitbox.width, 2)
             if self._debug:
                 pr.draw_rectangle(int(platform_hit_rectangle.x), int(platform_hit_rectangle.y), int(platform_hit_rectangle.width), int(player_hit_rectangle.height), pr.GREEN)
             colliding = pr.check_collision_recs(platform_hit_rectangle, player_hit_rectangle)

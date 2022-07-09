@@ -24,9 +24,18 @@ class Game:
         yeti = Yeti()
         yeti.center.x = 100
         yeti.center.y = 100
-        platform = Platform(200, 20, service_manager=service_manager)
-        platform.position.x = 200
-        platform.position.y = 200
+
+
+        #TODO move to world_create_platform_deed
+        from random import randint
+        platforms = []
+        platform_x = 50
+        for i in range(60):
+            platform = Platform(200, 20, service_manager=service_manager)
+            platform.position.x = platform_x
+            platform.position.y = randint(200, 800)
+            platforms.append(platform)
+            platform_x += randint(100,400)
 
         if self._debug:
             service_manager.show_all_services()
@@ -41,8 +50,8 @@ class Game:
         world_move_camera_deed = MoveCameraDeed(service_manager, yeti)
         #TODO create a list of Entities to be passed to the apply gravity deed. 
         world_apply_gravity_deed = ApplyGravityDeed([yeti], service_manager)
-        world_draw_platforms_deed = DrawPlatformsDeed([platform], service_manager)
-        world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed([platform], yeti)
+        world_draw_platforms_deed = DrawPlatformsDeed(platforms, service_manager)
+        world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed(platforms, yeti)
         player_action_deed = PlayerActionDeed(service_manager, yeti)
         player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
