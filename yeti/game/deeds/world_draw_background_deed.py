@@ -5,7 +5,7 @@ class DrawBackgroundDeed(Deed):
 
     def __init__(self, service_manager) -> None:
         super().__init__(service_manager)
-        self._background = self.video_service.register_texture("background", "game/entities/images/background.png")
+        self._background = self.video_service.register_texture("background", "yeti/game/entities/images/background.png")
         
     def execute(self):
         background_width = 4048
