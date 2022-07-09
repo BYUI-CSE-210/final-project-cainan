@@ -10,9 +10,7 @@ class MoveCameraDeed(Deed):
     '''
     def __init__(self, service_manager, target, debug=False ) -> None:
         super().__init__(service_manager, debug)
-        #TODO if yeti starts using position instead of center we need to update the next line. 
-        #The camera won't follow the yeti.
-        self._target = target.center
+        self._target = target.position
         assert isinstance(self._target.x, float) or isinstance(self._target.x, int), "Target of MoveCameraDeed needs to have an x property, it must be a float/int. Eg: target.x"
         assert isinstance(self._target.y, float) or isinstance(self._target.y, int), "Target of MoveCameraDeed needs to have a y property, it must be a float/int. Eg: target.y"
         

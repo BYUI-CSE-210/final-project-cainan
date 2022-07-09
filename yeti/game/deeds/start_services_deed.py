@@ -12,7 +12,7 @@ class StartServicesDeed(Deed):
         keyboard_service = KeyboardService()
 
         audio_service = AudioService()
-        video_service = VideoService(50)
+        video_service = VideoService(20)
         deed_service = DeedsService()
 
         service_manager.register_service(keyboard_service, "input")

@@ -10,6 +10,8 @@ class Platform(Entity):
         self.position = Point(0,0)
         self.solid = solid
         self._texture = self._video_service.register_texture("platform_snow", "yeti/game/entities/images/platform_snowy_interior.png")
+        if self._debug:
+            print("Platform: ", self.position.x, self.position.y)
     
     def draw(self):
         x = self.position.x
