@@ -7,11 +7,12 @@ from game.services.service_manager import ServiceManager
 from game.services.deeds_service import DeedsService
 class Entity(ABC):
 
-    def __init__(self, service_manager = None) -> None:
+    def __init__(self, service_manager = None, debug = None) -> None:
         super().__init__()
         self.position = Point()
         self.weight = 0
         self.is_on_solid_ground = False
+        self._debug = debug
         if service_manager:
             self._video_service: VideoService
             self._video_service = service_manager.video_service
