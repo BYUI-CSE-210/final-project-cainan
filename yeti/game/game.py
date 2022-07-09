@@ -62,7 +62,8 @@ class Game:
         # action deeds 
         world_move_camera_deed = MoveCameraDeed(service_manager, yeti)
         #TODO create a list of Entities to be passed to the apply gravity deed. 
-        world_apply_gravity_deed = ApplyGravityDeed(axes, service_manager)
+        yeti_apply_gravity_deed = ApplyGravityDeed([yeti], service_manager)
+        axes_apply_gravity_deed = ApplyGravityDeed(axes, service_manager)
         world_draw_platforms_deed = DrawPlatformsDeed(platforms, service_manager)
         world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed(platforms, yeti)
         player_action_deed = PlayerActionDeed(service_manager, yeti)
@@ -75,7 +76,8 @@ class Game:
 
         # deed registration
         deeds_service.register_deed(world_move_camera_deed, "action")
-        deeds_service.register_deed(world_apply_gravity_deed, "action")
+        deeds_service.register_deed(yeti_apply_gravity_deed, "action")
+        deeds_service.register_deed(axes_apply_gravity_deed, "action")
         deeds_service.register_deed(world_draw_platforms_deed, "action")
         deeds_service.register_deed(player_action_deed, "action")
         deeds_service.register_deed(player_move_deed, "action")
