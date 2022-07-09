@@ -14,5 +14,8 @@ class AxemanWalkDeed(Deed):
         # return super().execute()
         if self.axeman.position.x == self.platform.position.x + 10 or self.axeman.position.x == self.platform.position.x + self.platform.get_width() -10:
             self.direction *= -1
+        if self._debug:
+            print("Axeman Walk - Axeman position: ", self.axeman.position.x, self.axeman.position.y )
         self.axeman.advance(self.direction,0)
+        self.axeman.draw()
 

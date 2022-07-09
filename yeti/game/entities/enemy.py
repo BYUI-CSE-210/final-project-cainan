@@ -37,9 +37,9 @@ class Axe(Entity):
 
 
 class Axeman(Entity):
-    def __init__(self, service_manager=None, speed=10,_turn_after = 20) -> None:
-        super().__init__(service_manager)
-        self.texture = self._video_service.register_texture("Axeman","game/entities/images/lumberjack_walk.png")
+    def __init__(self, service_manager=None, speed=10,_turn_after = 20, debug=False) -> None:
+        super().__init__(service_manager, debug)
+        self.texture = self._video_service.register_texture("Axeman","yeti/game/entities/images/lumberjack_walk.png")
         # self.axes = []
         self.weight = 3
         self.speed = speed
@@ -49,6 +49,7 @@ class Axeman(Entity):
         self.frameCount = 1
         self.frameWidth = self.texture.width/5
         self.frameHeight = self.texture.height
+        self.is_on_solid_ground = True
 
     def draw(self):
         # return super().draw()
@@ -60,7 +61,9 @@ class Axeman(Entity):
         self.destination = pr.Rectangle(x,y, self.frameWidth/4, self.frameHeight/4)
         self.origin = Vector2(x/2,y/2)
         pr.draw_texture_pro(self.texture,self.source,self.destination,self.origin,0,pr.RAYWHITE)
-        # pr.draw_rectangle(int(x),int(y),int(self.frameWidth),int(self.frameHeight),pr.GREEN)
+        if self._debug:
+            pr.draw_rectangle(int(x),int(y),int(self.frameWidth),int(self.frameHeight),pr.GREEN)
+            print("Drawing axeman at: ", x, y)
 
     def advance(self,x_direction,y_direction):
         # return super().advance()
