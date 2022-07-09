@@ -89,7 +89,8 @@ class Yeti(Entity):
         if action == 3:
             self.is_running = True
         
-            
+    def get_hitbox(self):
+        return self.destination
         
 
 if __name__ == "__main__":
