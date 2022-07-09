@@ -13,15 +13,13 @@ class Entity(ABC):
         self.weight = 0
         self.is_on_solid_ground = False
         self._debug = debug
+        self._service_manager: ServiceManager
+        self._service_manager = service_manager
         if service_manager:
-            self._video_service: VideoService
-            self._video_service = service_manager.video_service
-            self._audio_service: AudioService
-            self._audio_service = service_manager.audio_service
-            self._keyboard_service: KeyboardService
-            self._keyboard_service = service_manager.keyboard_service
-            self._deeds_service: DeedsService
-            self._deeds_service = service_manager.deeds_service
+            self._video_service = self._service_manager.get_first_service(VideoService)
+            self._audio_service = self._service_manager.get_first_service(AudioService)
+            self._keyboard_service = self._service_manager.get_first_service(KeyboardService)
+            self._deeds_service = self._service_manager.get_first_service(DeedsService)
             
     @abstractmethod
     def advance(self):
