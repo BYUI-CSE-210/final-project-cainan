@@ -26,7 +26,7 @@ class Game:
         # game initialization
         service_manager: ServiceManager
         service_manager = StartServicesDeed().execute()
-        yeti = Yeti()
+        yeti = Yeti(service_manager)
         yeti.position.x = 100
         yeti.position.y = 100
 

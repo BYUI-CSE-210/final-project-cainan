@@ -11,11 +11,8 @@ class Yeti(Entity):
         super().__init__(service_manager, debug)
         
         self.weight = 3
-        self.speed = 10
-        self._video_service = VideoService(10)
+        self.speed = 5
         self._texture = self._video_service.register_texture("Yeti", "yeti/game/entities/images/yeti.png")
-
-        
         
         self.x = self.position.x
         self.y = self.position.y
@@ -31,6 +28,7 @@ class Yeti(Entity):
         self.is_throwing = False
         self.is_taunting = False
         self.direction = 1
+        self._frame_timer = 0
 
     def draw(self):
         x = self.position.x
@@ -45,7 +43,7 @@ class Yeti(Entity):
             source_y = 3 * self.frameHeight
         if self.is_falling:
             source_y = 4 * self.frameHeight
-        if self.is_throwing:
+        if self.is_throwing or self.is_taunting:
             source_y = 5 * self.frameHeight
 
         self.source = Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
@@ -55,15 +53,19 @@ class Yeti(Entity):
 
     def advance(self, x_direction, y_direction):
         if self.is_running:
-            self.speed = 20
-        else:
             self.speed = 10
+        else:
+            self.speed = 5
 
         self.position.x += x_direction * self.speed
         self.position.y += y_direction * self.speed
-
-        self.frameCount += 1
-        if self.frameCount > 7:
+        self._frame_timer += self._video_service.get_frame_time()
+        if self._frame_timer > .12:
+            self.frameCount += 1
+            self._frame_timer = 0
+        if (self.frameCount < 4 and self.is_taunting) or (self.is_taunting and self.frameCount > 7):
+            self.frameCount = 4
+        if self.frameCount > 7 or (self.frameCount > 4 and self.is_throwing):
             self.frameCount = 0
 
         if x_direction != 0 or y_direction != 0:
@@ -73,7 +75,7 @@ class Yeti(Entity):
             self.is_moving = False
 
     def get_hitbox(self):
-        return pr.Rectangle(self.position.x, self.position.y, self.frameWidth, self.frameHeight)
+        return self.destination
     
     def do_action(self, action):
         self.is_running = False
