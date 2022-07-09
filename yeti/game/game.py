@@ -5,6 +5,9 @@ from game.deeds.start_services_deed import StartServicesDeed
 from game.deeds.world_draw_background_deed import DrawBackgroundDeed
 from game.deeds.world_move_camera_deed import MoveCameraDeed
 from game.deeds.world_apply_gravity_deed import ApplyGravityDeed
+from game.deeds.player_action_deed import PlayerActionDeed
+from game.deeds.player_move_deed import PlayerMoveDeed
+from game.deeds.player_draw_deed import PlayerDrawDeed
 
 
 class Game:
@@ -16,6 +19,8 @@ class Game:
         service_manager: ServiceManager
         service_manager = StartServicesDeed().execute()
         yeti = Yeti()
+        yeti.center.x = 100
+        yeti.center.y = 100
 
         if self._debug:
             service_manager.show_all_services()
@@ -29,11 +34,17 @@ class Game:
         world_draw_background_deed = DrawBackgroundDeed(service_manager)
         world_move_camera_deed = MoveCameraDeed(service_manager, yeti)
         world_apply_gravity_deed = ApplyGravityDeed([yeti], service_manager)
+        player_action_deed = PlayerActionDeed(service_manager, yeti)
+        player_move_deed = PlayerMoveDeed(service_manager, yeti)
+        player_draw_deed = PlayerDrawDeed(yeti)
 
         # deed registration
         deeds_service.register_deed(world_draw_background_deed, "action")
         deeds_service.register_deed(world_move_camera_deed, "action")
         deeds_service.register_deed(world_apply_gravity_deed, "action")
+        deeds_service.register_deed(player_action_deed, "action")
+        deeds_service.register_deed(player_move_deed, "action")
+        deeds_service.register_deed(player_draw_deed, "action")
 
         # game loop 
         while video_service.is_window_open():
