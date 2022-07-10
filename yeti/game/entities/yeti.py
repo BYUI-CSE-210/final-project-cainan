@@ -7,10 +7,8 @@ import pyray as pr
 from pyray import Vector2
 from pyray import Rectangle
 
-#TODO: Animation for yeti crashing into the ground
 #TODO: Add projectile yeti can throw
-#TODO: Make sure animations reset when they first start
-#TODO: Make sure throwing and taunting animations finish once they start
+#TODO: Make jump
 
 class Yeti(Entity):
     def __init__(self, service_manager=None, debug=None) -> None:
@@ -39,8 +37,7 @@ class Yeti(Entity):
         
         self._fall_distance = 0
         self._stun_timer = 0
-        self._frame_count_reset = 0 # USE THIS TO MAKE SURE ANIMATIONS START AT THE BEGINING
-        self._animation_timer = 0 # USE THIS TO MAKE SURE THRWOING AND TAUNTING ANIMATIONS RUN ALL THE WAY THROUGH WHEN YOU START THEM. USE IN DO_ACTION()
+        self._animation_timer = 0 
 
     def draw(self):
         x = self.position.x
@@ -55,10 +52,12 @@ class Yeti(Entity):
         if self.is_jumping:
             source_y = 3 * self.frame_height
         if self.is_falling:
-            if self._fall_distance < 51:
+            if self._fall_distance < 101:
                 source_y = 3 * self.frame_height
             else:
                 source_y = 4 * self.frame_height
+        if self.is_stunned:
+            source_y = 4 * self.frame_height
         if self.is_throwing or self.is_taunting:
             source_y = 5 * self.frame_height
 
@@ -91,29 +90,31 @@ class Yeti(Entity):
         else:
             self.speed = 5
 
+        self._frame_timer += self._video_service.get_frame_time()
+        if self._frame_timer > .12:
+            self.frameCount += 1
+            self._frame_timer = 0
+
         if not self.is_stunned:
             self.position.x += x_direction * self.speed
             self.position.y += y_direction * self.speed
-
-            self._frame_timer += self._video_service.get_frame_time()
-            if self._frame_timer > .12:
-                self.frameCount += 1
-                self._frame_timer = 0
 
             if not self.is_on_solid_ground:
                 self.is_falling = True
                 self._fall_distance += 1
             else:
                 self.is_falling = False
+                if self._fall_distance > 101:
+                    self.is_stunned = True
                 self._fall_distance = 0
-            if (self.frameCount < 6 and self.is_falling and self._fall_distance < 50) or (self.is_falling and self.frameCount > 7):
+            if (self.frameCount < 6 and self.is_falling and self._fall_distance < 100) or (self.is_falling and self.frameCount > 7):
                 self.frameCount = 6
-            if self.frameCount > 1 and self.is_falling and self._fall_distance > 50:
+            if self.frameCount > 1 and self.is_falling and self._fall_distance > 100:
                 self.frameCount = 0
 
             if (self.frameCount < 4 and self.is_taunting) or (self.is_taunting and self.frameCount > 7):
                 self.frameCount = 4
-            if self.frameCount > 7 or (self.frameCount > 4 and self.is_throwing):
+            if self.frameCount > 7 or (self.frameCount > 3 and self.is_throwing):
                 self.frameCount = 0
 
             if x_direction != 0 or y_direction != 0:
@@ -122,9 +123,13 @@ class Yeti(Entity):
             else:
                 self.is_moving = False
         else:
-            self._frame_timer += self._video_service.get_frame_time()
-            if self._frame_timer > 1:
+            self._stun_timer += self._video_service.get_frame_time()
+            if (self.frameCount < 2 or self.frameCount > 7):
+                self.frameCount = 2
+                
+            if self._stun_timer > 2:
                 self.is_stunned = False
+                self._stun_timer = 0
 
 
     def get_hitbox(self):
@@ -143,7 +148,17 @@ class Yeti(Entity):
             self.is_running = True
         if action == 4:
             self.is_throwing = True
-                
+        
+        
+        if self.is_throwing and self._animation_timer < 15:
+            self._animation_timer += 1
+        elif self.is_taunting and self._animation_timer < 60:
+            self._animation_timer += 1
+        else:
+            self.is_taunting = False
+            self.is_throwing = False
+            self._animation_timer = 0
+
     def get_hitbox(self):
         return self.destination
         
