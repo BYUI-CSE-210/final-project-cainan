@@ -124,7 +124,7 @@ class Yeti(Entity):
         else:
             self._frame_timer += self._video_service.get_frame_time()
             if self._frame_timer > 1:
-                self.is_hit = False
+                self.is_stunned = False
 
 
     def get_hitbox(self):
