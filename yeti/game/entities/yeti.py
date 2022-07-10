@@ -6,10 +6,10 @@ import pyray as pr
 from pyray import Vector2
 from pyray import Rectangle
 
-#TODO: Make sure yeti cant sprint while standing still 
 #TODO: Animation for yeti crashing into the ground
 #TODO: Add projectile yeti can throw
 #TODO: Make sure animations reset when they first start
+#TODO: Make sure throwing and taunting animations finish once they start
 
 class Yeti(Entity):
     def __init__(self, service_manager=None, debug=None) -> None:
@@ -21,9 +21,10 @@ class Yeti(Entity):
         
         self.x = self.position.x
         self.y = self.position.y
+        self.direction = 1
 
-        self.frameWidth = self._texture.width / 8
-        self.frameHeight = self._texture.height / 6
+        self.frame_width = self._texture.width / 8
+        self.frame_height = self._texture.height / 6
         self.frameCount = 0
         self._frame_timer = 0
 
@@ -33,43 +34,58 @@ class Yeti(Entity):
         self.is_falling = False
         self.is_throwing = False
         self.is_taunting = False
-        self.direction = 1
+        self.is_stunned = False
+        
         self._fall_distance = 0
-
+        self._stun_timer = 0
+        self._frame_count_reset = 0 # USE THIS TO MAKE SURE ANIMATIONS START AT THE BEGINING
+        self._animation_timer = 0 # USE THIS TO MAKE SURE THRWOING AND TAUNTING ANIMATIONS RUN ALL THE WAY THROUGH WHEN YOU START THEM. USE IN DO_ACTION()
 
     def draw(self):
         x = self.position.x
         y = self.position.y
-        source_x = self.frameCount * self.frameWidth
+        source_x = self.frameCount * self.frame_width
         source_y = 0
 
         if self.is_moving:
-            source_y = 1 * self.frameHeight
+            source_y = 1 * self.frame_height
         if self.is_running:
-            source_y = 2 * self.frameHeight
+            source_y = 2 * self.frame_height
         if self.is_jumping:
-            source_y = 3 * self.frameHeight
+            source_y = 3 * self.frame_height
         if self.is_falling:
             if self._fall_distance < 51:
-                source_y = 3 * self.frameHeight
+                source_y = 3 * self.frame_height
             else:
-                source_y = 4 * self.frameHeight
+                source_y = 4 * self.frame_height
         if self.is_throwing or self.is_taunting:
-            source_y = 5 * self.frameHeight
+            source_y = 5 * self.frame_height
 
-        self.source = Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
-        self.destination = Rectangle(x, y, self.frameWidth, self.frameHeight)
+        self.source = Rectangle(source_x, source_y, self.frame_width * self.direction, self.frame_height)
+        self.destination = Rectangle(x, y, self.frame_width, self.frame_height)
         self.origin = Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
 
     def advance(self, x_direction, y_direction):
+        if not self.is_moving or self.is_jumping or self.is_falling:
+            self.is_running = False
+        if self.is_stunned:
+            self.is_moving = False
+            self.is_running = False
+            self.is_throwing = False
+            self.is_taunting = False
+        if self.is_moving or self.is_running or self.is_jumping or self.is_falling:
+            self.is_taunting = False
+            self.is_throwing = False
+        
         if self.is_running:
             self.speed = 10
         else:
             self.speed = 5
 
-        self.position.x += x_direction * self.speed
-        self.position.y += y_direction * self.speed
+        if not self.is_stunned:
+            self.position.x += x_direction * self.speed
+            self.position.y += y_direction * self.speed
 
         self._frame_timer += self._video_service.get_frame_time()
         if self._frame_timer > .12:
@@ -103,9 +119,6 @@ class Yeti(Entity):
     
     def do_action(self, action):
         self.is_running = False
-        self.is_jumping = False
-        self.is_throwing = False
-        self.is_taunting = False
         if action == 1:
             self.is_jumping = True
         if action == 2:
@@ -114,7 +127,7 @@ class Yeti(Entity):
             self.is_running = True
         if action == 4:
             self.is_throwing = True
-        
+                
     def get_hitbox(self):
         return self.destination
         
