@@ -67,7 +67,7 @@ class Yeti(Entity):
         self.origin = Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
         if self._debug:
-            if self.is_hit:
+            if self.is_stunned:
                 color = Color(green=0, blue=0).get_tuple()
             else:
                 color = Color(red=0, blue=0).get_tuple()
@@ -131,7 +131,7 @@ class Yeti(Entity):
         return self.destination
     
     def got_hit(self):
-        self.is_hit = True
+        self.is_stunned = True
     
     def do_action(self, action):
         self.is_running = False
