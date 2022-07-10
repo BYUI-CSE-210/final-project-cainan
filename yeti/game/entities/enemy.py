@@ -10,7 +10,6 @@ class Axeman(Entity):
     def __init__(self, service_manager=None, speed=5,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
         self.texture = self._video_service.register_texture("Axeman","yeti/game/entities/images/lumberjack_walk.png")
-        # self.axes = []
         self.weight = 3
         self.speed = speed
         self._pace_count = 0
@@ -23,24 +22,20 @@ class Axeman(Entity):
         self.scaled_frameHeight = self.frameHeight/4
         self.is_on_solid_ground = True
         self._frame_timer = 0
-
-
+        self.debug = True
         
-
     def draw(self):
-        # return super().draw()
+        self._texture = self._video_service.get_texture("Axeman")
         x = self.position.x
         y = self.position.y
-        source_x = int(self.frameCount * self.frameWidth)
+        source_x = self.frameCount * self.frameWidth
         source_y = 0
-        self.source = pr.Rectangle(source_x,source_y,self.frameWidth * self.direction,self.frameHeight)
-        self.destination = pr.Rectangle(x + self.frameWidth/8,y - self.frameHeight/8, self.scaled_frameWidth, self.scaled_frameHeight)
-        self.origin = Vector2(self.frameWidth/8,self.frameHeight/8)
-        pr.draw_texture_pro(self.texture,self.source,self.destination,self.origin,0,pr.RAYWHITE)
-        # pr.draw_texture_rec(self.texture,self.source,self.origin,pr.GREEN)
-        if self._debug:
-            pr.draw_rectangle(int(x),int(y), int(self.frameWidth/4), int(self.frameHeight/4),pr.GREEN)
-            print("Drawing axeman at: ", x, y)
+        self.source = pr.Rectangle(source_x,source_y,self.frameWidth * self.direction, self.frameHeight)
+        self.destination = pr.Rectangle(x,y - self.scaled_frameHeight,self.frameWidth/4,self.frameHeight/4)
+        self.origin = Vector2(0,0)
+        pr.draw_texture_pro(self._texture, self.source,self.destination,self.origin,0,pr.RAYWHITE)
+        if self.debug:
+            pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.WHITE)
 
     def advance(self,x_direction,y_direction):
         # return super().advance()
