@@ -16,14 +16,18 @@ class Bird(Entity):
         self.frameWidth = self._texture.width
         self.frameHeight = self._texture.height
         self.direction = -1
-        self.speed = 15
+        self.speed = 5
         self.timeCounter = 0
+        self._frame_time_counter = 0
 
 
     def advance(self):
         # return super().advance()
-        self.timeCounter += 1
-        self.frameCount += 1
+        self._frame_time_counter += self._video_service.get_frame_time()
+        if self._frame_time_counter > .12:
+            self._frame_time_counter = 0
+            self.timeCounter += 1
+            self.frameCount += 1
         if self.frameCount >= 4:
             self.frameCount = 1
         if self.timeCounter >= 30:
@@ -40,7 +44,7 @@ class Bird(Entity):
         source_x = self.frameCount * self.frameWidth
         source_y = 0
         self.source = Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
-        self.destination = Rectangle(x, y, self.frameWidth/12, self.frameHeight/12)
+        self.destination = Rectangle(x, y, self.frameWidth/18, self.frameHeight/18)
         self.origin = Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
         # pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.RED)
@@ -48,6 +52,8 @@ class Bird(Entity):
 
     def get_hitbox(self):
         return self.destination
+
+    
 
 
 if __name__ == "__main__":

@@ -76,6 +76,8 @@ class Axeman(Entity):
                 print("Throwing axe!")
 
     def get_hitbox(self):
-        return super().get_hitbox()
+        return self.destination
+
+    
 
 

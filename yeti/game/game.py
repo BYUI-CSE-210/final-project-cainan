@@ -17,6 +17,7 @@ from game.deeds.enemy_move_axes_deed import MoveAxesDeed
 from game.deeds.enemy_remove_old_axes_deed import RemoveOldAxesDeed
 from game.deeds.create_bird_deed import CreateBirdDeed
 from game.deeds.move_birds_deed import MoveBirdsDeed
+from game.deeds.player_detect_enemy_collisions_deed import PlayerDetectEnemyCollisionsDeed
 
 
 
@@ -28,7 +29,7 @@ class Game:
         # game initialization
         service_manager: ServiceManager
         service_manager = StartServicesDeed().execute()
-        yeti = Yeti(service_manager)
+        yeti = Yeti(service_manager, debug=True)
         yeti.position.x = 100
         yeti.position.y = 100
 
@@ -77,7 +78,7 @@ class Game:
         move_axes_deed = MoveAxesDeed(axes,service_manager)
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
-
+        player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, service_manager)
     
 
 
@@ -93,6 +94,7 @@ class Game:
         deeds_service.register_deed(move_axes_deed,"action")
         deeds_service.register_deed(remove_old_axes_deed, "action")
         deeds_service.register_deed(move_birds_deed,"action")
+        deeds_service.register_deed(player_detect_enemy_collisions_deed, "action")
 
         # game loop 
         frame_time_counter = 0

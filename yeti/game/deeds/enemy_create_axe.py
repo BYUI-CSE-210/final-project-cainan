@@ -1,3 +1,4 @@
+from distutils.log import debug
 from game.deeds.deed import Deed
 from game.entities.axe import Axe
 
@@ -8,7 +9,7 @@ class AxeCreateDeed(Deed):
         self.axeman = axeman
 
     def execute(self):
-        axe = Axe(self.service_manager,self.axeman.position,self.axeman.direction)
+        axe = Axe(self.service_manager,self.axeman.position,self.axeman.direction, debug=True)
         self.axes.append(axe)
         if self._debug:
             print(self.axes)

@@ -33,6 +33,9 @@ class Entity(ABC):
     def get_hitbox(self):
         pass
 
+    def got_hit(self):
+        pass
+
     @property
     def weight(self):
         return self._weight

@@ -3,8 +3,8 @@ from game.entities.entity import Entity
 
 
 class Axe(Entity):
-    def __init__(self, service_manager,starting_pos:pr.Vector2,direction) -> None:
-        super().__init__(service_manager)
+    def __init__(self, service_manager,starting_pos:pr.Vector2,direction, debug = False) -> None:
+        super().__init__(service_manager, debug)
         self.position.x = starting_pos.x
         self.position.y = starting_pos.y
         self.direction = direction
@@ -17,6 +17,7 @@ class Axe(Entity):
         self._max_alive_time = 3
         self._axe_weight_coefficient = 5
         self.axe_time_counter = 0
+        self.destination = None
 
     def draw(self):
         x = self.position.x
@@ -24,9 +25,11 @@ class Axe(Entity):
         frameWidth = self.texture.width
         frameHeight = self.texture.height
         source = pr.Rectangle(0,0,frameWidth,frameHeight)
-        destination = pr.Rectangle(x,y - frameHeight/4,frameWidth/6,frameHeight/6)
+        self.destination = pr.Rectangle(x,y - frameHeight/4,frameWidth/6,frameHeight/6)
         origin = pr.Vector2(frameWidth/12,frameHeight/12)
-        pr.draw_texture_pro(self.texture,source,destination,origin,self._angle,pr.WHITE)
+        pr.draw_texture_pro(self.texture,source,self.destination,origin,self._angle,pr.WHITE)
+        if self._debug:
+            pr.draw_rectangle(int(self.destination.x), int(self.destination.y), int(self.destination.width), int(self.destination.height), pr.GREEN)
 
     def advance(self):
         # return super().advance()
@@ -38,7 +41,7 @@ class Axe(Entity):
         self._alive_time += self._video_service.get_frame_time()
 
     def get_hitbox(self):
-        return super().get_hitbox()
+        return self.destination
 
     @property
     def weight(self):

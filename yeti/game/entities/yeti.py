@@ -1,6 +1,7 @@
 from game.entities.entity import Entity
 from game.services.video_service import VideoService
 from game.shared.point import Point
+from game.shared.color import Color
 
 import pyray as pr
 from pyray import Vector2
@@ -65,6 +66,13 @@ class Yeti(Entity):
         self.destination = Rectangle(x, y, self.frame_width, self.frame_height)
         self.origin = Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
+        if self._debug:
+            if self.is_hit:
+                color = Color(green=0, blue=0).get_tuple()
+            else:
+                color = Color(red=0, blue=0).get_tuple()
+
+            pr.draw_rectangle(int(self.destination.x), int(self.destination.y), int(self.destination.width), int(self.destination.height), color)
 
     def advance(self, x_direction, y_direction):
         if not self.is_moving or self.is_jumping or self.is_falling:
@@ -87,35 +95,43 @@ class Yeti(Entity):
             self.position.x += x_direction * self.speed
             self.position.y += y_direction * self.speed
 
-        self._frame_timer += self._video_service.get_frame_time()
-        if self._frame_timer > .12:
-            self.frameCount += 1
-            self._frame_timer = 0
+            self._frame_timer += self._video_service.get_frame_time()
+            if self._frame_timer > .12:
+                self.frameCount += 1
+                self._frame_timer = 0
 
-        if not self.is_on_solid_ground:
-            self.is_falling = True
-            self._fall_distance += 1
-        else:
-            self.is_falling = False
-            self._fall_distance = 0
-        if (self.frameCount < 6 and self.is_falling and self._fall_distance < 50) or (self.is_falling and self.frameCount > 7):
-           self.frameCount = 6
-        if self.frameCount > 1 and self.is_falling and self._fall_distance > 50:
-           self.frameCount = 0
-        
-        if (self.frameCount < 4 and self.is_taunting) or (self.is_taunting and self.frameCount > 7):
-            self.frameCount = 4
-        if self.frameCount > 7 or (self.frameCount > 4 and self.is_throwing):
-            self.frameCount = 0
+            if not self.is_on_solid_ground:
+                self.is_falling = True
+                self._fall_distance += 1
+            else:
+                self.is_falling = False
+                self._fall_distance = 0
+            if (self.frameCount < 6 and self.is_falling and self._fall_distance < 50) or (self.is_falling and self.frameCount > 7):
+                self.frameCount = 6
+            if self.frameCount > 1 and self.is_falling and self._fall_distance > 50:
+                self.frameCount = 0
 
-        if x_direction != 0 or y_direction != 0:
-            self.is_moving = True
-            self.direction = x_direction or 1
+            if (self.frameCount < 4 and self.is_taunting) or (self.is_taunting and self.frameCount > 7):
+                self.frameCount = 4
+            if self.frameCount > 7 or (self.frameCount > 4 and self.is_throwing):
+                self.frameCount = 0
+
+            if x_direction != 0 or y_direction != 0:
+                self.is_moving = True
+                self.direction = x_direction or 1
+            else:
+                self.is_moving = False
         else:
-            self.is_moving = False
+            self._frame_timer += self._video_service.get_frame_time()
+            if self._frame_timer > 1:
+                self.is_hit = False
+
 
     def get_hitbox(self):
         return self.destination
+    
+    def got_hit(self):
+        self.is_hit = True
     
     def do_action(self, action):
         self.is_running = False
