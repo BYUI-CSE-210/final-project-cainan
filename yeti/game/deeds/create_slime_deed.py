@@ -10,10 +10,9 @@ class CreateSlimeDeed(Deed):
 
     def execute(self):
         # return super().execute()
-        slime = OrangeSlime(self.service_manager, debug=True)
+        slime = OrangeSlime(self.service_manager, debug=False)
         starting_pos = Point(self.platform.position.x + self.platform.get_width() - slime.frameWidth/4 -11, self.platform.position.y +5)
         slime.position = starting_pos
         if self._debug:
             print("***Slime Starting position: ", starting_pos.x, starting_pos.y)
-            
         return slime

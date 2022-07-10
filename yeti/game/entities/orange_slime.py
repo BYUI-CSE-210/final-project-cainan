@@ -3,11 +3,12 @@ import pyray as pr
 from pyray import Vector2,Rectangle
 from game.shared.point import Point
 from game.deeds.start_services_deed import StartServicesDeed
+from game.entities.platform import Platform
 
 class OrangeSlime(Entity):
     def __init__(self, service_manager=None, speed=3,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
-        self.texture = self._video_service.register_texture("OrangeSlime","game/entities/images/OrangeSlimeSimp.png")
+        self.texture = self._video_service.register_texture("OrangeSlime","yeti/game/entities/images/OrangeSlimeSimp.png")
         self.weight = 3
         self.speed = speed
         self._pace_count = 0
@@ -34,9 +35,11 @@ class OrangeSlime(Entity):
         if self._debug:
             pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.WHITE)
 
+
     def advance(self,x_direction,y_direction):
         self._frame_timer += self._video_service.get_frame_time()
         print(f"frame-time: {self._frame_timer}")
+
         if self._frame_timer > .15:
             self.frameCount += 1
             self._frame_timer = 0
@@ -45,6 +48,7 @@ class OrangeSlime(Entity):
         self._pace_count += 1
         if x_direction != 0:
             self.direction = x_direction * -1
+
         self.position.x += x_direction * self.speed
         self.position.y += y_direction * self.speed
 

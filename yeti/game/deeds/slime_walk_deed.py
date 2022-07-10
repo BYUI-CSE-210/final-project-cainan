@@ -1,3 +1,4 @@
+from platform import platform
 from game.deeds.deed import Deed
 from game.entities.orange_slime import OrangeSlime
 from game.entities.platform import Platform
@@ -9,6 +10,16 @@ class OrangeSlimeWalkDeed(Deed):
         self.platform = platform
         self.orange_slime = orange_slime
         self.direction = -1
+
+    def jump(self):
+        if self.orange_slime._pace_count % 5:
+            dy = 20
+            self.orange_slime.position.y += dy
+            self.orange_slime.is_on_solid_ground = False
+            if self.orange_slime.position.y > self.platform.position.y:
+                self.orange_slime.position.y = self.platform.position.y
+                self.orange_slime.is_on_solid_ground = True
+        
 
     def execute(self):
         # return super().execute()
