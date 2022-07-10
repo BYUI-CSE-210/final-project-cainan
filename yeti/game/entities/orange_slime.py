@@ -14,7 +14,7 @@ class OrangeSlime(Entity):
         self.direction = -1
         self._turn_after = _turn_after
         self.frameCount = 1
-        self.frameWidth = self.texture.width/3
+        self.frameWidth = self.texture.width/3.05
         self.scaled_frameWidth = self.frameWidth * 2
         self.frameHeight = self.texture.height
         self.scaled_frameHeight = self.frameHeight * 2
@@ -35,21 +35,16 @@ class OrangeSlime(Entity):
             pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.WHITE)
 
     def advance(self,x_direction,y_direction):
-        # return super().advance()
         self._frame_timer += self._video_service.get_frame_time()
-        if self._frame_timer > .12:
+        print(f"frame-time: {self._frame_timer}")
+        if self._frame_timer > .15:
             self.frameCount += 1
             self._frame_timer = 0
-        if (self.frameCount < 3):
-            self.frameCount = 2
         if self.frameCount > 3:
-            self.frameCount = 0
+            self.frameCount = 1
         self._pace_count += 1
         if x_direction != 0:
             self.direction = x_direction * -1
-        self.frameCount += 1
-        if self.frameCount >5:
-            self.frameCount = 0
         self.position.x += x_direction * self.speed
         self.position.y += y_direction * self.speed
 
@@ -62,6 +57,7 @@ if __name__ == "__main__":
     _ks = service_manager.keyboard_service
     slime = OrangeSlime(service_manager)
     slime.position = Point(200,200)
+    pr.set_target_fps(50)
     while _vs.is_window_open():
         _vs.start_buffer()
         slime.advance(_ks.get_direction().x,_ks.get_direction().y)
