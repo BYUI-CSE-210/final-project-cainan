@@ -4,12 +4,14 @@ from pyray import Rectangle,Vector2
 from game.deeds.start_services_deed import StartServicesDeed
 from game.shared.point import Point
 class Bird(Entity):
-    def __init__(self,service_manager) -> None:
-        super().__init__(service_manager)
-        self._texture = self._video_service.register_texture("bird1","game/entities/images/bird-1.png")
-        self._video_service.register_texture("bird2","game/entities/images/bird-2.png")
-        self._video_service.register_texture("bird3","game/entities/images/bird-3.png")
-        self._video_service.register_texture("bird4","game/entities/images/bird-4.png")
+    def __init__(self, service_manager=None, debug=None) -> None:
+        super().__init__(service_manager, debug)
+    # def __init__(self,service_manager) -> None:
+    #     super().__init__(service_manager)
+        self._texture = self._video_service.register_texture("bird1","yeti/game/entities/images/bird-1.png")
+        self._video_service.register_texture("bird2","yeti/game/entities/images/bird-2.png")
+        self._video_service.register_texture("bird3","yeti/game/entities/images/bird-3.png")
+        self._video_service.register_texture("bird4","yeti/game/entities/images/bird-4.png")
         self.frameCount = 1
         self.frameWidth = self._texture.width
         self.frameHeight = self._texture.height
@@ -27,7 +29,7 @@ class Bird(Entity):
         if self.timeCounter >= 30:
             self.direction *= -1
             self.timeCounter= 0
-        self.position.x +=self.direction * self.speed
+        self.position.x += self.direction * self.speed
         
 
     def draw(self):
@@ -45,7 +47,7 @@ class Bird(Entity):
 
 
     def get_hitbox(self):
-        return super().get_hitbox()
+        return self.destination
 
 
 if __name__ == "__main__":

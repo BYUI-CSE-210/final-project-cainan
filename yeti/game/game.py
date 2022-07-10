@@ -15,6 +15,8 @@ from game.deeds.enemy_create_axeman import CreateAxemanDeed
 from game.deeds.enemy_axeman_walk_deed import AxemanWalkDeed
 from game.deeds.enemy_move_axes_deed import MoveAxesDeed
 from game.deeds.enemy_remove_old_axes_deed import RemoveOldAxesDeed
+from game.deeds.create_bird_deed import CreateBirdDeed
+from game.deeds.move_birds_deed import MoveBirdsDeed
 
 
 
@@ -36,6 +38,7 @@ class Game:
         platforms = []
         axemen = []
         axes = []
+        birds = []
         platform_x = 50
 
         if self._debug:
@@ -52,6 +55,8 @@ class Game:
             platform.position.y = randint(200, 800)
             platforms.append(platform)
             if not i % 15:
+                bird = CreateBirdDeed(service_manager).execute()
+                birds.append(bird)
                 axeman = CreateAxemanDeed(platform, service_manager).execute()
                 axemen.append(axeman)
                 print("AXEMAN ******", axeman)
@@ -71,6 +76,8 @@ class Game:
         player_draw_deed = PlayerDrawDeed(yeti)
         move_axes_deed = MoveAxesDeed(axes,service_manager)
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
+        move_birds_deed = MoveBirdsDeed(birds,service_manager)
+
     
 
 
@@ -85,6 +92,7 @@ class Game:
         deeds_service.register_deed(world_detect_platform_collisions_deed, "action")
         deeds_service.register_deed(move_axes_deed,"action")
         deeds_service.register_deed(remove_old_axes_deed, "action")
+        deeds_service.register_deed(move_birds_deed,"action")
 
         # game loop 
         frame_time_counter = 0
