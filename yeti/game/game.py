@@ -59,14 +59,14 @@ class Game:
             platform.position.x = platform_x
             platform.position.y = randint(200, 800)
             platforms.append(platform)
-            if not i % 15:
+            if not i % 12 and not i ==0:
                 bird = CreateBirdDeed(service_manager).execute()
                 birds.append(bird)
                 axeman = CreateAxemanDeed(platform, service_manager).execute()
                 axemen.append(axeman)
                 print("AXEMAN ******", axeman)
                 deeds_service.register_deed(AxemanWalkDeed(axeman, platform, service_manager, debug=False), "action")
-            if not i % 8:
+            if not i % 8 and not i==0:
                 slime = CreateSlimeDeed(platform,service_manager).execute()
                 slimes.append(slime)
                 deeds_service.register_deed(OrangeSlimeWalkDeed(slime,platform,service_manager,debug=False),"action")
@@ -119,7 +119,8 @@ class Game:
             
             frame_time_counter += video_service.get_frame_time()
             if frame_time_counter > 2:
-                axemen[0].do_action(1, axes)
+                for axeman in axemen:
+                    axeman.do_action(1, axes)
                 # slimes[0].do_action(1)
                 frame_time_counter = 0
 
