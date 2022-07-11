@@ -57,9 +57,8 @@ class OrangeSlime(Entity):
 
     def jump(self):
         dy = 40
-        self.position.y -= dy
-        self.is_on_solid_ground = False
-        
+        dx = 5
+        self.position.y -= dy  
 
     def do_action(self,action):
         dy = 10
