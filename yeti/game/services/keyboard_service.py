@@ -22,8 +22,10 @@ class KeyboardService(Service):
             print("***********Using Default keys! This could conflict if you have more than one keyboard service!!***********")
             self.LEFT_KEY = pr.KEY_LEFT
             self.RIGHT_KEY = pr.KEY_RIGHT
-            self.UP_KEY = pr.KEY_UP
-            self.DOWN_KEY = pr.KEY_DOWN
+            # self.UP_KEY = pr.KEY_UP
+            # self.DOWN_KEY = pr.KEY_DOWN
+            self.JUMP_KEY = pr.KEY_UP
+            self.DUCK_KEY = pr.KEY_DOWN
             self.ACTION_ONE = pr.KEY_SPACE
             self.ACTION_TWO = pr.KEY_ENTER
             self.ACTION_THREE = pr.KEY_LEFT_SHIFT
@@ -46,14 +48,14 @@ class KeyboardService(Service):
         if single_press:
             method = pr.is_key_pressed
         p = Point(0,0)
-        if method(self.UP_KEY):
-            p.y = -1
+        # if method(self.UP_KEY):
+        #     p.y = -1
         if method(self.RIGHT_KEY):
             p.x = 1
         if method(self.LEFT_KEY):
             p.x = -1
-        if method(self.DOWN_KEY):
-            p.y = 1
+        # if method(self.DOWN_KEY):
+        #     p.y = 1
         return p
     
     def get_action(self, single_press = False):
@@ -66,7 +68,10 @@ class KeyboardService(Service):
         method = pr.is_key_down
         if single_press:
             method = pr.is_key_pressed
-        
+        if method(self.JUMP_KEY):
+            return 5
+        if method(self.DUCK_KEY):
+            return 6
         if method(self.ACTION_ONE):
             return 1
         if method(self.ACTION_TWO):
@@ -75,6 +80,7 @@ class KeyboardService(Service):
             return 3
         if method(self.ACTION_FOUR):
             return 4
+        
 
 
    

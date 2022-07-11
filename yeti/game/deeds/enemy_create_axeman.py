@@ -10,7 +10,7 @@ class CreateAxemanDeed(Deed):
 
     def execute(self):
         # return super().execute()
-        axeman = Axeman(self.service_manager, debug=True)
+        axeman = Axeman(self.service_manager)
         starting_pos = Point(self.platform.position.x + self.platform.get_width() - axeman.frameWidth/4 -11, self.platform.position.y +5)
         axeman.position = starting_pos
         if self._debug:

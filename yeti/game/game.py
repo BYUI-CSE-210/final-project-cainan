@@ -32,7 +32,7 @@ class Game:
         # game initialization
         service_manager: ServiceManager
         service_manager = StartServicesDeed().execute()
-        yeti = Yeti(service_manager, debug=True)
+        yeti = Yeti(service_manager)
         yeti.position.x = 100
         yeti.position.y = 100
 
@@ -65,7 +65,7 @@ class Game:
                 axeman = CreateAxemanDeed(platform, service_manager).execute()
                 axemen.append(axeman)
                 print("AXEMAN ******", axeman)
-                deeds_service.register_deed(AxemanWalkDeed(axeman, platform, service_manager, debug=False), "action")
+                deeds_service.register_deed(AxemanWalkDeed(axeman, platform, service_manager), "action")
             if not i % 5:
                 slime = CreateSlimeDeed(platform,service_manager).execute()
                 slimes.append(slime)
