@@ -47,7 +47,8 @@ class Bird(Entity):
         self.destination = Rectangle(x, y, self.frameWidth/18, self.frameHeight/18)
         self.origin = Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
-        # pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.RED)
+        if self._debug:
+            pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.RED)
 
 
     def get_hitbox(self):

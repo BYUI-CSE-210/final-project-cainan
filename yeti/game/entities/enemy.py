@@ -22,7 +22,7 @@ class Axeman(Entity):
         self.scaled_frameHeight = self.frameHeight/4
         self.is_on_solid_ground = True
         self._frame_timer = 0
-        self.debug = True
+
         
     def draw(self):
         self._texture = self._video_service.get_texture("Axeman")
@@ -34,7 +34,7 @@ class Axeman(Entity):
         self.destination = pr.Rectangle(x,y - self.scaled_frameHeight,self.frameWidth/4,self.frameHeight/4)
         self.origin = Vector2(0,0)
         pr.draw_texture_pro(self._texture, self.source,self.destination,self.origin,0,pr.RAYWHITE)
-        if self.debug:
+        if self._debug:
             pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.WHITE)
 
     def advance(self,x_direction,y_direction):

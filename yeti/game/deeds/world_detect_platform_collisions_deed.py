@@ -1,12 +1,12 @@
 import pyray as pr
 from game.deeds.deed import Deed
-from game.entities.yeti import Yeti
+from game.entities.entity import Entity
 
 class DetectPlatformCollisionsDeed(Deed):
     def __init__(self, platforms: list, player, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self._platforms = platforms
-        self._player: Yeti
+        self._player: Entity
         self._player = player
 
     def execute(self):
