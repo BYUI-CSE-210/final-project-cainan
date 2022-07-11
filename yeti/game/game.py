@@ -89,7 +89,7 @@ class Game:
         move_axes_deed = MoveAxesDeed(axes,service_manager)
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
-        player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, service_manager,debug=True)
+        player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, service_manager,debug=True)
     
 
 
@@ -120,7 +120,7 @@ class Game:
             frame_time_counter += video_service.get_frame_time()
             if frame_time_counter > 2:
                 axemen[0].do_action(1, axes)
-                slimes[0].do_action(1)
+                # slimes[0].do_action(1)
                 frame_time_counter = 0
 
             video_service.end_buffer()
