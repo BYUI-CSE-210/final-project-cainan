@@ -3,13 +3,12 @@ import pyray as pr
 from pyray import Vector2,Rectangle
 from game.shared.point import Point
 from game.deeds.start_services_deed import StartServicesDeed
-from game.entities.platform import Platform
 
 class OrangeSlime(Entity):
     def __init__(self, service_manager=None, speed=3,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
         self.texture = self._video_service.register_texture("OrangeSlime","yeti/game/entities/images/OrangeSlimeSimp.png")
-        self.weight = 3
+        self.weight = 5
         self.speed = speed
         self._pace_count = 0
         self.direction = -1
@@ -29,12 +28,14 @@ class OrangeSlime(Entity):
         source_x = self.frameCount * self.frameWidth
         source_y = 0
         self.source = Rectangle(source_x,source_y,self.frameWidth * self.direction, self.frameHeight)
-        self.destination = Rectangle(x,y - self.scaled_frameHeight,self.scaled_frameWidth,self.scaled_frameHeight)
+        self._destination = Rectangle(x,y - self.scaled_frameHeight,self.scaled_frameWidth,self.scaled_frameHeight)
         self.origin = Vector2(0,0)
-        pr.draw_texture_pro(self._texture, self.source,self.destination,self.origin,0,pr.RAYWHITE)
+        pr.draw_texture_pro(self._texture, self.source,self._destination,self.origin,0,pr.RAYWHITE)
         if self._debug:
-            pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.WHITE)
+            pr.draw_rectangle(int(self._destination.x),int(self._destination.y),int(self._destination.width),int(self._destination.height),pr.WHITE)
 
+           
+            
 
     def advance(self,x_direction,y_direction):
         self._frame_timer += self._video_service.get_frame_time()
@@ -45,15 +46,27 @@ class OrangeSlime(Entity):
             self._frame_timer = 0
         if self.frameCount > 3:
             self.frameCount = 1
-        self._pace_count += 1
         if x_direction != 0:
             self.direction = x_direction * -1
-
+        self._pace_count += 1
         self.position.x += x_direction * self.speed
         self.position.y += y_direction * self.speed
 
     def get_hitbox(self):
-        return self.destination
+        return self._destination
+
+    def jump(self):
+        dy = 40
+        self.position.y -= dy
+        self.is_on_solid_ground = False
+        
+
+    def do_action(self,action):
+        dy = 10
+        if action == 1:
+            self.jump()
+
+
 
 if __name__ == "__main__":
     service_manager = StartServicesDeed().execute()

@@ -20,6 +20,7 @@ from game.deeds.enemy_remove_old_axes_deed import RemoveOldAxesDeed
 from game.deeds.create_bird_deed import CreateBirdDeed
 from game.deeds.move_birds_deed import MoveBirdsDeed
 from game.deeds.player_detect_enemy_collisions_deed import PlayerDetectEnemyCollisionsDeed
+from game.deeds.slime_platform_collision_deed import SlimePlatformCollisionsDeed
 
 
 
@@ -65,7 +66,7 @@ class Game:
                 axemen.append(axeman)
                 print("AXEMAN ******", axeman)
                 deeds_service.register_deed(AxemanWalkDeed(axeman, platform, service_manager, debug=False), "action")
-            if not i % 8 and i != 0:
+            if not i % 8:
                 slime = CreateSlimeDeed(platform,service_manager).execute()
                 slimes.append(slime)
                 deeds_service.register_deed(OrangeSlimeWalkDeed(slime,platform,service_manager,debug=False),"action")
@@ -81,13 +82,14 @@ class Game:
         slime_apply_gravity_deed = ApplyGravityDeed(slimes,service_manager)
         world_draw_platforms_deed = DrawPlatformsDeed(platforms, service_manager)
         world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed(platforms, yeti)
+        slime_platform_collisions_deed = SlimePlatformCollisionsDeed(platforms,slime,service_manager,debug=True)
         player_action_deed = PlayerActionDeed(service_manager, yeti)
         player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
         move_axes_deed = MoveAxesDeed(axes,service_manager)
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
-        player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, service_manager)
+        player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, service_manager,debug=True)
     
 
 
@@ -101,6 +103,7 @@ class Game:
         deeds_service.register_deed(player_move_deed, "action")
         deeds_service.register_deed(player_draw_deed, "action")
         deeds_service.register_deed(world_detect_platform_collisions_deed, "action")
+        deeds_service.register_deed(slime_platform_collisions_deed,"action")
         deeds_service.register_deed(move_axes_deed,"action")
         deeds_service.register_deed(remove_old_axes_deed, "action")
         deeds_service.register_deed(move_birds_deed,"action")
@@ -117,6 +120,7 @@ class Game:
             frame_time_counter += video_service.get_frame_time()
             if frame_time_counter > 2:
                 axemen[0].do_action(1, axes)
+                slimes[0].do_action(1)
                 frame_time_counter = 0
 
             video_service.end_buffer()
