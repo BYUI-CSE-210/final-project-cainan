@@ -23,7 +23,7 @@ class OrangeSlimeWalkDeed(Deed):
 
     def execute(self):
         # return super().execute()
-        if self.orange_slime.position.x <= self.platform.position.x + 10 or self.orange_slime.position.x >= self.platform.position.x + self.platform.get_width() - self.orange_slime.frameWidth/4 - 10:
+        if self.orange_slime.position.x <= self.platform.position.x - 10 or self.orange_slime.position.x >= self.platform.position.x + self.platform.get_width() - self.orange_slime.frameWidth/4 - 10:
             self.direction *= -1
         if self._debug:
             print("orange_slime Walk - orange_slime position: ", self.orange_slime.position.x, self.orange_slime.position.y )
