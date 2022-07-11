@@ -66,7 +66,7 @@ class Game:
                 axemen.append(axeman)
                 print("AXEMAN ******", axeman)
                 deeds_service.register_deed(AxemanWalkDeed(axeman, platform, service_manager, debug=False), "action")
-            if not i % 8 and not i==0:
+            if not i % 5:
                 slime = CreateSlimeDeed(platform,service_manager).execute()
                 slimes.append(slime)
                 deeds_service.register_deed(OrangeSlimeWalkDeed(slime,platform,service_manager,debug=False),"action")

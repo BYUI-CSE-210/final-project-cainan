@@ -8,7 +8,9 @@ class OrangeSlime(Entity):
     def __init__(self, service_manager=None, speed=3,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
         self.texture = self._video_service.register_texture("OrangeSlime","yeti/game/entities/images/OrangeSlimeSimp.png")
-        self.weight = 5
+        self._weight = 1
+        self._slime_weight_coefficient = 3
+        self._jump_height = 128
         self.speed = speed
         self._pace_count = 0
         self.direction = -1
@@ -20,6 +22,8 @@ class OrangeSlime(Entity):
         self.scaled_frameHeight = self.frameHeight * 2
         self.is_on_solid_ground = True
         self._frame_timer = 0
+        self._jump_timer = 0
+        self.is_jumping = False
 
     def draw(self):
         self._texture = self._video_service.get_texture("OrangeSlime")
@@ -40,6 +44,16 @@ class OrangeSlime(Entity):
     def advance(self,x_direction,y_direction):
         self._frame_timer += self._video_service.get_frame_time()
         print(f"frame-time: {self._frame_timer}")
+        dy = 8
+        if self._frame_timer > 0.04:
+            if self._jump_timer < self._jump_height and self.is_jumping:
+                self.position.y -= dy
+                self._jump_timer +=16
+                print(f"Jump Timer********: {self._jump_timer}")
+            else:
+                self.is_jumping = False
+                self._jump_timer = 0
+                print(f"Jumping switching to False!")
 
         if self._frame_timer > .15:
             self.frameCount += 1
@@ -56,14 +70,19 @@ class OrangeSlime(Entity):
         return self._destination
 
     def jump(self):
-        dy = 40
-        dx = 5
-        self.position.y -= dy  
+        self.is_jumping = True
 
     def do_action(self,action):
         dy = 10
         if action == 1:
             self.jump()
+
+    @property
+    def weight(self):
+        if self._jump_timer <= self._jump_height and self.is_jumping:
+            return 0
+        return 2
+        # return self._weight * (self._slime_weight_coefficient / self._jump_timer)
 
 
 
