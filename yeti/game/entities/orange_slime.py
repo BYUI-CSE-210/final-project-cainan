@@ -43,17 +43,17 @@ class OrangeSlime(Entity):
 
     def advance(self,x_direction,y_direction):
         self._frame_timer += self._video_service.get_frame_time()
-        print(f"frame-time: {self._frame_timer}")
+        # print(f"frame-time: {self._frame_timer}")
         dy = 8
         if self._frame_timer > 0.04:
             if self._jump_timer < self._jump_height and self.is_jumping:
                 self.position.y -= dy
                 self._jump_timer +=16
-                print(f"Jump Timer********: {self._jump_timer}")
+                # print(f"Jump Timer********: {self._jump_timer}")
             else:
                 self.is_jumping = False
                 self._jump_timer = 0
-                print(f"Jumping switching to False!")
+                # print(f"Jumping switching to False!")
 
         if self._frame_timer > .15:
             self.frameCount += 1
