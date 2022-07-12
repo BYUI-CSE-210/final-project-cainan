@@ -16,6 +16,7 @@ class AxemanWalkDeed(Deed):
             self.direction *= -1
         if self._debug:
             print("Axeman Walk - Axeman position: ", self.axeman.position.x, self.axeman.position.y )
-        self.axeman.advance(self.direction,0)
-        self.axeman.draw()
+        if self.axeman._is_alive:
+            self.axeman.advance(self.direction,0)
+            self.axeman.draw()
 

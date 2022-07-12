@@ -78,6 +78,9 @@ class Axeman(Entity):
     def get_hitbox(self):
         return self.destination
 
+    def got_hit(self):
+        self._is_alive = False
+
     
 
 

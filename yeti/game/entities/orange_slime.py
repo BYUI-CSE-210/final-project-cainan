@@ -68,6 +68,9 @@ class OrangeSlime(Entity):
 
     def get_hitbox(self):
         return self._destination
+    
+    def got_hit(self):
+        self._is_alive = False
 
     def jump(self):
         self.is_jumping = True
