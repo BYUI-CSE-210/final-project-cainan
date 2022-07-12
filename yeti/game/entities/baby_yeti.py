@@ -7,30 +7,34 @@ from game.shared.color import Color
 class BabyYeti(Entity):
     def __init__(self, service_manager=None, debug=None) -> None:
         super().__init__(service_manager, debug)
-        self._texture = self._video_service.register_texture("Baby Yeti","game/entities/images/yeti.png")
+        self._texture = self._video_service.register_texture("Baby Yeti","yeti/game/entities/images/yeti.png")
         self._is_saved = False
         self._frameCount = 0
         self.x = self.position.x
         self.y = self.position.y
 
-        self.frame_width = self._texture.width / 8
+        self._frame_width = self._texture.width / 8
         self.direction = -1
-        self.frame_height = self._texture.height / 6
+        self._frame_height = self._texture.height / 6
         self._frame_timer = 0
+        self.height = self._frame_height
+        self.width = self._frame_width
+        self._destination = pr.Rectangle()
+
 
     def draw(self): 
         baby_color = Color(255,180,145).get_tuple()
         x = self.position.x
         y = self.position.y
-        source_x = self._frameCount * self.frame_width
+        source_x = self._frameCount * self._frame_width
         source_y = 0
 
         if self._is_saved:
-            source_y = 5 * self.frame_height
+            source_y = 5 * self._frame_height
 
 
-        self.source = pr.Rectangle(source_x, source_y, self.frame_width * self.direction, self.frame_height)
-        self._destination = pr.Rectangle(x, y, self.frame_width/1.5, self.frame_height/1.5)
+        self.source = pr.Rectangle(source_x, source_y, self._frame_width * self.direction, self._frame_height)
+        self._destination = pr.Rectangle(x, y, self._frame_width/1.5, self._frame_height/1.5)
         self.origin = pr.Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self._destination, self.origin, 0, baby_color)
 

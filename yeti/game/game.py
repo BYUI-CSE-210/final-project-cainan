@@ -1,5 +1,6 @@
 from game.services.service_manager import ServiceManager
 from game.entities.yeti import Yeti
+from game.entities.baby_yeti import BabyYeti
 from game.entities.platform import Platform
 from game.deeds.deed import Deed
 from game.deeds.start_services_deed import StartServicesDeed
@@ -18,6 +19,9 @@ from game.deeds.enemy_axeman_walk_deed import AxemanWalkDeed
 from game.deeds.slime_walk_deed import OrangeSlimeWalkDeed
 from game.deeds.enemy_move_axes_deed import MoveAxesDeed
 from game.deeds.enemy_remove_old_axes_deed import RemoveOldAxesDeed
+from game.deeds.create_baby_yeti_deed import CreateBabyYetiDeed
+from game.deeds.world_draw_baby_yeti_deed import DrawBabyYetiDeed
+from game.deeds.player_detect_baby_collision_deed import PlayerDetectBabyCollisionsDeed
 from game.deeds.create_bird_deed import CreateBirdDeed
 from game.deeds.move_birds_deed import MoveBirdsDeed
 from game.deeds.player_detect_enemy_collisions_deed import PlayerDetectEnemyCollisionsDeed
@@ -54,6 +58,7 @@ class Game:
         axes = []
         birds = []
         healers = []
+        babies = []
 
 
         CreatePlatformsDeed(platforms, service_manager).execute()
@@ -78,8 +83,6 @@ class Game:
                 slime_platform_collsions_deed = DetectPlatformCollisionsDeed(platforms,slime)
                 deeds_service.register_deed(slime_platform_collsions_deed,"action")
 
-
-
         
         # action deeds 
         world_move_camera_deed = MoveCameraDeed(service_manager, yeti)
@@ -92,6 +95,8 @@ class Game:
         player_action_deed = PlayerActionDeed(service_manager, yeti)
         world_create_healers = CreateHealersDeed(healers, service_manager)
         world_draw_healers = DrawHealersDeed(healers, service_manager)
+        world_create_baby_yeti = CreateBabyYetiDeed(babies,service_manager)
+        draw_baby_yeti_deed = DrawBabyYetiDeed(babies,service_manager)
         player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
         move_axes_deed = MoveAxesDeed(axes,service_manager)
@@ -100,11 +105,13 @@ class Game:
         player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, service_manager,debug=True)
         draw_hud_deed = DrawHudDeed(yeti, service_manager)
         world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
+        player_detect_baby_collisions_deed = PlayerDetectBabyCollisionsDeed(yeti, babies)
     
 
 
         # deed registration
         deeds_service.register_deed(world_create_healers, "init")
+        deeds_service.register_deed(world_create_baby_yeti,"init")
         deeds_service.register_deed(world_move_camera_deed, "action")
         deeds_service.register_deed(yeti_apply_gravity_deed, "action")
         deeds_service.register_deed(axes_apply_gravity_deed, "action")
@@ -121,6 +128,8 @@ class Game:
         deeds_service.register_deed(draw_hud_deed, "action")
         deeds_service.register_deed(world_detect_healer_collisions_deed, "action")
         deeds_service.register_deed(world_draw_healers, "action")
+        deeds_service.register_deed(player_detect_baby_collisions_deed,"action")
+        deeds_service.register_deed(draw_baby_yeti_deed,"action")
 
 
         #init deeds loop

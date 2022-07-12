@@ -3,15 +3,21 @@ from game.deeds.deed import Deed
 from game.entities.baby_yeti import BabyYeti
 from game.entities.yeti import Yeti
 
-class PlayerDetectEnemyCollisionsDeed(Deed):
-    def __init__(self, player,baby_yeti, service_manager=None, debug=False) -> None:
+class PlayerDetectBabyCollisionsDeed(Deed):
+    def __init__(self, player,babies:list, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
-        self._baby_yeti: BabyYeti
-        self._baby_yeti = baby_yeti
+        self._babies = babies
         self._player: Yeti
         self._player = player
     
     def execute(self):
-        if pr.check_collision_recs(self._player.get_hitbox(), self._baby_yeti.get_hitbox()):
-            self._baby_yeti._is_saved = True
+        player_hitbox = self._player.get_hitbox()
+        for baby in self._babies:
+            baby: BabyYeti
+            baby_hitbox = baby.get_hitbox()
+            colliding = pr.check_collision_recs(player_hitbox, baby_hitbox)
+            if colliding:
+                baby._is_saved = True
+                break
+
             
