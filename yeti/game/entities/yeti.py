@@ -19,6 +19,8 @@ class Yeti(Entity):
         self.weight = 4
         self.speed = 5
         self._texture = self._video_service.register_texture("Yeti", "yeti/game/entities/images/yeti.png")
+        self._audio_service.register_sound("yeti_grunt", "yeti/game/entities/sounds/grunt.wav")
+        self._audio_service.register_sound("yeti_yell", "yeti/game/entities/sounds/yeti_yell.wav")
         
         self.x = self.position.x
         self.y = self.position.y
@@ -124,6 +126,7 @@ class Yeti(Entity):
                 self.is_falling = False
                 if self._fall_distance > 101:
                     self.is_stunned = True
+                    self._audio_service.play_sound("yeti_grunt")
                 self._fall_distance = 0
 
 
@@ -153,6 +156,7 @@ class Yeti(Entity):
     def got_hit(self):
         self.is_stunned = True
         self._health -= 1
+        self._audio_service.play_sound("yeti_grunt")
         if self._health <= 0:
             self._is_alive = False
     
@@ -168,6 +172,7 @@ class Yeti(Entity):
             self.jump()
         if action == 2:
             self.is_taunting = True
+            self._audio_service.play_sound("yeti_yell")
         if action == 3:
             self.is_running = True
         if action == 4:
