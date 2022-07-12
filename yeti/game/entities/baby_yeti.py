@@ -1,7 +1,7 @@
 from game.entities.entity import Entity
 import pyray as pr
 from game.deeds.start_services_deed import StartServicesDeed
-from game.entities.yeti import Yeti
+from game.shared.color import Color
 
 
 class BabyYeti(Entity):
@@ -18,7 +18,8 @@ class BabyYeti(Entity):
         self.frame_height = self._texture.height / 6
         self._frame_timer = 0
 
-    def draw(self):
+    def draw(self): 
+        baby_color = Color(255,180,145).get_tuple()
         x = self.position.x
         y = self.position.y
         source_x = self._frameCount * self.frame_width
@@ -29,9 +30,9 @@ class BabyYeti(Entity):
 
 
         self.source = pr.Rectangle(source_x, source_y, self.frame_width * self.direction, self.frame_height)
-        self.destination = pr.Rectangle(x, y, self.frame_width/1.5, self.frame_height/1.5)
+        self._destination = pr.Rectangle(x, y, self.frame_width/1.5, self.frame_height/1.5)
         self.origin = pr.Vector2(0, 0)
-        pr.draw_texture_pro(self._texture, self.source, self.destination, self.origin, 0, pr.RAYWHITE)
+        pr.draw_texture_pro(self._texture, self.source, self._destination, self.origin, 0, baby_color)
 
     def advance(self):
         self._frame_timer += self._video_service.get_frame_time()
@@ -42,11 +43,8 @@ class BabyYeti(Entity):
             print(self._frameCount)
             self._frameCount = 4
 
-            
-
-
     def get_hitbox(self):
-        return super().get_hitbox()
+        return self._destination
 
 
 if __name__ == "__main__":
