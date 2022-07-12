@@ -35,9 +35,7 @@ class Healer(Entity):
     def do_action(self, action):
         if action == 1:
             self._is_healing = True
-            
-            if not self._audio_service.is_sound_playing("heal"):
-                self._audio_service.play_sound("heal")
+            self._audio_service.play_sound("heal")
 
     def draw(self):
         source = pr.Rectangle(self._frame_count*self._frame_width, 0, self._frame_width, self._frame_height)

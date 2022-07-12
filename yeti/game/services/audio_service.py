@@ -51,8 +51,9 @@ class AudioService(Service):
                 for s_name in self._sounds:
                     pr.stop_sound(self._sounds[s_name])
                 pr.play_sound(self._sounds[name])
-                return True    
-            pr.play_sound(self._sounds[name])
+                return True 
+            if not self.is_sound_playing(name):
+                pr.play_sound(self._sounds[name])
             if self._debug:
                 print("Number of sounds playing: ", pr.get_sounds_playing())
             return True
