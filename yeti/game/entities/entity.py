@@ -15,6 +15,7 @@ class Entity(ABC):
         self._debug = debug
         self._service_manager: ServiceManager
         self._service_manager = service_manager
+        self._is_alive = True
         if service_manager:
             self._video_service = self._service_manager.get_first_service(VideoService)
             self._audio_service = self._service_manager.get_first_service(AudioService)

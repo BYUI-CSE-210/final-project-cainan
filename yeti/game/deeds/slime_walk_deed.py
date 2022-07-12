@@ -27,5 +27,6 @@ class OrangeSlimeWalkDeed(Deed):
             self.direction *= -1
         if self._debug:
             print("orange_slime Walk - orange_slime position: ", self.orange_slime.position.x, self.orange_slime.position.y )
-        self.orange_slime.advance(self.direction,0)
-        self.orange_slime.draw()
+        if self.orange_slime._is_alive:
+            self.orange_slime.advance(self.direction,0)
+            self.orange_slime.draw()

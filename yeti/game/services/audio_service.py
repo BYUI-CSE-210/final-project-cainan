@@ -58,9 +58,18 @@ class AudioService(Service):
             return True
         return False
 
+    def get_sound(self, sound:str):
+        if sound not in self._sounds.keys():
+            return False
+        return self._sounds[sound]
     
-    def is_sound_playing(self):
+    def is_sound_playing(self, sound=None):
         '''Returns True if there is a sound playing in the multichanell buffer. False otherwise.'''
+        if sound:
+            sound_object = self.get_sound(sound) 
+            if sound_object:
+                return pr.is_sound_playing(sound_object)
+            return False
         if pr.get_sounds_playing() > 0:
             return True
         return False
