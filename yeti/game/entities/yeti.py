@@ -153,6 +153,13 @@ class Yeti(Entity):
     def got_hit(self):
         self.is_stunned = True
         self._health -= 1
+        if self._health <= 0:
+            self._is_alive = False
+    
+    def game_over(self):
+        if not self._is_alive:
+            return True
+        return False
     
     def do_action(self, action):
         self.is_running = False

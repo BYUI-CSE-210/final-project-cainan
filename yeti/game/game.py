@@ -135,7 +135,7 @@ class Game:
 
         # game loop 
         frame_time_counter = 0
-        while video_service.is_window_open():
+        while video_service.is_window_open() and not yeti.game_over():
             video_service.start_buffer()
             for deed in deeds_service.get_all_deeds(exclude_groups=['init']):
                 deed.execute()
@@ -147,6 +147,10 @@ class Game:
                 for slime in slimes:
                     slime.do_action(1)
                 frame_time_counter = 0
+            
+            # if yeti falls off screen
+            if yeti.position.y > video_service.get_height():
+                yeti.got_hit()
             video_service.end_buffer()
         service_manager.stop_all_services()
     
