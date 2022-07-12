@@ -134,7 +134,7 @@ class Game:
         deeds_service.register_deed(world_draw_healers, "action")
         deeds_service.register_deed(player_detect_baby_collisions_deed,"action")
         deeds_service.register_deed(draw_baby_yeti_deed,"action")
-        deeds_service.register_deed(world_start_background_music_deed, "init")
+        deeds_service.register_deed(world_start_background_music_deed, "action")
         #TODO Loop BG music
 
 

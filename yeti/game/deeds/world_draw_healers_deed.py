@@ -6,5 +6,6 @@ class DrawHealersDeed(Deed):
         self._healers = healers_list
     def execute(self):
         for healer in self._healers:
+            healer.advance()
             healer.draw()
         

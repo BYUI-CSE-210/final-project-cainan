@@ -8,4 +8,4 @@ class StartBackgroundMusicDeed(Deed):
     
     def execute(self):
         if not self.audio_service.is_sound_playing("bg1"):
-            self.audio_service.play_sound("bg1", True)
+            self.audio_service.play_sound("bg1")

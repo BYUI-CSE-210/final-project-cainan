@@ -15,6 +15,7 @@ class DetectHealerCollisionsDeed(Deed):
             colliding = pr.check_collision_recs(player_hitbox, healer_hitbox)
             if colliding:
                 self._player.increase_health(3)
+                healer.do_action(1)
                 break
             
             
