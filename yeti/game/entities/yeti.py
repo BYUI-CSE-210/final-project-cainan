@@ -8,13 +8,13 @@ from pyray import Vector2
 from pyray import Rectangle
 
 #TODO: Add projectile yeti can throw
-#TODO: Make jump
+#TODO: Stretch Goal: Make double jump
 
 class Yeti(Entity):
     def __init__(self, service_manager=None, debug=None) -> None:
         super().__init__(service_manager, debug)
         
-        self.weight = 3
+        self.weight = 4
         self.speed = 5
         self._texture = self._video_service.register_texture("Yeti", "yeti/game/entities/images/yeti.png")
         
@@ -30,14 +30,17 @@ class Yeti(Entity):
         self.is_moving = False
         self.is_running = False
         self.is_jumping = False
+        self.double_jump = False
         self.is_falling = False
         self.is_throwing = False
         self.is_taunting = False
         self.is_stunned = False
         
+        self.jump_height = 25
         self._fall_distance = 0
         self._stun_timer = 0
         self._animation_timer = 0 
+        self._jump_timer = 0
 
     def draw(self):
         x = self.position.x
@@ -50,7 +53,8 @@ class Yeti(Entity):
         if self.is_running:
             source_y = 2 * self.frame_height
         if self.is_jumping:
-            source_y = 3 * self.frame_height
+            if self._jump_timer < 10:
+                source_y = 3 * self.frame_height
         if self.is_falling:
             if self._fall_distance < 101:
                 source_y = 3 * self.frame_height
@@ -84,6 +88,10 @@ class Yeti(Entity):
         if self.is_moving or self.is_running or self.is_jumping or self.is_falling:
             self.is_taunting = False
             self.is_throwing = False
+        if self.is_taunting or self.is_throwing:
+            self.is_moving = False
+            self.is_running = False
+            self.is_jumping = False
         
         if self.is_running:
             self.speed = 10
@@ -91,7 +99,7 @@ class Yeti(Entity):
             self.speed = 5
 
         self._frame_timer += self._video_service.get_frame_time()
-        if self._frame_timer > .12:
+        if self._frame_timer > .14:
             self.frameCount += 1
             self._frame_timer = 0
 
@@ -102,15 +110,20 @@ class Yeti(Entity):
             if not self.is_on_solid_ground:
                 self.is_falling = True
                 self._fall_distance += 1
-            else:
+                if self.is_jumping and self._jump_timer < 25:
+                    if self.frameCount > 5 or self._jump_timer == 0:
+                        self.frameCount = 0
+                else:
+                    if (self.frameCount < 6 and self._fall_distance < 100) or self.frameCount > 7:
+                        self.frameCount = 6
+                    if self.frameCount > 1 and self.is_falling and self._fall_distance > 100:
+                        self.frameCount = 0
+            elif self.is_falling:
                 self.is_falling = False
                 if self._fall_distance > 101:
                     self.is_stunned = True
                 self._fall_distance = 0
-            if (self.frameCount < 6 and self.is_falling and self._fall_distance < 100) or (self.is_falling and self.frameCount > 7):
-                self.frameCount = 6
-            if self.frameCount > 1 and self.is_falling and self._fall_distance > 100:
-                self.frameCount = 0
+
 
             if (self.frameCount < 4 and self.is_taunting) or (self.is_taunting and self.frameCount > 7):
                 self.frameCount = 4
@@ -142,6 +155,7 @@ class Yeti(Entity):
         self.is_running = False
         if action == 1:
             self.is_jumping = True
+            self.jump()
         if action == 2:
             self.is_taunting = True
         if action == 3:
@@ -150,14 +164,23 @@ class Yeti(Entity):
             self.is_throwing = True
         
         
-        if self.is_throwing and self._animation_timer < 15:
-            self._animation_timer += 1
-        elif self.is_taunting and self._animation_timer < 60:
+        if (self.is_throwing and self._animation_timer < 15) or (self.is_taunting and self._animation_timer < 60):
             self._animation_timer += 1
         else:
             self.is_taunting = False
             self.is_throwing = False
             self._animation_timer = 0
+        
+    def jump(self):
+        if self.is_stunned or self.is_taunting or self.is_throwing:
+            self.is_jumping = False
+            self._jump_timer = 0
+        elif (self._jump_timer < self.jump_height) and self.is_jumping:
+            self.position.y -= 10
+            self._jump_timer += 1
+        elif self.is_on_solid_ground:
+            self.is_jumping = False
+            self._jump_timer = 0
 
     def get_hitbox(self):
         return self.destination
