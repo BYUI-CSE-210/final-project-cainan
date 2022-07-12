@@ -23,6 +23,8 @@ class VideoService(Service):
         self._frametime = 0
         self._textures = {}
         self._camera = None
+        self._background_width = 4048
+        self._game_width_multiplier = 5
         #self._camera = pr.Camera2D()  #TODO
         if not bg_color:
             bg_color = Color(0,0,0,255)    
@@ -99,6 +101,12 @@ class VideoService(Service):
     def get_frame_time(self):
         '''Returns the time since the last frame.'''
         return self._frametime
+    
+    def get_game_width(self):
+        return self._background_width * self._game_width_multiplier
+
+    def set_background_width(self, width):
+        self._background_width = width
 
     def set_camera_target(self, target: pr.Vector2):
         '''Sets the target of the camera.  target param is a pr.Vector2'''

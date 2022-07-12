@@ -13,7 +13,9 @@ from pyray import Rectangle
 class Yeti(Entity):
     def __init__(self, service_manager=None, debug=None) -> None:
         super().__init__(service_manager, debug)
-        
+        #TODO decide how much health is good. 
+        self._max_health = 5
+        self._health = 5
         self.weight = 4
         self.speed = 5
         self._texture = self._video_service.register_texture("Yeti", "yeti/game/entities/images/yeti.png")
@@ -150,6 +152,7 @@ class Yeti(Entity):
     
     def got_hit(self):
         self.is_stunned = True
+        self._health -= 1
     
     def do_action(self, action):
         self.is_running = False
@@ -184,7 +187,15 @@ class Yeti(Entity):
 
     def get_hitbox(self):
         return self.destination
-        
+    
+    def increase_health(self, hp):
+        if self._health < self._max_health - hp:
+            self._health += hp
+        else:
+            self._health = self._max_health
+    
+    def get_health(self):
+        return self._health
 
 if __name__ == "__main__":
     pr.init_window(800,600,"YETI")

@@ -22,6 +22,10 @@ from game.deeds.create_bird_deed import CreateBirdDeed
 from game.deeds.move_birds_deed import MoveBirdsDeed
 from game.deeds.player_detect_enemy_collisions_deed import PlayerDetectEnemyCollisionsDeed
 from game.deeds.slime_platform_collision_deed import SlimePlatformCollisionsDeed
+from game.entities.healer import Healer
+from game.deeds.world_draw_hud_deed import DrawHudDeed
+from game.deeds.world_create_healers_deed import CreateHealersDeed
+from game.deeds.world_detect_healer_collisions_deed import DetectHealerCollisionsDeed
 
 
 
@@ -48,6 +52,7 @@ class Game:
         slimes=[]
         axes = []
         birds = []
+        healers = []
 
 
         CreatePlatformsDeed(platforms, service_manager).execute()
@@ -90,6 +95,9 @@ class Game:
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
         player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, service_manager,debug=True)
+        draw_hud_deed = DrawHudDeed(yeti, service_manager)
+        world_create_healers = CreateHealersDeed(healers, service_manager)
+        world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
     
 
 
@@ -101,12 +109,15 @@ class Game:
         deeds_service.register_deed(world_draw_platforms_deed, "action")
         deeds_service.register_deed(player_action_deed, "action")
         deeds_service.register_deed(player_move_deed, "action")
+        deeds_service.register_deed(world_create_healers, "action")
         deeds_service.register_deed(player_draw_deed, "action")
         deeds_service.register_deed(world_detect_platform_collisions_deed, "action")
         deeds_service.register_deed(move_axes_deed,"action")
         deeds_service.register_deed(remove_old_axes_deed, "action")
         deeds_service.register_deed(move_birds_deed,"action")
         deeds_service.register_deed(player_detect_enemy_collisions_deed, "action")
+        deeds_service.register_deed(draw_hud_deed, "action")
+        deeds_service.register_deed(world_detect_healer_collisions_deed, "action")
 
         # game loop 
         frame_time_counter = 0
@@ -123,7 +134,6 @@ class Game:
                 for slime in slimes:
                     slime.do_action(1)
                 frame_time_counter = 0
-
             video_service.end_buffer()
         service_manager.stop_all_services()
         
