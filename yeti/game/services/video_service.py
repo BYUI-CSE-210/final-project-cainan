@@ -1,6 +1,7 @@
 import pyray as pr
 from game.shared.color import Color
 from game.services.service import Service
+from game.shared.point import Point
 
 
 class VideoService(Service):
@@ -111,6 +112,20 @@ class VideoService(Service):
     def set_camera_target(self, target: pr.Vector2):
         '''Sets the target of the camera.  target param is a pr.Vector2'''
         self._camera.target = target
+    
+    def is_on_screen(self, point: Point):
+        if point.y > self._height or point.y < 0: 
+                return False
+        if self._camera.target.x < self._width/2:
+            if point.x < 0 or point.x > self._width:
+                return False
+        if self._camera.target.x > self._background_width - self._width/2:
+            if point.x < self._background_width - self._width/2 or point.x > self._background_width:
+                return False
+        else:
+            if point.x < self._camera.target.x - self._width/2 or point.x > self._camera.target.x + self._width/2:
+                return False
+        return True
 
 
 if __name__ == "__main__":
