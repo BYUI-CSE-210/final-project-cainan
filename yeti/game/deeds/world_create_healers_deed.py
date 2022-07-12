@@ -8,8 +8,7 @@ class CreateHealersDeed(Deed):
         self._healers = healers_list
 
     def execute(self):
-        for i in range(0, 3):
+        for i in range(0, 5):
             healer = Healer(self.service_manager)
             healer.position = Point(i*4048 + 500, self.video_service.get_height()- healer.height - 20)
             self._healers.append(healer)
-            healer.draw()

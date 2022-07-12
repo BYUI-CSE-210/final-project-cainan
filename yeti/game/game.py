@@ -26,6 +26,7 @@ from game.entities.healer import Healer
 from game.deeds.world_draw_hud_deed import DrawHudDeed
 from game.deeds.world_create_healers_deed import CreateHealersDeed
 from game.deeds.world_detect_healer_collisions_deed import DetectHealerCollisionsDeed
+from game.deeds.world_draw_healers_deed import DrawHealersDeed
 
 
 
@@ -89,6 +90,8 @@ class Game:
         world_draw_platforms_deed = DrawPlatformsDeed(platforms, service_manager)
         world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed(platforms, yeti)
         player_action_deed = PlayerActionDeed(service_manager, yeti)
+        world_create_healers = CreateHealersDeed(healers, service_manager)
+        world_draw_healers = DrawHealersDeed(healers, service_manager)
         player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
         move_axes_deed = MoveAxesDeed(axes,service_manager)
@@ -96,12 +99,12 @@ class Game:
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
         player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, service_manager,debug=True)
         draw_hud_deed = DrawHudDeed(yeti, service_manager)
-        world_create_healers = CreateHealersDeed(healers, service_manager)
         world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
     
 
 
         # deed registration
+        deeds_service.register_deed(world_create_healers, "init")
         deeds_service.register_deed(world_move_camera_deed, "action")
         deeds_service.register_deed(yeti_apply_gravity_deed, "action")
         deeds_service.register_deed(axes_apply_gravity_deed, "action")
@@ -109,7 +112,6 @@ class Game:
         deeds_service.register_deed(world_draw_platforms_deed, "action")
         deeds_service.register_deed(player_action_deed, "action")
         deeds_service.register_deed(player_move_deed, "action")
-        deeds_service.register_deed(world_create_healers, "action")
         deeds_service.register_deed(player_draw_deed, "action")
         deeds_service.register_deed(world_detect_platform_collisions_deed, "action")
         deeds_service.register_deed(move_axes_deed,"action")
@@ -118,16 +120,25 @@ class Game:
         deeds_service.register_deed(player_detect_enemy_collisions_deed, "action")
         deeds_service.register_deed(draw_hud_deed, "action")
         deeds_service.register_deed(world_detect_healer_collisions_deed, "action")
+        deeds_service.register_deed(world_draw_healers, "action")
+
+
+        #init deeds loop
+        deed: Deed
+        for deed in deeds_service.get_deeds("init"):
+            deed.execute()
 
         # game loop 
         frame_time_counter = 0
         while video_service.is_window_open():
             video_service.start_buffer()
-            deed: Deed
             for deed in deeds_service.get_all_deeds(exclude_groups=['init']):
                 deed.execute()
             
             frame_time_counter += video_service.get_frame_time()
+            frame_time = video_service.get_frame_time()
+            if frame_time > .05:
+                print(frame_time)
             if frame_time_counter > 2:
                 for axeman in axemen:
                     axeman.do_action(1, axes)
@@ -136,6 +147,12 @@ class Game:
                 frame_time_counter = 0
             video_service.end_buffer()
         service_manager.stop_all_services()
+    
+        
+        
+        
+        
+        
         
         
 
