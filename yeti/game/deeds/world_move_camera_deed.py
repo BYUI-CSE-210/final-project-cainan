@@ -20,8 +20,8 @@ class MoveCameraDeed(Deed):
 
         if target.x < self.video_service.get_width()/2:
             self.video_service.set_camera_target(pr.Vector2(self.video_service.get_width()/2,0))
-        elif target.x > ((4048 * 2) - self.video_service.get_width()/2): 
-            self.video_service.set_camera_target(pr.Vector2((4048 * 2 - self.video_service.get_width()/2), 0))
+        elif target.x > ((4048 * 5) - self.video_service.get_width()/2): 
+            self.video_service.set_camera_target(pr.Vector2((4048 * 5 - self.video_service.get_width()/2), 0))
         else:
             self.video_service.set_camera_target(pr.Vector2(target.x, 0))
 

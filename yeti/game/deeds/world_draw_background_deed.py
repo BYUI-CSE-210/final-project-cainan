@@ -10,13 +10,14 @@ class DrawBackgroundDeed(Deed):
         
     def execute(self):
         background_width = 4048
-        background_height = 1024        
+        background_height = 1024      
+        background_width_multiplier = 5  
         source_rect = pr.Rectangle(0, 0, background_width, background_height)
         dest_rect = pr.Rectangle(0, 0, background_width, self.video_service.get_height())
         origin = pr.Vector2(0,0)
         tint = Color(alpha=150).get_tuple()
         pr.draw_texture_pro(self._background, source_rect, dest_rect, origin, 0, tint )
-        dest_rect = pr.Rectangle(background_width, 0, background_width*2, self.video_service.get_height())
+        dest_rect = pr.Rectangle(background_width, 0, background_width*background_width_multiplier, self.video_service.get_height())
         pr.draw_texture_pro(self._background, source_rect, dest_rect, origin, 0, tint)
         
 
