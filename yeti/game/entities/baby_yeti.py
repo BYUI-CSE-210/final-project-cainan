@@ -44,7 +44,7 @@ class BabyYeti(Entity):
             self._frameCount += 1
             self._frame_timer = 0
         if (self._frameCount < 4 and self._is_saved) or (self._is_saved and self._frameCount > 7):
-            print(self._frameCount)
+            # print(self._frameCount)
             self._frameCount = 4
 
     def get_hitbox(self):
