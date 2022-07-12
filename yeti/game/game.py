@@ -7,6 +7,7 @@ from game.deeds.world_draw_background_deed import DrawBackgroundDeed
 from game.deeds.world_move_camera_deed import MoveCameraDeed
 from game.deeds.world_apply_gravity_deed import ApplyGravityDeed
 from game.deeds.world_draw_platforms_deed import DrawPlatformsDeed
+from game.deeds.world_create_platforms_deed import CreatePlatformsDeed
 from game.deeds.world_detect_platform_collisions_deed import DetectPlatformCollisionsDeed
 from game.deeds.player_action_deed import PlayerActionDeed
 from game.deeds.player_move_deed import PlayerMoveDeed
@@ -38,13 +39,14 @@ class Game:
 
 
         #TODO move to world_create_platform_deed
-        from random import randint
         platforms = []
         axemen = []
         slimes=[]
         axes = []
         birds = []
-        platform_x = 50
+
+
+        CreatePlatformsDeed(platforms, service_manager).execute()
 
         if self._debug:
             service_manager.show_all_services()
@@ -55,10 +57,7 @@ class Game:
         world_draw_background_deed = DrawBackgroundDeed(service_manager)
         deeds_service.register_deed(world_draw_background_deed, "action")
         for i in range(60):
-            platform = Platform(200, 20, service_manager=service_manager)
-            platform.position.x = platform_x
-            platform.position.y = randint(200, 800)
-            platforms.append(platform)
+            platform = platforms[i]
             if not i % 12 and not i ==0:
                 bird = CreateBirdDeed(service_manager).execute()
                 birds.append(bird)
@@ -73,7 +72,7 @@ class Game:
                 slime_platform_collsions_deed = DetectPlatformCollisionsDeed(platforms,slime)
                 deeds_service.register_deed(slime_platform_collsions_deed,"action")
 
-            platform_x += randint(100,400)
+
 
         
         # action deeds 
