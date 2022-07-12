@@ -15,9 +15,9 @@ class StartServicesDeed(Deed):
         video_service = VideoService(50)
         deed_service = DeedsService()
 
+        service_manager.register_service(video_service, "output")
         service_manager.register_service(keyboard_service, "input")
         service_manager.register_service(audio_service, "output")
-        service_manager.register_service(video_service, "output")
         service_manager.register_service(deed_service, "control")
 
         service_manager.start_all_services()

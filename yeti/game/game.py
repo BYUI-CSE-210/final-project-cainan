@@ -27,6 +27,7 @@ from game.deeds.world_draw_hud_deed import DrawHudDeed
 from game.deeds.world_create_healers_deed import CreateHealersDeed
 from game.deeds.world_detect_healer_collisions_deed import DetectHealerCollisionsDeed
 from game.deeds.world_draw_healers_deed import DrawHealersDeed
+from game.deeds.world_start_background_music_deed import StartBackgroundMusicDeed
 
 
 
@@ -100,6 +101,7 @@ class Game:
         player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, service_manager,debug=True)
         draw_hud_deed = DrawHudDeed(yeti, service_manager)
         world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
+        world_start_background_music_deed = StartBackgroundMusicDeed(service_manager)
     
 
 
@@ -121,6 +123,9 @@ class Game:
         deeds_service.register_deed(draw_hud_deed, "action")
         deeds_service.register_deed(world_detect_healer_collisions_deed, "action")
         deeds_service.register_deed(world_draw_healers, "action")
+        deeds_service.register_deed(world_start_background_music_deed, "init")
+        #TODO Loop BG music
+        
 
 
         #init deeds loop
@@ -136,9 +141,6 @@ class Game:
                 deed.execute()
             
             frame_time_counter += video_service.get_frame_time()
-            frame_time = video_service.get_frame_time()
-            if frame_time > .05:
-                print(frame_time)
             if frame_time_counter > 2:
                 for axeman in axemen:
                     axeman.do_action(1, axes)
