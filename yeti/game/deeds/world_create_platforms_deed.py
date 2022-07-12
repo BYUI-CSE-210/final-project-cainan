@@ -1,6 +1,7 @@
+from pyray import play_audio_stream
 from game.deeds.deed import Deed
 from game.entities.platform import Platform
-from random import randint
+from random import randint, choice
 
 class CreatePlatformsDeed(Deed):
     def __init__(self, platforms_list:list, service_manager=None, debug=False) -> None:
@@ -8,12 +9,38 @@ class CreatePlatformsDeed(Deed):
         self._platforms = platforms_list
 
     def execute(self):
-        platform_x = 50
         platforms = self._platforms
+        floor_platform = Platform(4048*2/3, 20, service_manager=self.service_manager)
+        floor_platform.position.x = 0
+        floor_platform.position.y = self.video_service.get_height()-20
+        platforms.append(floor_platform)
+        floor_platform = Platform(4048*2/3, 20, service_manager=self.service_manager)
+        floor_platform.position.x = 4048
+        floor_platform.position.y = self.video_service.get_height()-20
+        platforms.append(floor_platform)
+        platform_x = 50
+        platform_y = self.video_service.get_height() - 150
+        last_platform = None
         for i in range(60):
-            platform = Platform(200, 20, service_manager=self.service_manager)
+            platform_height = 20
+            platform_width = 200
+            
+            if last_platform:
+                platform_x += randint(200, 350)
+                if last_platform.position.y < 200:
+                    platform_y = last_platform.position.y + 150
+                elif last_platform.position.y > self.video_service.get_height()-300:
+                    platform_y = last_platform.position.y - 150
+                else:
+                    platform_y = choice([last_platform.position.y + 150, last_platform.position.y - 150])
+            
+            
+                
+            platform = Platform(platform_width, platform_height, service_manager=self.service_manager)
             platform.position.x = platform_x
-            platform.position.y = randint(200, 800)
-            platforms.append(platform)
-            platform_x += randint(100,400)
+            platform.position.y = platform_y
+            self._platforms.append(platform)
+            last_platform = platform
+            
+            
 

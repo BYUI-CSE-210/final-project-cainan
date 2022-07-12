@@ -33,9 +33,13 @@ class Game:
         # game initialization
         service_manager: ServiceManager
         service_manager = StartServicesDeed().execute()
+        video_service = service_manager.video_service
+        audio_service = service_manager.audio_service
+        keyboard_service = service_manager.keyboard_service
+        deeds_service = service_manager.deeds_service
         yeti = Yeti(service_manager)
         yeti.position.x = 100
-        yeti.position.y = 100
+        yeti.position.y = video_service.get_height() - 300
 
 
         #TODO move to world_create_platform_deed
@@ -50,10 +54,6 @@ class Game:
 
         if self._debug:
             service_manager.show_all_services()
-        video_service = service_manager.video_service
-        audio_service = service_manager.audio_service
-        keyboard_service = service_manager.keyboard_service
-        deeds_service = service_manager.deeds_service
         world_draw_background_deed = DrawBackgroundDeed(service_manager)
         deeds_service.register_deed(world_draw_background_deed, "action")
         for i in range(60):
