@@ -28,6 +28,7 @@ from game.deeds.world_create_healers_deed import CreateHealersDeed
 from game.deeds.world_detect_healer_collisions_deed import DetectHealerCollisionsDeed
 from game.deeds.world_draw_healers_deed import DrawHealersDeed
 from game.deeds.world_start_background_music_deed import StartBackgroundMusicDeed
+from game.deeds.world_show_game_over_deed import ShowGameOverDeed
 
 
 
@@ -135,22 +136,25 @@ class Game:
 
         # game loop 
         frame_time_counter = 0
-        while video_service.is_window_open() and not yeti.game_over():
+        while video_service.is_window_open():
             video_service.start_buffer()
-            for deed in deeds_service.get_all_deeds(exclude_groups=['init']):
-                deed.execute()
-            
-            frame_time_counter += video_service.get_frame_time()
-            if frame_time_counter > 2:
-                for axeman in axemen:
-                    axeman.do_action(1, axes)
-                for slime in slimes:
-                    slime.do_action(1)
-                frame_time_counter = 0
-            
-            # if yeti falls off screen
-            if yeti.position.y > video_service.get_height():
-                yeti.got_hit()
+            if not yeti.game_over():
+                for deed in deeds_service.get_all_deeds(exclude_groups=['init']):
+                    deed.execute()
+                
+                frame_time_counter += video_service.get_frame_time()
+                if frame_time_counter > 2:
+                    for axeman in axemen:
+                        axeman.do_action(1, axes)
+                    for slime in slimes:
+                        slime.do_action(1)
+                    frame_time_counter = 0
+                
+                # if yeti falls off screen
+                if yeti.position.y > video_service.get_height():
+                    yeti.got_hit()
+            else:
+                ShowGameOverDeed(yeti, service_manager).execute()
             video_service.end_buffer()
         service_manager.stop_all_services()
     
