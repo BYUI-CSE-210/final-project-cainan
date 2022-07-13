@@ -5,6 +5,13 @@ from game.shared.color import Color
 from game.entities.yeti import Yeti
 
 class DrawHudDeed(Deed):
+    '''
+    Draws the HUD.
+
+    Params - player:Yeti
+    
+    '''
+    
     def __init__(self, player, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self._player: Yeti

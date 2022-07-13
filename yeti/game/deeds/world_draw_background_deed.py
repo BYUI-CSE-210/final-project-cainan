@@ -3,7 +3,9 @@ from game.deeds.deed import Deed
 from game.shared.point import Point
 from game.shared.color import Color
 class DrawBackgroundDeed(Deed):
-
+    '''
+    Draw the background.
+    '''
     def __init__(self, service_manager) -> None:
         super().__init__(service_manager)
         self._background = self.video_service.register_texture("background", "yeti/game/entities/images/background.png")
