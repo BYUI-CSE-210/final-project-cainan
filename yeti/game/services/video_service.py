@@ -119,7 +119,7 @@ class VideoService(Service):
         if self._camera.target.x < self._width/2:
             if point.x < 0 or point.x > self._width:
                 return False
-        if self._camera.target.x > self._background_width - self._width/2:
+        if self._camera.target.x > self.get_game_width() - self._width/2:
             if point.x < self._background_width - self._width/2 or point.x > self._background_width:
                 return False
         else:
