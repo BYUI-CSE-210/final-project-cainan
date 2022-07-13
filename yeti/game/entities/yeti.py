@@ -18,6 +18,9 @@ class Yeti(Entity):
         self._health = 5
         self.weight = 4
         self.speed = 5
+
+        self._audio_service.register_sound("yeti_grunt", "yeti/game/entities/sounds/grunt.wav")
+        self._audio_service.register_sound("yeti_yell", "yeti/game/entities/sounds/yeti_yell.wav")
         
         self.x = self.position.x
         self.y = self.position.y
@@ -150,6 +153,7 @@ class Yeti(Entity):
                 self.is_falling = False
                 if self._fall_distance > 100:
                     self.is_stunned = True
+                    self._audio_service.play_sound("yeti_grunt")
                 self._fall_distance = 0
         else:
             self.stun()
@@ -172,12 +176,8 @@ class Yeti(Entity):
         if self._fall_distance > 101:
             if self.frameCount > 1:
                 self.frameCount = 0
-        else:
-            if self.frameCount < 6 or self.frameCount > 7:
-                self.frameCount = 6
-            self._fall_distance += 1
 
-
+    
     """Sets yeti's jump movements and animations"""
     def jump(self):
         if self._jump_timer < self.jump_height:
@@ -205,6 +205,7 @@ class Yeti(Entity):
     def taunt(self):
         if self.frameCount < 4 or self.frameCount > 7 or self._animation_timer == 0:
             self.frameCount = 4
+            self._audio_service.play_sound("yeti_yell")
         self._animation_timer += 1
         if self._animation_timer > 100:
             self.is_taunting = False
@@ -236,15 +237,16 @@ class Yeti(Entity):
         return self._health
 
 
-    def get_hitbox(self):
-        return self.destination
-
-
     def got_hit(self):
         self.is_stunned = True
         self._health -= 1
+        self._audio_service.play_sound("yeti_grunt")
         if self._health <= 0:
             self._is_alive = False
+
+
+    def get_hitbox(self):
+        return self.destination
 
 
     def game_over(self):
