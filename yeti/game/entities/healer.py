@@ -1,4 +1,3 @@
-from email.mime import audio
 import pyray as pr
 from game.entities.entity import Entity
 
@@ -30,8 +29,6 @@ class Healer(Entity):
                     self._frame_count = 0
                     self._is_healing = False
 
-
-    
     def do_action(self, action):
         if action == 1:
             self._is_healing = True
