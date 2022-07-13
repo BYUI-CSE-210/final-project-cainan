@@ -1,7 +1,5 @@
 from game.services.service_manager import ServiceManager
 from game.entities.yeti import Yeti
-from game.entities.baby_yeti import BabyYeti
-from game.entities.platform import Platform
 from game.deeds.deed import Deed
 from game.deeds.start_services_deed import StartServicesDeed
 from game.deeds.world_draw_background_deed import DrawBackgroundDeed
@@ -25,16 +23,12 @@ from game.deeds.player_detect_baby_collision_deed import PlayerDetectBabyCollisi
 from game.deeds.create_bird_deed import CreateBirdDeed
 from game.deeds.move_birds_deed import MoveBirdsDeed
 from game.deeds.player_detect_enemy_collisions_deed import PlayerDetectEnemyCollisionsDeed
-from game.deeds.slime_platform_collision_deed import SlimePlatformCollisionsDeed
-from game.entities.healer import Healer
 from game.deeds.world_draw_hud_deed import DrawHudDeed
 from game.deeds.world_create_healers_deed import CreateHealersDeed
 from game.deeds.world_detect_healer_collisions_deed import DetectHealerCollisionsDeed
 from game.deeds.world_draw_healers_deed import DrawHealersDeed
 from game.deeds.world_start_background_music_deed import StartBackgroundMusicDeed
 from game.deeds.world_show_game_over_deed import ShowGameOverDeed
-
-
 
 class Game:
     def __init__(self, debug=False) -> None:
@@ -109,9 +103,6 @@ class Game:
         world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
         player_detect_baby_collisions_deed = PlayerDetectBabyCollisionsDeed(yeti, babies)
         world_start_background_music_deed = StartBackgroundMusicDeed(service_manager)
-
-    
-
 
         # deed registration
         deeds_service.register_deed(world_create_healers, "init")
