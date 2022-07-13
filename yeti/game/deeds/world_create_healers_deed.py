@@ -3,6 +3,11 @@ from game.entities.healer import Healer
 from game.shared.point import Point
 
 class CreateHealersDeed(Deed):
+    '''
+    Create the healer objects. Currently placing at specific places. 
+    '''
+
+    #TODO place the healers more randomly, or at least on upper platforms.
     def __init__(self, healers_list:list, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self._healers = healers_list

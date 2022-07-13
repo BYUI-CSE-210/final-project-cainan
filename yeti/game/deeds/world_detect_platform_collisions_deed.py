@@ -3,6 +3,14 @@ from game.deeds.deed import Deed
 from game.entities.entity import Entity
 
 class DetectPlatformCollisionsDeed(Deed):
+    '''
+    Detects if player comes into contact with a platform in platforms:list. 
+
+    platforms: list of Platforms() to check against
+    player: an Entity object
+
+    Method: Execute() Compares small rectangle at player feet to small rectangle at top of each platform.
+    '''
     def __init__(self, platforms: list, player, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self._platforms = platforms

@@ -11,7 +11,7 @@ instantiate Axeman class
 and pass arguments
 """
 class Axeman(Entity):
-    def __init__(self, service_manager=None, speed=5,_turn_after = 20, debug=False) -> None:
+    def __init__(self, service_manager=None, speed=2,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
         self.texture = self._video_service.register_texture("Axeman","yeti/game/entities/images/lumberjack_walk.png")
         self.weight = 3
@@ -48,7 +48,7 @@ class Axeman(Entity):
     def advance(self,x_direction,y_direction):
         # return super().advance()
         self._frame_timer += self._video_service.get_frame_time()
-        if self._frame_timer > .12:
+        if self._frame_timer > .25:
             self.frameCount += 1
             self._frame_timer = 0
         if (self.frameCount < 3):
@@ -58,7 +58,7 @@ class Axeman(Entity):
         self._pace_count += 1
         if x_direction != 0:
             self.direction = x_direction
-        self.frameCount += 1
+        # self.frameCount += 1
         if self.frameCount >5:
             self.frameCount = 0
         self.position.x += x_direction * self.speed
