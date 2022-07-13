@@ -176,6 +176,10 @@ class Yeti(Entity):
         if self._fall_distance > 101:
             if self.frameCount > 1:
                 self.frameCount = 0
+        else:
+            if self.frameCount < 6 or self.frameCount > 7:
+                self.frameCount = 6
+            self._fall_distance += 1
 
     
     """Sets yeti's jump movements and animations"""
