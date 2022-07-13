@@ -1,13 +1,21 @@
 from game.deeds.deed import Deed
 
 class ApplyGravityDeed(Deed):
-    
+    '''
+    Applies gravity to objects. 
+
+    Parameter - Entities: Nested list, each item in the entities list is expected to be a list of entitles. 
+
+    Method - Execute() if item is not on solid ground, apply gravity based on weight.
+    '''
+
+    #TODO fix this deed to use either a single list or a single object, then call the deed multiple times,
+    # rather than a nested list of entities. EG: entities[0][0]
     def __init__(self, entities,  service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self._entities = entities
 
     def execute(self):
-        #TODO make sure entities have a property to tell if they are on ground.
         if self._debug:
             print("Entities: ", self._entities)
         for entity in self._entities:
@@ -16,7 +24,6 @@ class ApplyGravityDeed(Deed):
             if not entity.is_on_solid_ground:
                 if self._debug:
                     print("Entity is not on solid ground. He should fall at a rate of: ", 1*entity.weight)
-                #TODO Clean this up when center is no longer being used
                 entity.position.y += 1 * entity.weight
                 
 

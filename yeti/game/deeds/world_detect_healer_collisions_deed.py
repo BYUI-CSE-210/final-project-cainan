@@ -3,6 +3,13 @@ from game.deeds.deed import Deed
 
 
 class DetectHealerCollisionsDeed(Deed):
+    '''
+    Detect if player has touched a healer.
+
+    Params:
+    player - Yeti(Entity)
+    healers_list - List of Healer objects
+    '''
     def __init__(self, player, healers_list, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self._healers = healers_list
