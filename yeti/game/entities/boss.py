@@ -29,13 +29,13 @@ class GoblinBoss(Entity):
         self.is_attacking = False
         self.is_hurt = False
         self.is_dying = False
-        self.frameWidth = int()
-        self.frameHeight = int()
                #Tom's load images code
         self._actions = ['blink-idle', 'attack', 'hurt', 'dying']
         for action_type in self._actions:
             for i in range(8):
-                self._video_service.register_texture(f'goblin_{action_type}_{i}', f'yeti/game/entities/images/goblin/{action_type}/{i}.png')
+                texture = self._video_service.register_texture(f'goblin_{action_type}_{i}', f'yeti/game/entities/images/goblin/{action_type}/{i}.png')
+        self.frameHeight = texture.height
+        self.frameWidth = texture.width
 
     def draw(self):
         """
@@ -47,7 +47,8 @@ class GoblinBoss(Entity):
         y = self.position.y
         self.frameWidth = self._texture.width
         self.frameHeight = self._texture.height
-        print("Goblin Size*****",self.frameHeight,self.frameWidth)
+        if self._debug:
+            print("Goblin Size*****",self.frameHeight,self.frameWidth)
         source_x = self.frameWidth
         source_y = 0
         self.source = pr.Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)

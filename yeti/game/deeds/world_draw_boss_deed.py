@@ -4,7 +4,7 @@ from game.entities.platform import Platform
 
 
 class DrawBossDeed(Deed):
-    def __init__(self, boss:GoblinBoss, platform:Platform, service_manager=None, debug=True) -> None:
+    def __init__(self, boss:GoblinBoss, platform:Platform, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
         self.platform = platform
         self.boss = boss
@@ -15,7 +15,7 @@ class DrawBossDeed(Deed):
         if self.boss.position.x <= self.platform.position.x + 10 or self.boss.position.x >= self.platform.position.x + self.platform.get_width() - self.boss.frameWidth/4 - 10:
             self.direction *= -1
         if self._debug:
-            print("GoblinBoss Walk - GoblinBoss position: ", self.boss.position.x, self.boss.position.y )
+            print("GoblinBoss Walk (Draw Deed) - GoblinBoss position: ", self.boss.position.x, self.boss.position.y )
         if self.boss._is_alive:
             self.boss.advance(self.direction,0)
             self.boss.draw()

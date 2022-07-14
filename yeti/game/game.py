@@ -84,8 +84,8 @@ class Game:
                 slime_platform_collsions_deed = DetectPlatformCollisionsDeed(platforms,slime)
                 deeds_service.register_deed(slime_platform_collsions_deed,"action")
             if i == 0:
-            # boss_platform = platforms[1]
-                goblin_boss = CreateBossDeed(platform,service_manager).execute()
+                boss_platform = platforms[0]
+                goblin_boss = CreateBossDeed(boss_platform,service_manager, debug=True).execute()
                 bosses.append(goblin_boss)
                 print("Boss List: *****",bosses)
                 print("*****Goblin boss",goblin_boss)
@@ -96,7 +96,7 @@ class Game:
 
         
         # action deeds 
-        world_move_camera_deed = MoveCameraDeed(service_manager, yeti)
+        world_move_camera_deed = MoveCameraDeed(service_manager, bosses[0])
         #TODO create a list of Entities to be passed to the apply gravity deed. 
         yeti_apply_gravity_deed = ApplyGravityDeed([yeti], service_manager)
         axes_apply_gravity_deed = ApplyGravityDeed(axes, service_manager)
