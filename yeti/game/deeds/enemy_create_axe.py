@@ -1,4 +1,3 @@
-from distutils.log import debug
 from game.deeds.deed import Deed
 from game.entities.axe import Axe
 

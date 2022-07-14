@@ -6,7 +6,7 @@ from game.shared.point import Point
 class ShowGameOverDeed(Deed):
     def __init__(self, player, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
-        self._position = player.position
+        self._position = player.position  
     
     def execute(self):
         if self._position.x < self.video_service.get_width()/2:
