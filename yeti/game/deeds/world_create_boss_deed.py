@@ -12,7 +12,7 @@ class CreateBossDeed(Deed):
         # return super().execute()
         boss = GoblinBoss(self.service_manager)
         # starting_pos = Point(0,0)
-        starting_pos = Point(self.platform.position.x, self.video_service.get_height()- boss.frameHeight)
+        starting_pos = Point(self.platform.position.x, self.video_service.get_height()- boss.frameHeight - 20)
         boss.position = starting_pos
         if self._debug:
             print("***GoblinBoss Starting position (CreateBossDeed):************************************* ", starting_pos.x, starting_pos.y)

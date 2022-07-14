@@ -34,7 +34,7 @@ class GoblinBoss(Entity):
         for action_type in self._actions:
             for i in range(8):
                 texture = self._video_service.register_texture(f'goblin_{action_type}_{i}', f'yeti/game/entities/images/goblin/{action_type}/{i}.png')
-        self.frameHeight = texture.height
+        self.frameHeight = texture.height - 126 - 65
         self.frameWidth = texture.width
 
     def draw(self):
@@ -51,7 +51,7 @@ class GoblinBoss(Entity):
             print("Goblin Size*****",self.frameHeight,self.frameWidth)
         source_x = self.frameWidth
         source_y = 0
-        self.source = pr.Rectangle(source_x, source_y, self.frameWidth * self.direction, self.frameHeight)
+        self.source = pr.Rectangle(source_x, source_y+65, self.frameWidth * self.direction, self.frameHeight)
         self._destination = pr.Rectangle(x, y, self.frameWidth, self.frameHeight)
         self.origin = pr.Vector2(0, 0)
         pr.draw_texture_pro(self._texture, self.source, self._destination, self.origin, 0, pr.RAYWHITE)
