@@ -10,17 +10,17 @@ class CreatePlatformsDeed(Deed):
 
     def execute(self):
         platforms = self._platforms
+        # boss platform
+        floor_platform = Platform(4048, 20, service_manager=self.service_manager)
+        floor_platform.position.x = 16192
+        floor_platform.position.y = self.video_service.get_height()-20
+        platforms.append(floor_platform)
         # create floor platforms.
         for p in range(4):
             floor_platform = Platform(4048*2/3, 20, service_manager=self.service_manager)
             floor_platform.position.x = 4048*p
             floor_platform.position.y = self.video_service.get_height()-20
             platforms.append(floor_platform)
-        # boss platform
-        floor_platform = Platform(4048, 20, service_manager=self.service_manager)
-        floor_platform.position.x = 16192
-        floor_platform.position.y = self.video_service.get_height()-20
-        platforms.append(floor_platform)
 
         # create random floating platforms within jump range of eachother
         platform_x = 50
