@@ -14,6 +14,7 @@ class Yeti(Entity):
     def __init__(self, service_manager=None, debug=None) -> None:
         super().__init__(service_manager, debug)
         #TODO decide how much health is good. 
+        #TODO: make yeti crashing into ground lose health
         self._max_health = 5
         self._health = 5
         self.weight = 4
