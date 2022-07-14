@@ -3,7 +3,11 @@ import pyray as pr
 from pyray import Vector2,Rectangle
 from game.shared.point import Point
 from game.deeds.start_services_deed import StartServicesDeed
-
+"""
+instantiate OrangeSlime
+(child class of Entity) 
+class and pass arguments
+"""
 class OrangeSlime(Entity):
     def __init__(self, service_manager=None, speed=3,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
@@ -24,7 +28,9 @@ class OrangeSlime(Entity):
         self._frame_timer = 0
         self._jump_timer = 0
         self.is_jumping = False
-
+    """
+    draw method to display slime in window
+    """
     def draw(self):
         self._texture = self._video_service.get_texture("OrangeSlime")
         x = self.position.x
@@ -40,7 +46,9 @@ class OrangeSlime(Entity):
 
            
             
-
+    """
+    method to advance slime
+    """
     def advance(self,x_direction,y_direction):
         self._frame_timer += self._video_service.get_frame_time()
         # print(f"frame-time: {self._frame_timer}")

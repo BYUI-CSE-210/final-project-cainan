@@ -5,7 +5,11 @@ from game.deeds.start_services_deed import StartServicesDeed
 from game.deeds.enemy_create_axe import AxeCreateDeed
 import pyray as pr
 from pyray import Vector2
-
+"""
+instantiate Axeman class
+(inheriting from Entity parent class)
+and pass arguments
+"""
 class Axeman(Entity):
     def __init__(self, service_manager=None, speed=2,_turn_after = 20, debug=False) -> None:
         super().__init__(service_manager, debug)
@@ -23,7 +27,9 @@ class Axeman(Entity):
         self.is_on_solid_ground = True
         self._frame_timer = 0
 
-        
+    """
+    method to display texture in game
+    """
     def draw(self):
         self._texture = self._video_service.get_texture("Axeman")
         x = self.position.x
@@ -36,7 +42,9 @@ class Axeman(Entity):
         pr.draw_texture_pro(self._texture, self.source,self.destination,self.origin,0,pr.RAYWHITE)
         if self._debug:
             pr.draw_rectangle(int(self.destination.x),int(self.destination.y),int(self.destination.width),int(self.destination.height),pr.WHITE)
-
+    """
+    method to advance axeman in game
+    """
     def advance(self,x_direction,y_direction):
         # return super().advance()
         self._frame_timer += self._video_service.get_frame_time()
@@ -55,29 +63,23 @@ class Axeman(Entity):
             self.frameCount = 0
         self.position.x += x_direction * self.speed
         self.position.y += y_direction * self.speed
-        # if self._pace_count >= self._turn_after:
-        #     self.direction *= -1
-        #     self._pace_count = 0
-        #     self.axes.append(Axe)
-        # if self.position.x <=0:
-        #     self.direction = 0
-        #     self._pace_count = 0
-        #     self.axes.append(Axe)
-        # if self.position.x >= pr.get_screen_width():
-        #     self.direction = -1
-        #     self._pace_count = 0
-        #     self.axes.append(Axe)
-
+    """
+    set action for use in Axe throw in game
+    """
     def do_action(self,action,axes:list):
         if action == 1:
             create_axe = AxeCreateDeed(self,axes,self._service_manager,debug=False)
             create_axe.execute()
             if self._debug:
                 print("Throwing axe!")
-
+    """
+    return rectangle for hit detection
+    """
     def get_hitbox(self):
         return self.destination
-
+    """
+    return boolean for removal of axeman
+    """
     def got_hit(self):
         self._is_alive = False
 
