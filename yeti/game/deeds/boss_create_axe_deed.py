@@ -12,6 +12,6 @@ class BossCreateAxeDeed(Deed):
         rand_num = randint(1,3)
         for i in range(3):
             axe = Axe(self.service_manager,pr.Vector2(self.boss.position.x, self.boss.position.y + self.boss.frameHeight/rand_num),-1)
-        self.axes.append(axe)
+            self.axes.append(axe)
         if self._debug:
             print(self.axes)
