@@ -1,6 +1,6 @@
 from game.deeds.deed import Deed
 from game.entities.axe import Axe
-
+from game.shared.point import Point
 class BossCreateAxeDeed(Deed):
     def __init__(self, boss ,axes:list, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
@@ -8,7 +8,8 @@ class BossCreateAxeDeed(Deed):
         self.boss = boss
 
     def execute(self):
-        axe = Axe(self.service_manager,self.boss.position,-1)
+        starting_point = Point(self.boss.position.x, self.boss.position.y + self.boss.frameHeight/2)
+        axe = Axe(self.service_manager,starting_point,-1)
         self.axes.append(axe)
         if self._debug:
             print(self.axes)
