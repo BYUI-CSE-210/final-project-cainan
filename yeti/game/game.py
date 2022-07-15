@@ -112,9 +112,9 @@ class Game:
         player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
         move_axes_deed = MoveAxesDeed(axes,service_manager)
-        move_boss_axes_deed = MoveAxesDeed(boss_axes,service_manager)
+        # move_boss_axes_deed = MoveAxesDeed(boss_axes,service_manager)
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
-        remove_boss_axes_deed = RemoveOldAxesDeed(boss_axes,service_manager)
+        # remove_boss_axes_deed = RemoveOldAxesDeed(boss_axes,service_manager)
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
         player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, bosses, service_manager,debug=True)
         draw_hud_deed = DrawHudDeed(yeti, service_manager)
@@ -136,9 +136,9 @@ class Game:
         deeds_service.register_deed(player_draw_deed, "action")
         deeds_service.register_deed(world_detect_platform_collisions_deed, "action")
         deeds_service.register_deed(move_axes_deed,"action")
-        deeds_service.register_deed(move_boss_axes_deed,"action")
+        # deeds_service.register_deed(move_boss_axes_deed,"action")
         deeds_service.register_deed(remove_old_axes_deed, "action")
-        deeds_service.register_deed(remove_boss_axes_deed, "action")
+        # deeds_service.register_deed(remove_boss_axes_deed, "action")
         deeds_service.register_deed(move_birds_deed,"action")
         deeds_service.register_deed(player_detect_enemy_collisions_deed, "action")
         deeds_service.register_deed(draw_hud_deed, "action")
@@ -171,7 +171,7 @@ class Game:
                     for slime in slimes:
                         slime.do_action(1)
                     for boss in bosses:
-                        boss.do_action(2,boss_axes)
+                        boss.do_action(2,axes)
                     frame_time_counter = 0
                 
                 # if yeti falls off screen

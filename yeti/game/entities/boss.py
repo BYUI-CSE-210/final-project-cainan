@@ -111,8 +111,9 @@ class GoblinBoss(Entity):
             self.is_attacking = True
             self.is_hurt = False
             self.is_dying = False
-            create_axe = BossCreateAxeDeed(self,boss_axes,self._service_manager,debug=False)
-            create_axe.execute()
+            for i in range(3):
+                create_axe = BossCreateAxeDeed(self,boss_axes,self._service_manager,debug=False)
+                create_axe.execute()
             if self._debug:
                 print("Throwing Boss' axe!")
         if action == 3:
