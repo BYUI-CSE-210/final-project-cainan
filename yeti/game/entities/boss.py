@@ -26,9 +26,10 @@ class GoblinBoss(Entity):
         self._action = 'blink-idle'
         self.frameCount = 0
         self._frame_timer = self._video_service.get_frame_time()
-        self.is_idle = True
+        self.is_idle = False
         self.is_attacking = False
         self.is_hurt = False
+        self._is_moving = False
         self.is_dying = False
                #Tom's load images code
         self._actions = ['blink-idle', 'attack', 'hurt', 'dying', 'run']
@@ -38,12 +39,21 @@ class GoblinBoss(Entity):
         self.frameHeight = texture.height - 126 - 65
         self.frameWidth = texture.width
         self._axes_list = axes_list
-
     def draw(self):
         """
         function to display the boss sprite
         on screen.
         """
+        if not self.is_alive:
+            self._action = self._actions[3]
+        elif self.is_attacking:
+            self._action = self._actions[1]
+        elif self.is_hurt:
+            self._action = self._actions[2]
+        elif self._is_moving:
+            self._action = self._actions[4]
+        else:
+            self._action = self._actions[0]
         self._texture = self._video_service.get_texture(f"goblin_{self._action}_{self.frameCount}")
         x = self.position.x
         y = self.position.y
@@ -65,8 +75,8 @@ class GoblinBoss(Entity):
     attacking, hurt and dying
     """
     def advance(self,x_direction,y_direction):
+        self._is_moving = abs(x_direction)
         self._frame_timer += self._video_service.get_frame_time()
-        self._action = self._actions[0]
 
         if self._frame_timer > .12:
             self.frameCount += 1
@@ -74,6 +84,9 @@ class GoblinBoss(Entity):
         if self.frameCount >=7:
             if self.is_alive:
                 self.frameCount = 0
+                self.is_attacking = False
+                self.is_hurt = False
+                
             else:
                 self.frameCount = 7
         self.position.x += x_direction * self.speed
@@ -94,37 +107,25 @@ class GoblinBoss(Entity):
     def do_action(self, action):
        
         if action == 2:
-            self.is_attacking = True
             self.frameCount = 0
-            self._action = self._actions[1]
+            self.is_attacking = True
             for i in range(3):
                 create_axe = BossCreateAxeDeed(self,self._axes_list,self._service_manager,debug=False)
                 create_axe.execute()
             if self._debug:
                 print("Throwing Boss' axe!")
         if action == 3:
+            self.frameCount = 0
             self.is_hurt = True
-            self._action = self._actions[2]
+            
         if action == 4:
             self.is_dying = True
             self.frameCount = 7
-            self._action = self._actions[3]
+            
         else:
-            self._action = self._actions[0]
+            
+            
+            self.is_idle = True
 
-if __name__ == "__main__":
-    service_manager = StartServicesDeed().execute()
-    _vs = service_manager.video_service
-    _ks = service_manager.keyboard_service
-    boss = GoblinBoss(service_manager)
-    boss.position = Point(200,200)
-    boss.is_idle = False
-    boss.is_attacking = True
-    pr.set_target_fps(50)
-    while _vs.is_window_open():
-        _vs.start_buffer()
-        boss.advance()
-        boss.draw()
-        _vs.end_buffer()
-    service_manager.stop_all_services()
+
 
