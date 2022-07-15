@@ -86,7 +86,7 @@ class Game:
                 deeds_service.register_deed(slime_platform_collsions_deed,"action")
             if i == 0:
                 boss_platform = platforms[0]
-                goblin_boss = CreateBossDeed(boss_platform,service_manager, debug=True).execute()
+                goblin_boss = CreateBossDeed(boss_platform,axes, service_manager, debug=True).execute()
                 bosses.append(goblin_boss)
                 print("Boss List: *****",bosses)
                 print("*****Goblin boss",goblin_boss)
@@ -105,12 +105,12 @@ class Game:
         boss_apply_gravity_deed = ApplyGravityDeed(bosses,service_manager)
         world_draw_platforms_deed = DrawPlatformsDeed(platforms, service_manager)
         world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed(platforms, yeti)
-        player_action_deed = PlayerActionDeed(service_manager, yeti)
+        player_action_deed = PlayerActionDeed(service_manager, bosses[0])
         world_create_healers = CreateHealersDeed(healers, service_manager)
         world_draw_healers = DrawHealersDeed(healers, service_manager)
         world_create_baby_yeti = CreateBabyYetiDeed(babies,service_manager)
         draw_baby_yeti_deed = DrawBabyYetiDeed(babies,service_manager)
-        player_move_deed = PlayerMoveDeed(service_manager, yeti)
+        player_move_deed = PlayerMoveDeed(service_manager, bosses[0])
         player_draw_deed = PlayerDrawDeed(yeti)
         move_axes_deed = MoveAxesDeed(axes,service_manager)
         # move_boss_axes_deed = MoveAxesDeed(boss_axes,service_manager)
@@ -171,14 +171,6 @@ class Game:
                         axeman.do_action(1, axes)
                     for slime in slimes:
                         slime.do_action(1)
-                    for boss in bosses:
-                        boss:GoblinBoss
-                        if boss.is_alive:
-                            boss.do_action(2,axes)
-                        else:
-                            boss.is_dying = True
-                            boss.do_action(4,None)
-                            bosses.pop()
                     frame_time_counter = 0
                 
                 # if yeti falls off screen

@@ -11,11 +11,7 @@ class DrawBossDeed(Deed):
         self.direction = -1
 
     def execute(self):
-        # return super().execute()
-        if self.boss.position.x <= self.platform.position.x + 10 or self.boss.position.x >= self.platform.position.x + self.platform.get_width() - self.boss.frameWidth/4 - 10:
-            self.direction *= -1
         if self._debug:
             print("GoblinBoss Walk (Draw Deed) - GoblinBoss position: ", self.boss.position.x, self.boss.position.y )
         if self.boss._is_alive:
-            self.boss.advance(self.direction,0)
             self.boss.draw()
