@@ -33,6 +33,8 @@ from game.deeds.world_start_background_music_deed import StartBackgroundMusicDee
 from game.deeds.world_show_game_over_deed import ShowGameOverDeed
 from game.deeds.world_win_game_deed import ShowGameWinnerDeed
 from game.entities.boss import GoblinBoss
+from game.deeds.enemy_boss_walk_deed import BossWalkDeed
+from game.deeds.enemy_boss_actions_deed import BossActionsDeed
 
 class Game:
     def __init__(self, debug=False) -> None:
@@ -105,12 +107,12 @@ class Game:
         boss_apply_gravity_deed = ApplyGravityDeed(bosses,service_manager)
         world_draw_platforms_deed = DrawPlatformsDeed(platforms, service_manager)
         world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed(platforms, yeti)
-        player_action_deed = PlayerActionDeed(service_manager, bosses[0])
+        player_action_deed = PlayerActionDeed(service_manager, yeti)
         world_create_healers = CreateHealersDeed(healers, service_manager)
         world_draw_healers = DrawHealersDeed(healers, service_manager)
         world_create_baby_yeti = CreateBabyYetiDeed(babies,service_manager)
         draw_baby_yeti_deed = DrawBabyYetiDeed(babies,service_manager)
-        player_move_deed = PlayerMoveDeed(service_manager, bosses[0])
+        player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
         move_axes_deed = MoveAxesDeed(axes,service_manager)
         # move_boss_axes_deed = MoveAxesDeed(boss_axes,service_manager)
@@ -122,6 +124,8 @@ class Game:
         world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
         player_detect_baby_collisions_deed = PlayerDetectBabyCollisionsDeed(yeti, babies)
         world_start_background_music_deed = StartBackgroundMusicDeed(service_manager)
+        enemy_boss_walk_deed = BossWalkDeed(bosses[0], platforms[0], service_manager)
+        enemy_boss_action_deed = BossActionsDeed(bosses[0], service_manager)
 
         # deed registration
         deeds_service.register_deed(world_create_healers, "init")
@@ -137,9 +141,7 @@ class Game:
         deeds_service.register_deed(player_draw_deed, "action")
         deeds_service.register_deed(world_detect_platform_collisions_deed, "action")
         deeds_service.register_deed(move_axes_deed,"action")
-        # deeds_service.register_deed(move_boss_axes_deed,"action")
         deeds_service.register_deed(remove_old_axes_deed, "action")
-        # deeds_service.register_deed(remove_boss_axes_deed, "action")
         deeds_service.register_deed(move_birds_deed,"action")
         deeds_service.register_deed(player_detect_enemy_collisions_deed, "action")
         deeds_service.register_deed(draw_hud_deed, "action")
@@ -148,7 +150,9 @@ class Game:
         deeds_service.register_deed(player_detect_baby_collisions_deed,"action")
         deeds_service.register_deed(draw_baby_yeti_deed,"action")
         deeds_service.register_deed(world_start_background_music_deed, "action")
-        #TODO Loop BG music
+        deeds_service.register_deed(enemy_boss_walk_deed, "action")
+        deeds_service.register_deed(enemy_boss_action_deed, "action")
+        
 
 
 
