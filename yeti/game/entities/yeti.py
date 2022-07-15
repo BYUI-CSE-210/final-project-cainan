@@ -264,7 +264,7 @@ class Yeti(Entity):
         if self._fall_distance < 60:
             weight = self._weight
         else:
-            weight = 6
+            weight = self._weight * 1.5
         return weight
 
 
