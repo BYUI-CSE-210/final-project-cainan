@@ -32,6 +32,7 @@ from game.deeds.world_draw_healers_deed import DrawHealersDeed
 from game.deeds.world_start_background_music_deed import StartBackgroundMusicDeed
 from game.deeds.world_show_game_over_deed import ShowGameOverDeed
 from game.deeds.world_win_game_deed import ShowGameWinnerDeed
+from game.entities.boss import GoblinBoss
 
 class Game:
     def __init__(self, debug=False) -> None:
@@ -171,7 +172,13 @@ class Game:
                     for slime in slimes:
                         slime.do_action(1)
                     for boss in bosses:
-                        boss.do_action(2,axes)
+                        boss:GoblinBoss
+                        if boss.is_alive:
+                            boss.do_action(2,axes)
+                        else:
+                            boss.is_dying = True
+                            boss.do_action(4,None)
+                            bosses.pop()
                     frame_time_counter = 0
                 
                 # if yeti falls off screen

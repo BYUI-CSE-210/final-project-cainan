@@ -14,6 +14,7 @@ class GoblinBoss(Entity):
         super().__init__(service_manager, debug)
         self.weight = 0
         self.is_on_solid_ground = True
+        self.is_alive = True
         self.max_hp = max_hp
         self.speed = speed
         self._service_manager = service_manager
@@ -89,7 +90,10 @@ class GoblinBoss(Entity):
             self.frameCount += 1
             self._frame_timer = 0
         if self.frameCount >=7:
-            self.frameCount = 0
+            if self.is_alive:
+                self.frameCount = 0
+            else:
+                self.frameCount = 7
         # self.position.x += x_direction * self.speed
 
     def get_hitbox(self):
@@ -98,12 +102,17 @@ class GoblinBoss(Entity):
         return a rectangle for hit detection
         """
         return self._destination
-
+    def got_hit(self):
+        # return super().got_hit()
+        self.max_hp -= 1
+        if self.max_hp == 0:
+            self.is_alive = False
+            
     """Set action button being pressed to true"""
     def do_action(self, action,boss_axes:list):
         if action == 1:
             self.is_idle = True 
-            self.is_attacking = True
+            self.is_attacking = False
             self.is_hurt = False
             self.is_dying = False
         if action == 2:
@@ -118,14 +127,15 @@ class GoblinBoss(Entity):
                 print("Throwing Boss' axe!")
         if action == 3:
             self.is_idle= False
-            self.is_attacking = True
-            self.is_hurt = False
+            self.is_attacking = False
+            self.is_hurt = True
             self.is_dying = False
         if action == 4:
             self.is_idle= False
-            self.is_attacking = True
+            self.is_attacking = False
             self.is_hurt = False
             self.is_dying = True
+            self.frameCount = 7
 
 if __name__ == "__main__":
     service_manager = StartServicesDeed().execute()
