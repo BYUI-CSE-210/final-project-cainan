@@ -17,7 +17,7 @@ class Yeti(Entity):
         #TODO: make yeti crashing into ground lose health
         self._max_health = 5
         self._health = 5
-        self.weight = 4
+        self._weight = 4
         self.speed = 5
 
         self._audio_service.register_sound("yeti_grunt", "yeti/game/entities/sounds/grunt.wav")
@@ -258,6 +258,14 @@ class Yeti(Entity):
         if not self._is_alive:
             return True
         return False
+
+    @property
+    def weight(self):
+        if self._fall_distance < 60:
+            weight = self._weight
+        else:
+            weight = self._weight * 1.5
+        return weight
 
 
 if __name__ == "__main__":
