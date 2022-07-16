@@ -15,7 +15,7 @@ class VideoService(Service):
     caption: string, The title of the window
     bg_color: Color(), the background color that the game will be painted on top of. Default is black.
     '''
-    def __init__(self, framerate, width = 0, height = 0, caption = "Title", bg_color = None) -> None:
+    def __init__(self, framerate, width = 0, height = 0, caption = "Title", bg_color = None, debug = False) -> None:
         super().__init__()
         self._width = width
         self._height = height
@@ -30,6 +30,7 @@ class VideoService(Service):
         if not bg_color:
             bg_color = Color(0,0,0,255)    
         self._background_color = bg_color.get_tuple()
+        self._debug = debug
     
     def start_service(self):
         pr.init_window(self._width, self._height, self._caption)
@@ -83,7 +84,8 @@ class VideoService(Service):
         
         '''
         if name not in self._textures:
-            print(f"Loaded textures: {self._textures}")
+            if self._debug:
+                print(f"Loaded textures: {self._textures}")
             texture = pr.load_texture(path)
             self._textures[name] = texture
         return self._textures[name]

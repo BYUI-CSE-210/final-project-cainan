@@ -19,9 +19,12 @@ class Yeti(Entity):
         #TODO: make yeti crashing into ground lose health
         self._max_health = 5
         self._health = 5
+
         self._ammo = 5
         self._ammo_list = ammo_list
-        self.weight = 4
+
+        self._weight = 4
+
         self.speed = 5
 
         self._audio_service.register_sound("yeti_grunt", "yeti/game/entities/sounds/grunt.wav")
@@ -53,6 +56,10 @@ class Yeti(Entity):
         self.frameCount = 0
         self.jump_height = 25
         self._fall_distance = 0
+        """
+        Create a boolean argument for win condition
+        """
+        self.is_winner = False
 
 
     """Method to draw the Yeti texture"""
@@ -139,6 +146,11 @@ class Yeti(Entity):
             self.is_taunting = False
             self.is_throwing = False
         if self.is_taunting or self.is_throwing:
+            self.is_moving = False
+            self.is_running = False
+            self.is_jumping = False
+        if self.is_winner:
+            self.is_taunting = True
             self.is_moving = False
             self.is_running = False
             self.is_jumping = False
@@ -276,6 +288,14 @@ class Yeti(Entity):
             return True
         return False
 
+    @property
+    def weight(self):
+        if self._fall_distance < 60:
+            weight = self._weight
+        else:
+            weight = self._weight * 1.5
+        return weight
+
 
 if __name__ == "__main__":
     pr.init_window(800,600,"YETI")
@@ -306,7 +326,6 @@ if __name__ == "__main__":
             yeti.is_running = False
         if pr.is_key_pressed(pr.KEY_SPACE):
             yeti.is_jumping = True
-
         yeti.advance(x_direction,y_direction)
         yeti.draw()
         pr.end_drawing()

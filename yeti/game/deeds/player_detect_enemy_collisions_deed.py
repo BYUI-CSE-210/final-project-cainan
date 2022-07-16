@@ -5,9 +5,9 @@ from game.entities.yeti import Yeti
 from game.entities.orange_slime import OrangeSlime
 
 class PlayerDetectEnemyCollisionsDeed(Deed):
-    def __init__(self, player, axes, enemies, birds, slimes, service_manager=None, debug=False) -> None:
+    def __init__(self, player, axes, enemies, birds, slimes,boss, service_manager=None, debug=False) -> None:
         super().__init__(service_manager, debug)
-        self._entities = [axes, enemies, birds, slimes]
+        self._entities = [axes, enemies, birds, slimes, boss]
         self._player: Yeti
         self._player = player
     
