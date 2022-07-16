@@ -71,6 +71,8 @@ class KeyboardService(Service):
         method = pr.is_key_down
         if single_press:
             method = pr.is_key_pressed
+        if method(self.ACTION_FOUR):
+            return 4
         if method(self.JUMP_KEY):
             return 5
         if method(self.DUCK_KEY):
@@ -81,8 +83,6 @@ class KeyboardService(Service):
             return 2
         if pr.is_key_down(self.ACTION_THREE):
             return 3
-        if method(self.ACTION_FOUR):
-            return 4
         
 
 
