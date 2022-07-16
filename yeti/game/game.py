@@ -58,11 +58,10 @@ class Game:
         axemen = []
         slimes=[]
         axes = []
-        boss_axes = []
         birds = []
         healers = []
         babies = []
-        bosses = []
+        
 
 
         CreatePlatformsDeed(platforms, service_manager).execute()
@@ -86,25 +85,23 @@ class Game:
                 deeds_service.register_deed(OrangeSlimeWalkDeed(slime,platform,service_manager,debug=False),"action")
                 slime_platform_collsions_deed = DetectPlatformCollisionsDeed(platforms,slime)
                 deeds_service.register_deed(slime_platform_collsions_deed,"action")
-            if i == 0:
-                boss_platform = platforms[0]
-                goblin_boss = CreateBossDeed(boss_platform,axes, service_manager, debug=True).execute()
-                bosses.append(goblin_boss)
-                print("Boss List: *****",bosses)
-                print("*****Goblin boss",goblin_boss)
-                deeds_service.register_deed(DrawBossDeed(goblin_boss,platform,service_manager),"action")
-                boss_platform_collision_deed = DetectPlatformCollisionsDeed(platforms,goblin_boss)
-                deeds_service.register_deed(boss_platform_collision_deed,"action")
-            
+    
+        #create boss
+        boss_platform = platforms[0]
+        goblin_boss = CreateBossDeed(boss_platform,axes, service_manager, debug=True).execute()
+        deeds_service.register_deed(DrawBossDeed(goblin_boss,platform,service_manager),"action")
+        boss_platform_collision_deed = DetectPlatformCollisionsDeed(platforms,goblin_boss)
+        deeds_service.register_deed(boss_platform_collision_deed,"action")
+    
 
         
         # action deeds 
-        world_move_camera_deed = MoveCameraDeed(service_manager, bosses[0])
+        world_move_camera_deed = MoveCameraDeed(service_manager, yeti)
         #TODO create a list of Entities to be passed to the apply gravity deed. 
         yeti_apply_gravity_deed = ApplyGravityDeed([yeti], service_manager)
         axes_apply_gravity_deed = ApplyGravityDeed(axes, service_manager)
         slime_apply_gravity_deed = ApplyGravityDeed(slimes,service_manager)
-        boss_apply_gravity_deed = ApplyGravityDeed(bosses,service_manager)
+        boss_apply_gravity_deed = ApplyGravityDeed([goblin_boss],service_manager)
         world_draw_platforms_deed = DrawPlatformsDeed(platforms, service_manager)
         world_detect_platform_collisions_deed = DetectPlatformCollisionsDeed(platforms, yeti)
         player_action_deed = PlayerActionDeed(service_manager, yeti)
@@ -119,13 +116,13 @@ class Game:
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
         # remove_boss_axes_deed = RemoveOldAxesDeed(boss_axes,service_manager)
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
-        player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, bosses, service_manager,debug=True)
+        player_detect_enemy_collisions_deed = PlayerDetectEnemyCollisionsDeed(yeti, axes, axemen, birds, slimes, [goblin_boss], service_manager,debug=True)
         draw_hud_deed = DrawHudDeed(yeti, service_manager)
         world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
         player_detect_baby_collisions_deed = PlayerDetectBabyCollisionsDeed(yeti, babies)
         world_start_background_music_deed = StartBackgroundMusicDeed(service_manager)
-        enemy_boss_walk_deed = BossWalkDeed(bosses[0], platforms[0], service_manager)
-        enemy_boss_action_deed = BossActionsDeed(bosses[0], service_manager)
+        enemy_boss_walk_deed = BossWalkDeed(goblin_boss, platforms[0], service_manager)
+        enemy_boss_action_deed = BossActionsDeed(goblin_boss, service_manager)
 
         # deed registration
         deeds_service.register_deed(world_create_healers, "init")
