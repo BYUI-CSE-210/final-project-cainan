@@ -72,7 +72,7 @@ class KeyboardService(Service):
             return 5
         if method(self.DUCK_KEY):
             return 6
-        if method(self.ACTION_ONE):
+        if pr.is_key_down(self.ACTION_ONE):
             return 1
         if method(self.ACTION_TWO):
             return 2

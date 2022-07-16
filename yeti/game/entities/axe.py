@@ -10,8 +10,8 @@ class Axe(Entity):
         self.direction = direction
         self.speed = 25
         self._weight = 3
-        self.texture = self._video_service.register_texture("flyingAxe","game/entities/images/axe.png")
-        self._audio_service.register_sound("flying_axe", "game/entities/sounds/flying_axe.wav" )
+        self.texture = self._video_service.register_texture("flyingAxe","yeti/game/entities/images/axe.png")
+        self._audio_service.register_sound("flying_axe", "yeti/game/entities/sounds/flying_axe.wav" )
         self._angle = int()
         self._spin = 20
         self._alive_time = 0 
