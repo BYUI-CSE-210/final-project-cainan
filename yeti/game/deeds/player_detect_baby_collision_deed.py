@@ -17,6 +17,7 @@ class PlayerDetectBabyCollisionsDeed(Deed):
             baby_hitbox = baby.get_hitbox()
             colliding = pr.check_collision_recs(player_hitbox, baby_hitbox)
             if colliding:
+                self._player.is_winner = True
                 baby._is_saved = True
                 break
 

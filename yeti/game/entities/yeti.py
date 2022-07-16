@@ -49,6 +49,10 @@ class Yeti(Entity):
         self.frameCount = 0
         self.jump_height = 25
         self._fall_distance = 0
+        """
+        Create a boolean argument for win condition
+        """
+        self.is_winner = False
 
 
     """Method to draw the Yeti texture"""
@@ -127,6 +131,11 @@ class Yeti(Entity):
             self.is_taunting = False
             self.is_throwing = False
         if self.is_taunting or self.is_throwing:
+            self.is_moving = False
+            self.is_running = False
+            self.is_jumping = False
+        if self.is_winner:
+            self.is_taunting = True
             self.is_moving = False
             self.is_running = False
             self.is_jumping = False
@@ -297,7 +306,6 @@ if __name__ == "__main__":
             yeti.is_running = False
         if pr.is_key_pressed(pr.KEY_SPACE):
             yeti.is_jumping = True
-
         yeti.advance(x_direction,y_direction)
         yeti.draw()
         pr.end_drawing()
