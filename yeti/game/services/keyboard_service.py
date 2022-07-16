@@ -42,12 +42,12 @@ class KeyboardService(Service):
 
         The returned point object will be between the range of (-1,-1) and (1,1)
         '''
+        p = Point(0,0)
         if not self._is_started:
-            raise ValueError("Keyboard Service not started.")
+            return p
         method = pr.is_key_down
         if single_press:
             method = pr.is_key_pressed
-        p = Point(0,0)
         # if method(self.UP_KEY):
         #     p.y = -1
         if method(self.RIGHT_KEY):
@@ -64,7 +64,7 @@ class KeyboardService(Service):
         '''
 
         if not self._is_started:
-            raise ValueError("Keyboard Service not started.")
+            pass
         method = pr.is_key_down
         if single_press:
             method = pr.is_key_pressed

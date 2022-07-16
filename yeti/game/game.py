@@ -37,6 +37,8 @@ from game.deeds.world_win_game_deed import ShowGameWinnerDeed
 from game.entities.boss import GoblinBoss
 from game.deeds.enemy_boss_walk_deed import BossWalkDeed
 from game.deeds.enemy_boss_actions_deed import BossActionsDeed
+from game.deeds.world_draw_billboards_deed import DrawBillboardsDeed
+
 
 class Game:
     def __init__(self, debug=False) -> None:
@@ -127,10 +129,9 @@ class Game:
         world_start_background_music_deed = StartBackgroundMusicDeed(service_manager)
         enemy_detect_projectile_collisions = EnemyDetectProjectileCollisionDeed(axemen, yeti_ammo, service_manager)
         enemy_detect_projectile_collisions_boss = EnemyDetectProjectileCollisionDeed([goblin_boss], yeti_ammo, service_manager)
-        
-
         enemy_boss_walk_deed = BossWalkDeed(goblin_boss, platforms[0], service_manager)
         enemy_boss_action_deed = BossActionsDeed(goblin_boss, service_manager)
+        world_draw_billboards_deed = DrawBillboardsDeed(service_manager)
 
         # deed registration
         deeds_service.register_deed(world_create_healers, "init")
@@ -161,7 +162,7 @@ class Game:
         deeds_service.register_deed(enemy_detect_projectile_collisions_boss, "action")
         deeds_service.register_deed(enemy_boss_walk_deed, "action")
         deeds_service.register_deed(enemy_boss_action_deed, "action")
-        
+        deeds_service.register_deed(world_draw_billboards_deed, "action")
 
 
 
@@ -189,8 +190,9 @@ class Game:
                 # if yeti falls off screen
                 if yeti.position.y > video_service.get_height():
                     yeti.got_hit()
-            elif yeti.is_winner:
-                ShowGameWinnerDeed(yeti,service_manager).execute()
+                if yeti.is_winner:
+                    keyboard_service.stop_service()
+                    ShowGameWinnerDeed(yeti,service_manager).execute()
             else:
                 ShowGameOverDeed(yeti, service_manager).execute()
             video_service.end_buffer()

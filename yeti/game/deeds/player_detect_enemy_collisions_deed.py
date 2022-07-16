@@ -19,7 +19,8 @@ class PlayerDetectEnemyCollisionsDeed(Deed):
                     if isinstance(entity, OrangeSlime):
                         self._player.increase_ammo(1)
                     else:
-                        self._player.got_hit()
+                        if entity.is_alive():
+                            self._player.got_hit()
                     entity.got_hit()
                     entity_list.remove(entity)
                 
