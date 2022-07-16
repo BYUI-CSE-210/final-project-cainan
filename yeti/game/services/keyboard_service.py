@@ -42,6 +42,9 @@ class KeyboardService(Service):
 
         The returned point object will be between the range of (-1,-1) and (1,1)
         '''
+
+        
+
         p = Point(0,0)
         if not self._is_started:
             return p
@@ -76,7 +79,7 @@ class KeyboardService(Service):
             return 1
         if method(self.ACTION_TWO):
             return 2
-        if method(self.ACTION_THREE):
+        if pr.is_key_down(self.ACTION_THREE):
             return 3
         if method(self.ACTION_FOUR):
             return 4
