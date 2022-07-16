@@ -128,7 +128,7 @@ class Game:
         player_detect_baby_collisions_deed = PlayerDetectBabyCollisionsDeed(yeti, babies)
         world_start_background_music_deed = StartBackgroundMusicDeed(service_manager)
         enemy_detect_projectile_collisions = EnemyDetectProjectileCollisionDeed(axemen, yeti_ammo, service_manager)
-        enemy_detect_projectile_collisions_boss = EnemyDetectProjectileCollisionDeed([goblin_boss], yeti_ammo, service_manager)
+        enemy_detect_projectile_collisions_boss = EnemyDetectProjectileCollisionDeed([goblin_boss], yeti_ammo, service_manager=service_manager,remove_dead_units=False)
         enemy_boss_walk_deed = BossWalkDeed(goblin_boss, platforms[0], service_manager)
         enemy_boss_action_deed = BossActionsDeed(goblin_boss, service_manager)
         world_draw_billboards_deed = DrawBillboardsDeed(service_manager)

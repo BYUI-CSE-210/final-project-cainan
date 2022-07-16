@@ -15,17 +15,21 @@ class BossWalkDeed(Deed):
 
     def execute(self):
         self._frame_timer += self.video_service.get_frame_time()
-        if self.video_service.is_on_screen(self._boss.position):
-            if self._pace_count > 3:
-                self._direction *= -1
-                self._pace_count = 0
+        if self._boss.is_alive():
+            if self.video_service.is_on_screen(self._boss.position):
+                if self._pace_count > 3:
+                    self._direction *= -1
+                    self._pace_count = 0
 
-            if self._frame_timer > 1:
-                self._frame_timer = 0
-                self._pace_count += 1
-            elif self._frame_timer > .5:
-                self._boss.advance(self._direction,0)
-            else:
-                self._boss.advance(0,0)
+                if self._frame_timer > 1:
+                    self._frame_timer = 0
+                    self._pace_count += 1
+                elif self._frame_timer > .5:
+                    self._boss.advance(self._direction,0)
+            
+                else:
+                    self._boss.advance(0,0)
+        else:
+            self._boss.advance(0,0)
         
         

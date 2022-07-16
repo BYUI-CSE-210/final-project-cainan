@@ -82,11 +82,10 @@ class GoblinBoss(Entity):
             self.frameCount += 1
             self._frame_timer = 0
         if self.frameCount >=7:
-            if self.is_alive:
+            if self.is_alive():
                 self.frameCount = 0
                 self.is_attacking = False
                 self.is_hurt = False
-                
             else:
                 self.frameCount = 7
         self.position.x += x_direction * self.speed
@@ -101,6 +100,7 @@ class GoblinBoss(Entity):
         # return super().got_hit()
         self.max_hp -= 1
         if self.max_hp == 0:
+            self.frameCount = 0
             self._is_alive = False
             
     """Set action button being pressed to true"""

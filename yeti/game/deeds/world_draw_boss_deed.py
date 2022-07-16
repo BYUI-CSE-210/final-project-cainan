@@ -13,5 +13,5 @@ class DrawBossDeed(Deed):
     def execute(self):
         if self._debug:
             print("GoblinBoss Walk (Draw Deed) - GoblinBoss position: ", self.boss.position.x, self.boss.position.y )
-        if self.boss._is_alive:
-            self.boss.draw()
+        # if self.boss._is_alive:
+        self.boss.draw()
