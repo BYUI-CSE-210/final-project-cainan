@@ -18,7 +18,10 @@ class Axe(Entity):
         self._max_alive_time = 3
         self._axe_weight_coefficient = 5
         self.axe_time_counter = 0
-        self.destination = None
+        self.destination = pr.Rectangle()
+        self.dest_divisor = 4
+        self.frame_divisor = 6
+        self.origin_divisor = 12
 
     def draw(self):
         x = self.position.x
@@ -26,13 +29,16 @@ class Axe(Entity):
         frameWidth = self.texture.width
         frameHeight = self.texture.height
         source = pr.Rectangle(0,0,frameWidth,frameHeight)
-        self.destination = pr.Rectangle(x,y - frameHeight/4,frameWidth/6,frameHeight/6)
-        origin = pr.Vector2(frameWidth/12,frameHeight/12)
+        self.destination = pr.Rectangle(x,y - frameHeight/self.dest_divisor,frameWidth/self.frame_divisor ,frameHeight/self.frame_divisor )
+        origin = pr.Vector2(frameWidth/self.origin_divisor,frameHeight/self.origin_divisor)
         pr.draw_texture_pro(self.texture,source,self.destination,origin,self._angle,pr.WHITE)
         if self._video_service.is_on_screen(self.position):
-            self._audio_service.play_sound("flying_axe")
+            self.play_sound()
         if self._debug:
             pr.draw_rectangle(int(self.destination.x), int(self.destination.y), int(self.destination.width), int(self.destination.height), pr.GREEN)
+
+    def play_sound(self):
+        self._audio_service.play_sound("flying_axe")
 
     def advance(self):
         # return super().advance()

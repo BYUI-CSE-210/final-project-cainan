@@ -2,7 +2,7 @@ from random import randint
 from pyray import Rectangle
 from game.entities.entity import Entity
 from game.deeds.start_services_deed import StartServicesDeed
-from game.deeds.enemy_create_axe import AxeCreateDeed
+from game.deeds.enemy_create_axe import ProjectileCreateDeed
 import pyray as pr
 from pyray import Vector2
 """
@@ -68,7 +68,7 @@ class Axeman(Entity):
     """
     def do_action(self,action,axes:list):
         if action == 1:
-            create_axe = AxeCreateDeed(self,axes,self._service_manager,debug=False)
+            create_axe = ProjectileCreateDeed(self,axes,self._service_manager,debug=False)
             create_axe.execute()
             if self._debug:
                 print("Throwing axe!")

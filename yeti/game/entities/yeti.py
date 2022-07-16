@@ -2,6 +2,8 @@ from game.entities.entity import Entity
 from game.services.video_service import VideoService
 from game.shared.point import Point
 from game.shared.color import Color
+from game.deeds.enemy_create_axe import ProjectileCreateDeed
+from game.entities.slime_ammo import SlimeAmmo
 
 import pyray as pr
 from pyray import Vector2
@@ -11,13 +13,18 @@ from pyray import Rectangle
 #TODO: Stretch Goal: Make double jump
 
 class Yeti(Entity):
-    def __init__(self, service_manager=None, debug=None) -> None:
+    def __init__(self, ammo_list, service_manager=None, debug=None) -> None:
         super().__init__(service_manager, debug)
         #TODO decide how much health is good. 
         #TODO: make yeti crashing into ground lose health
         self._max_health = 5
         self._health = 5
+
+        self._ammo = 5
+        self._ammo_list = ammo_list
+
         self._weight = 4
+
         self.speed = 5
 
         self._audio_service.register_sound("yeti_grunt", "yeti/game/entities/sounds/grunt.wav")
@@ -115,7 +122,15 @@ class Yeti(Entity):
         if action == 3:
             self.is_running = True
         if action == 4:
-            self.is_throwing = True
+            if self._ammo > 0:
+                self.is_throwing = True
+                create_orange_slime_projectile_deed = ProjectileCreateDeed(self,self._ammo_list, self._service_manager, object_type=SlimeAmmo)
+                create_orange_slime_projectile_deed.execute()
+                self._ammo -= 1
+            else:
+                self.is_taunting = True
+
+            
 
 
     """Animates the yeti and resticts certain movement"""
@@ -246,9 +261,14 @@ class Yeti(Entity):
         else:
             self._health = self._max_health
 
+    def increase_ammo(self, ammo):
+        self._ammo += ammo
 
     def get_health(self):
         return self._health
+    
+    def get_ammo(self):
+        return self._ammo
 
 
     def got_hit(self):

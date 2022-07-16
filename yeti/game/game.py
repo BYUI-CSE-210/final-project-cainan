@@ -31,6 +31,8 @@ from game.deeds.world_detect_healer_collisions_deed import DetectHealerCollision
 from game.deeds.world_draw_healers_deed import DrawHealersDeed
 from game.deeds.world_start_background_music_deed import StartBackgroundMusicDeed
 from game.deeds.world_show_game_over_deed import ShowGameOverDeed
+from game.deeds.world_move_projectiles_deed import MoveProjectilesDeed
+from game.deeds.enemy_detect_projectile_collisions_deed import EnemyDetectProjectileCollisionDeed
 from game.deeds.world_win_game_deed import ShowGameWinnerDeed
 from game.entities.boss import GoblinBoss
 from game.deeds.enemy_boss_walk_deed import BossWalkDeed
@@ -48,7 +50,9 @@ class Game:
         audio_service = service_manager.audio_service
         keyboard_service = service_manager.keyboard_service
         deeds_service = service_manager.deeds_service
-        yeti = Yeti(service_manager)
+
+        yeti_ammo = []
+        yeti = Yeti(yeti_ammo, service_manager)
         yeti.position.x = 100
         yeti.position.y = video_service.get_height() - 300
 
@@ -111,8 +115,12 @@ class Game:
         draw_baby_yeti_deed = DrawBabyYetiDeed(babies,service_manager)
         player_move_deed = PlayerMoveDeed(service_manager, yeti)
         player_draw_deed = PlayerDrawDeed(yeti)
-        move_axes_deed = MoveAxesDeed(axes,service_manager)
-        # move_boss_axes_deed = MoveAxesDeed(boss_axes,service_manager)
+
+        # move_axes_deed = MoveAxesDeed(axes,service_manager)
+        move_axes_deed = MoveProjectilesDeed(axes, service_manager)
+        move_slime_ammo_deed = MoveProjectilesDeed(yeti_ammo, service_manager)
+        world_apply_gravity_slime_projectiles_deed = ApplyGravityDeed(yeti_ammo, service_manager)
+
         remove_old_axes_deed = RemoveOldAxesDeed(axes, service_manager)
         # remove_boss_axes_deed = RemoveOldAxesDeed(boss_axes,service_manager)
         move_birds_deed = MoveBirdsDeed(birds,service_manager)
@@ -121,6 +129,9 @@ class Game:
         world_detect_healer_collisions_deed = DetectHealerCollisionsDeed(yeti, healers)
         player_detect_baby_collisions_deed = PlayerDetectBabyCollisionsDeed(yeti, babies)
         world_start_background_music_deed = StartBackgroundMusicDeed(service_manager)
+        enemy_detect_projectile_collisions = EnemyDetectProjectileCollisionDeed(axemen, yeti_ammo, service_manager)
+        
+
         enemy_boss_walk_deed = BossWalkDeed(goblin_boss, platforms[0], service_manager)
         enemy_boss_action_deed = BossActionsDeed(goblin_boss, service_manager)
 
@@ -147,6 +158,10 @@ class Game:
         deeds_service.register_deed(player_detect_baby_collisions_deed,"action")
         deeds_service.register_deed(draw_baby_yeti_deed,"action")
         deeds_service.register_deed(world_start_background_music_deed, "action")
+        deeds_service.register_deed(move_slime_ammo_deed, "action")
+        deeds_service.register_deed(world_apply_gravity_slime_projectiles_deed, "action")
+        deeds_service.register_deed(enemy_detect_projectile_collisions, "action")
+        
         deeds_service.register_deed(enemy_boss_walk_deed, "action")
         deeds_service.register_deed(enemy_boss_action_deed, "action")
         

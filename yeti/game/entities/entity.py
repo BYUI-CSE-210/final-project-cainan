@@ -58,3 +58,6 @@ class Entity(ABC):
     @weight.setter
     def weight(self, weight):
         self._weight = weight
+
+    def is_alive(self):
+        return self._is_alive
