@@ -14,7 +14,7 @@ class GoblinBoss(Entity):
         super().__init__(service_manager, debug)
         self.weight = 0
         self.is_on_solid_ground = True
-        self.is_alive = True
+        
         self.max_hp = max_hp
         self.speed = speed
         self._service_manager = service_manager
@@ -44,7 +44,7 @@ class GoblinBoss(Entity):
         function to display the boss sprite
         on screen.
         """
-        if not self.is_alive:
+        if not self._is_alive:
             self._action = self._actions[3]
         elif self.is_attacking:
             self._action = self._actions[1]
@@ -101,7 +101,7 @@ class GoblinBoss(Entity):
         # return super().got_hit()
         self.max_hp -= 1
         if self.max_hp == 0:
-            self.is_alive = False
+            self._is_alive = False
             
     """Set action button being pressed to true"""
     def do_action(self, action):

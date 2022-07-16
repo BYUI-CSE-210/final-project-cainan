@@ -9,7 +9,8 @@ class BossActionsDeed(Deed):
 
     def execute(self):
         self._frame_timer += self.video_service.get_frame_time()
-        if self.video_service.is_on_screen(self._boss.position):
-            if self._frame_timer > 2:
-                self._boss.do_action(2)
-                self._frame_timer = 0
+        if self._boss.is_alive():
+            if self.video_service.is_on_screen(self._boss.position):
+                if self._frame_timer > 2:
+                    self._boss.do_action(2)
+                    self._frame_timer = 0
