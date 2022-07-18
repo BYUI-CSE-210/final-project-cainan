@@ -26,6 +26,7 @@ class Axeman(Entity):
         self.scaled_frameHeight = self.frameHeight/4
         self.is_on_solid_ground = True
         self._frame_timer = 0
+        self.destination = pr.Rectangle()
 
     """
     method to display texture in game

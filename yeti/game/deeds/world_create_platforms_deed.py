@@ -29,7 +29,10 @@ class CreatePlatformsDeed(Deed):
         for i in range(60):
             platform_height = 20
             platform_width = 200
-            
+            fading = False
+            fading_platform_randomness = randint(3, 7)
+            if not i % fading_platform_randomness:
+                fading = True
             if last_platform:
                 platform_x += randint(200, 350)
                 if last_platform.position.y < 200:
@@ -41,7 +44,7 @@ class CreatePlatformsDeed(Deed):
             
             
                 
-            platform = Platform(platform_width, platform_height, service_manager=self.service_manager)
+            platform = Platform(platform_width, platform_height, fading_type=fading, service_manager=self.service_manager)
             platform.position.x = platform_x
             platform.position.y = platform_y
             self._platforms.append(platform)
