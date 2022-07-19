@@ -1,4 +1,3 @@
-from matplotlib.pyplot import cla
 import pyray as pr
 from game.deeds.deed import Deed
 
